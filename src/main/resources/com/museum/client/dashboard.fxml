@@ -12,7 +12,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.DashboardController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="dashboard" stylesheets="@dashboard.css">
+      <AnchorPane fx:id="dashboardView" prefHeight="200.0" prefWidth="200.0" styleClass="dashboard" stylesheets="@dashboard.css">
          <children>
             <AnchorPane prefHeight="700.0" prefWidth="194.0" styleClass="menu" stylesheets="@dashboard.css">
                <children>
@@ -85,6 +85,11 @@
                         </Button>
                      </children>
                   </VBox>
+                  <Button layoutX="14.0" layoutY="656.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-btn" stylesheets="@dashboard.css" text="LOGOUT" textFill="WHITE">
+                     <font>
+                        <Font name="Lato Regular" size="14.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="220.0" prefHeight="45.0" prefWidth="880.0" styleClass="topbar" stylesheets="@dashboard.css">
