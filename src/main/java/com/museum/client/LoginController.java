@@ -25,6 +25,8 @@ public class LoginController {
     @FXML
     private TextField usernameText;
 
+    private AlertMessage alert = new AlertMessage();
+
     @FXML
     protected void login(ActionEvent event) throws IOException {
         try {
@@ -33,7 +35,7 @@ public class LoginController {
             System.out.println(usernameText.getText() + " " + passwordText.getText());
 
             if (username.isEmpty() || password.isEmpty()) {
-                new CustomAlert(Alert.AlertType.INFORMATION, "Login information", "Please fill in the blanks.");
+                alert.info("Logowanie", "Proszę wypełnić wszystkie pola.");
             } else {
                 this.socket = new Socket("localhost", 5000);
                 out = new ObjectOutputStream(this.socket.getOutputStream());
@@ -44,7 +46,6 @@ public class LoginController {
                 in = new ObjectInputStream(this.socket.getInputStream());
                 boolean isAuthenticated = in.readBoolean();
                 socket.close();
-                System.out.println("Response " + isAuthenticated);
 
                 if (isAuthenticated) {
                     User user = new User(username); // populate with more data: role, department etc
@@ -53,7 +54,7 @@ public class LoginController {
                     DashboardController dashboardController = dashboardView.getFXMLController();
                     dashboardController.setUser(user);
                 } else {
-                    new CustomAlert(Alert.AlertType.ERROR, "Login error", "Username or password are incorrect.");
+                    alert.error("Błąd logowania", "Nazwa użytkownika lub hasło są niepoprawne.");
                 }
 
             }

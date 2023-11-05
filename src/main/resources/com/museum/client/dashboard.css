@@ -1,7 +1,7 @@
 
 
 .dashboard {
-    -fx-background-color: #fff;
+    -fx-background-color: #f6f9ff;
 }
 
 .menu {
@@ -18,7 +18,7 @@
 }
 
 .topbar {
-    -fx-background-color: #EAEAEA;
+    -fx-background-color: #DBDBDB;
 }
 
 .logout-btn {
@@ -31,4 +31,104 @@
 
 .logout-btn:hover {
     -fx-background-color: #1769c6;
+}
+
+.white-wrapper {
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2),5,0,0,0);
+    -fx-border-color: #DBDBDB;
+}
+
+.tile-tours {
+    -fx-background-color: #0a7df3;
+}
+
+.tile-exhibitions {
+    -fx-background-color: #8d64f2;
+}
+
+.tile-exhibits-due {
+    -fx-background-color: #28c195;
+}
+
+.tile-exhibits-overdue {
+    -fx-background-color: #e74519;
+}
+
+.exhibit-form {
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2),5,0,0,0);
+}
+
+.exhibit-image {
+     -fx-background-color: red;
+}
+
+.exhibit-form-input {
+    -fx-background-color: transparent;
+    -fx-border-color: #DBDBDB;
+}
+
+.exhibit-form-combobox {
+    -fx-background-color: transparent;
+    -fx-border-color: #DBDBDB;
+}
+
+.exhibit-form-input:focused {
+    -fx-border-color: #0a7df3;
+}
+
+.clear-btn {
+    -fx-background-color: #0a7df3;
+    -fx-cursor: hand;
+}
+
+.clear-btn:hover {
+    -fx-background-color: #0063d4;
+}
+
+.add-btn {
+    -fx-background-color: #28c195;
+    -fx-cursor: hand;
+}
+
+.add-btn:hover {
+    -fx-background-color: #009a71;
+}
+
+.update-btn {
+    -fx-background-color: #e74519;
+    -fx-cursor: hand;
+}
+
+.update-btn:hover {
+    -fx-background-color: #c42200;
+}
+
+.search-input {
+     -fx-background-color: transparent;
+     -fx-border-color: #DBDBDB;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color:  #DBDBDB;
+}
+
+.table-view .table-column {
+    -fx-alignment: center;
+    -fx-border-color:  #DBDBDB;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #0a7df3;
+    -fx-background-insets: 0 0 0 0;
+}
+
+.table-view .column-header, .filter{
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+}
+.table-view .column-header .label{
+    -fx-text-fill: #fff;
 }

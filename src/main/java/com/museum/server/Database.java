@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-    private static final String DB_URL = "";
-    private static final String DB_USER = "";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/museum";
+    private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
 
     public static Connection connect() {
