@@ -1,14 +1,17 @@
 package com.museum.server;
 
 import com.museum.Actions;
+import com.museum.models.Exhibit;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
@@ -33,6 +36,12 @@ public class ClientHandler implements Runnable {
                     out.writeBoolean(isAuthenticated);
                     out.flush();
                     break;
+                case GET_EXHIBITS:
+                    ExhibitsHandler exhibitsHandler = new ExhibitsHandler();
+                    List<Exhibit> exhibits = exhibitsHandler.getExhibits();
+                    out.writeObject(exhibits);
+                    out.flush();
+                    break;
                 default:
                     // TODO: make a res to this
                     System.out.println("Unexpected action");
@@ -46,3 +55,5 @@ public class ClientHandler implements Runnable {
         }
     }
 }
+
+

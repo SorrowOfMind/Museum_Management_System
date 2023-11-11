@@ -32,7 +32,6 @@ public class LoginController {
         try {
             String username = usernameText.getText();
             String password = passwordText.getText();
-            System.out.println(usernameText.getText() + " " + passwordText.getText());
 
             if (username.isEmpty() || password.isEmpty()) {
                 alert.info("Logowanie", "Proszę wypełnić wszystkie pola.");
@@ -45,7 +44,7 @@ public class LoginController {
 
                 in = new ObjectInputStream(this.socket.getInputStream());
                 boolean isAuthenticated = in.readBoolean();
-                socket.close();
+                this.socket.close();
 
                 if (isAuthenticated) {
                     User user = new User(username); // populate with more data: role, department etc
