@@ -1,2 +1,8 @@
-package com.museum.Enums;public class DatabaseQuery {
+package com.museum.Enums;
+
+public enum DatabaseQuery {
+    Select,
+    Update,
+    Insert,
+    Delete
 }

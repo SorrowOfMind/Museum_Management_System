@@ -1,7 +1,6 @@
 package com.museum.server;
 
 import com.museum.Actions;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -9,6 +8,8 @@ public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+
+
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
@@ -33,6 +34,11 @@ public class ClientHandler implements Runnable {
                     out.writeBoolean(isAuthenticated);
                     out.flush();
                     break;
+                case RUNQUERY:
+                    QueryHandler queryHandler = new QueryHandler();
+                    String query = (String) in.readObject();
+                    out.writeObject(queryHandler.ExecuteDatabaseQuery(query));
+
                 default:
                     // TODO: make a res to this
                     System.out.println("Unexpected action");

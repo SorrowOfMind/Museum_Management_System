@@ -226,7 +226,7 @@
                                                 <Font name="Lato Regular" size="16.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="exhibitHistoricalPeriod" layoutX="18.0" layoutY="794.0" prefHeight="25.0" prefWidth="305.0" promptText="Wybierz" styleClass="exhibit-form-combobox" stylesheets="@dashboard.css" />
+                                          <ComboBox fx:id="exhibitHistoricalPeriod"  layoutX="18.0" layoutY="794.0" prefHeight="25.0" prefWidth="305.0" promptText="Wybierz" styleClass="exhibit-form-combobox" stylesheets="@dashboard.css" />
                                           <Label layoutX="18.0" layoutY="836.0" text="Data ostatniej konserwacji:">
                                              <font>
                                                 <Font name="Lato Regular" size="16.0" />

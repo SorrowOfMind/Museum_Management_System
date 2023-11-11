@@ -1,5 +1,9 @@
 package com.museum.client;
 
+import com.museum.DataModels.Age;
+import com.museum.Enums.DatabaseQuery;
+import com.museum.Enums.Table;
+import jakarta.persistence.Query;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,12 +11,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
     private User user;
+    private Socket socket;
+
+    private DatabaseHelper databaseHelper;
     @FXML
     private Label usernameText;
 
@@ -21,6 +29,8 @@ public class DashboardController implements Initializable {
     private Button overviewBtn;
     @FXML
     private Button exhibitsBtn;
+    @FXML
+    private Button exhibitionsBtn;
 
 
     // EXHIBIT TABLE
@@ -77,6 +87,8 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane exhibitsView;
     @FXML
+    private AnchorPane exhibitionsView;
+    @FXML
     private AnchorPane overviewView;
     @FXML
     private AnchorPane dashboardView;
@@ -88,12 +100,37 @@ public class DashboardController implements Initializable {
         usernameText.setText(user.getUsername());
     }
 
+    public void setSocket(Socket socket){
+        this.socket = socket;
+        this.databaseHelper = new DatabaseHelper(socket);
+    }
+
+    private void handleExhibitsSelected(){
+        setVisibleView(exhibitsView);
+
+
+
+    }
+
     @FXML
     protected void switchDashboardView(ActionEvent event) {
         if (event.getSource().equals(overviewBtn)) {
             setVisibleView(overviewView);
         } else if (event.getSource().equals(exhibitsBtn)) {
-            setVisibleView(exhibitsView);
+            handleExhibitsSelected();
+        }
+        else if (event.getSource().equals(exhibitionsBtn)) {
+            setVisibleView(exhibitionsView);
+        }
+        else if (event.getSource().equals(exhibitionsBtn)) {
+            final QueryHelper helper = new QueryHelper();
+            final Age age = new Age(1, null, null, null);
+            try{
+                System.out.println(this.databaseHelper.ExecuteDatabaseQuery(helper.ConstructQuery(DatabaseQuery.Select, Table.Age, age)));
+            }catch(ClassNotFoundException | IOException e){
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -118,6 +155,6 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        views = new AnchorPane[]{overviewView, exhibitsView};
+        views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView};
     }
 }

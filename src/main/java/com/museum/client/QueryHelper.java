@@ -4,7 +4,7 @@ import com.museum.DataModels.Age;
 import com.museum.Enums.DatabaseQuery;
 import com.museum.Enums.Table;
 
-public  class DatabaseHelper<T> {
+public  class QueryHelper<T> {
 
     private String ConstructWhereClauseForTable(Table table, T params){
 

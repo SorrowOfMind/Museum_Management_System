@@ -53,6 +53,7 @@ public class LoginController {
                     View dashboardView = new View("dashboard.fxml");
                     DashboardController dashboardController = dashboardView.getFXMLController();
                     dashboardController.setUser(user);
+                    dashboardController.setSocket(this.socket);
                 } else {
                     alert.error("Błąd logowania", "Nazwa użytkownika lub hasło są niepoprawne.");
                 }

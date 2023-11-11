@@ -140,7 +140,7 @@ create table worker_exhibition (
     FOREIGN KEY (exhibitionID) REFERENCES exhibition(exhibitionID)
 );
 
-create table worker_addres (
+create table worker_address (
     workerID int not null,
     street varchar(100) not null,
     buildingNumber int not null,
