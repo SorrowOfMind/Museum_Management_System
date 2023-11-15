@@ -158,7 +158,6 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView};
-        this.setVisibleView(overviewView);
         exhibits = new Exhibits();
         exhibitsShowList();
     }

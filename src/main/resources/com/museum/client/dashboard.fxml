@@ -60,7 +60,7 @@
                               <Insets left="20.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="exhibitionsBtn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="60.0" onAction="#switchDashboardView" mnemonicParsing="false" prefHeight="50.0" prefWidth="196.0" styleClass="menu-button" stylesheets="@dashboard.css" text="Wystawy" textFill="WHITE">
+                        <Button fx:id="exhibitionsBtn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#switchDashboardView" prefHeight="50.0" prefWidth="196.0" styleClass="menu-button" stylesheets="@dashboard.css" text="Wystawy" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -114,7 +114,7 @@
             </AnchorPane>
             <AnchorPane layoutX="220.0" layoutY="56.0" prefHeight="756.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <AnchorPane fx:id="overviewView" prefHeight="200.0" prefWidth="200.0" visible="false">
+                  <AnchorPane fx:id="overviewView" prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="white-wrapper" stylesheets="@dashboard.css" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <children>
@@ -127,7 +127,7 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="279.0" layoutY="11.0" prefHeight="179.0" prefWidth="244.0"  styleClass="tile-exhibitions" stylesheets="@dashboard.css">
+                              <AnchorPane layoutX="279.0" layoutY="11.0" prefHeight="179.0" prefWidth="244.0" styleClass="tile-exhibitions" stylesheets="@dashboard.css">
                                  <children>
                                     <Label layoutX="75.0" layoutY="20.0" text="WYSTAWY" textFill="WHITE">
                                        <font>
@@ -168,7 +168,7 @@
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="exhibitsView" layoutY="-8.0" prefHeight="655.0" prefWidth="1080.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0">
+                  <AnchorPane fx:id="exhibitsView" layoutY="-8.0" prefHeight="655.0" prefWidth="1080.0" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0">
                      <children>
                         <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
                            <children>
