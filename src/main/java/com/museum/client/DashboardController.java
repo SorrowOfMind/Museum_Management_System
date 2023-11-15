@@ -1,21 +1,13 @@
 package com.museum.client;
 
-import com.museum.Actions;
-import com.museum.models.Exhibit;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
-import java.sql.Date;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
