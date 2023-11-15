@@ -8,7 +8,7 @@ public class Exhibit implements Serializable {
     private int exhibitID;
     private String name;
     private String author;
-    private Date creationDate;
+    private String creationDate;
     private String origins;
     private String description;
     private Date acquisitionDate;
@@ -23,7 +23,7 @@ public class Exhibit implements Serializable {
             int exhibitID,
             String name,
             String author,
-            Date creationDate,
+            String creationDate,
             String origins,
             String description,
             Date acquisitionDate,

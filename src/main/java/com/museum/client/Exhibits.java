@@ -24,7 +24,7 @@ public class Exhibits {
         getExhibits();
     }
 
-    private void getExhibits() {
+    public void getExhibits() {
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -45,6 +45,10 @@ public class Exhibits {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void addExhibit(Exhibit exhibit) {
+        System.out.println(exhibit.getExhibitID() + " "+ exhibit.getName());
     }
 
     public ObservableList<Exhibit> getExhibitsList() {

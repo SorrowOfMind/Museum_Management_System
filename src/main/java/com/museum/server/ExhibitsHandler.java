@@ -30,7 +30,7 @@ public class ExhibitsHandler {
                         result.getInt("exhibitID"),
                         result.getString("name"),
                         result.getString("author"),
-                        result.getDate("creationDate"),
+                        result.getString("creationDate"),
                         result.getString("origins"),
                         result.getString("description"),
                         result.getDate("acquisitionDate"),
