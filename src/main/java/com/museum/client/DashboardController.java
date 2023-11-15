@@ -34,6 +34,8 @@ public class DashboardController implements Initializable {
     private Button overviewBtn;
     @FXML
     private Button exhibitsBtn;
+    @FXML
+    private Button exhibitionsBtn;
 
 
     // EXHIBIT TABLE
@@ -93,6 +95,10 @@ public class DashboardController implements Initializable {
     private AnchorPane overviewView;
     @FXML
     private AnchorPane dashboardView;
+    @FXML
+    private AnchorPane exhibitionsView;
+
+    private ExhibitionsController exhibitionsController = null;
     private AnchorPane[] views;
     private AlertMessage alert = new AlertMessage();
 
@@ -108,6 +114,10 @@ public class DashboardController implements Initializable {
         } else if (event.getSource().equals(exhibitsBtn)) {
             setVisibleView(exhibitsView);
         }
+        else if (event.getSource().equals(exhibitionsBtn)) {
+            if(exhibitionsController == null) this.exhibitionsController = new ExhibitionsController();
+            setVisibleView(exhibitionsView);
+        }
     }
 
     @FXML
@@ -121,6 +131,7 @@ public class DashboardController implements Initializable {
 
     private void setVisibleView(AnchorPane visibleView) {
         visibleView.setVisible(true);
+
         for (AnchorPane view : views) {
             if (view != visibleView) {
                 view.setVisible(false);
@@ -128,37 +139,11 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void getExhibits() {
-        List<Exhibit> exhibits = new ArrayList<>();
-        try {
-            this.socket = new Socket("localhost", 5000);
-            out = new ObjectOutputStream(this.socket.getOutputStream());
-            out.writeObject(Actions.GET_EXHIBITS);
-            in = new ObjectInputStream(this.socket.getInputStream());
-            try {
-                Object object = in.readObject();
-                System.out.println("client");
-                exhibits = (List<Exhibit>)object;
-                for (Exhibit ex : exhibits) {
-                    System.out.println(ex.id + " " + ex.name + " " + ex.status);
-                }
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            this.socket.close();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        views = new AnchorPane[]{overviewView, exhibitsView};
-        getExhibits();
+        views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView};
+        this.setVisibleView(overviewView);
+        DatabaseHelper.getExhibits();
     }
 }

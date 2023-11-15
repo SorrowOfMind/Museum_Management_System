@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.*;
@@ -27,8 +29,9 @@ public class LoginController {
 
     private AlertMessage alert = new AlertMessage();
 
+
     @FXML
-    protected void login(ActionEvent event) throws IOException {
+    protected void login() throws IOException {
         try {
             String username = usernameText.getText();
             String password = passwordText.getText();
@@ -39,15 +42,15 @@ public class LoginController {
                 this.socket = new Socket("localhost", 5000);
                 out = new ObjectOutputStream(this.socket.getOutputStream());
                 out.writeObject(Actions.LOGIN);
-                out.writeObject(username);
-                out.writeObject(password);
+                out.writeObject("root");
+                out.writeObject("admin");
 
                 in = new ObjectInputStream(this.socket.getInputStream());
                 boolean isAuthenticated = in.readBoolean();
                 this.socket.close();
 
                 if (isAuthenticated) {
-                    User user = new User(username); // populate with more data: role, department etc
+                    User user = new User("someone"); // populate with more data: role, department etc
                     loginForm.getScene().getWindow().hide();
                     View dashboardView = new View("dashboard.fxml");
                     DashboardController dashboardController = dashboardView.getFXMLController();
@@ -61,4 +64,17 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    protected void onEnter(KeyEvent e){
+        if(e.getCode() == KeyCode.ENTER){
+            try{
+                this.login();
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
 }

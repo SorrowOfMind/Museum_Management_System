@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane layoutX="11.0" layoutY="25.0" prefHeight="655.0" prefWidth="1080.0" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.ExhibitionsController">
+        <children>
+            <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
+                <children>
+                    <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="721.0" prefWidth="350.0" style="-fx-border-color: none;" stylesheets="@dashboard.css" vbarPolicy="ALWAYS">
+               <content>
+                  <AnchorPane prefHeight="600.0" prefWidth="350.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
+                     <children>
+                        <AnchorPane layoutX="102.0" layoutY="24.0" prefHeight="150.0" prefWidth="141.0" styleClass="exhibit-image" stylesheets="@dashboard.css" />
+                        <Label layoutX="18.0" layoutY="195.0" text="ID: ">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="exhibitionIDText" layoutX="47.0" layoutY="192.0" prefHeight="26.0" prefWidth="272.0" text="Label">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
+                           </padding>
+                        </Label>
+                        <Label layoutX="18.0" layoutY="226.0" text="Nazwa:">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="exhibitionTitle" layoutX="18.0" layoutY="252.0" prefHeight="25.0" prefWidth="307.0" styleClass="exhibit-form-input" stylesheets="@dashboard.css">
+                           <padding>
+                              <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
+                           </padding>
+                        </TextField>
+                        <Label layoutX="22.0" layoutY="290.0" text="Eksponaty:">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="exhibitsInExhibitions" layoutX="19.0" layoutY="322.0" maxHeight="110.0" prefHeight="55.0" prefWidth="268.0" />
+                        <Label layoutX="21.0" layoutY="386.0" text="Początek:">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="452.0" text="Koniec:">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="exhibitionResetBtn" layoutX="22.0" layoutY="520.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="305.0" styleClass="clear-btn" stylesheets="@dashboard.css" text="RESETUJ" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="exhibitionAddBtn" layoutX="22.0" layoutY="566.0" mnemonicParsing="false" prefWidth="305.0" styleClass="add-btn" stylesheets="@dashboard.css" text="DODAJ" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="exhibitionUpdateBtn" layoutX="22.0" layoutY="612.0" mnemonicParsing="false" prefWidth="305.0" styleClass="update-btn" stylesheets="@dashboard.css" text="AKTUALIZUJ" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Button>
+                        <DatePicker fx:id="exhibitionStartDate" layoutX="20.0" layoutY="412.0" prefHeight="27.0" prefWidth="307.0" styleClass="exhibit-form-input" stylesheets="@dashboard.css" />
+                        <DatePicker fx:id="exhibitionEndDate" layoutX="17.0" layoutY="479.0" prefHeight="27.0" prefWidth="307.0" styleClass="exhibit-form-input" stylesheets="@dashboard.css" />
+                        <Button layoutX="294.0" layoutY="322.0" mnemonicParsing="false" onAction="#showPopup" prefHeight="25.0" prefWidth="31.0" text="Button" />
+                        <Pane fx:id="exhibitsPopup" layoutX="47.0" layoutY="136.0" pickOnBounds="false" prefHeight="500.0" prefWidth="250.0" styleClass="white-wrapper" stylesheets="@dashboard.css" visible="false">
+                           <children>
+                              <Label layoutX="85.0" layoutY="14.0" text="Eksponaty">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ListView fx:id="exhibitsList" layoutX="25.0" layoutY="47.0" prefHeight="406.0" prefWidth="200.0" />
+                              <Button fx:id="popUpOK" layoutX="166.0" layoutY="461.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="OK" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+               </content>
+                    </ScrollPane>
+                </children>
+            </AnchorPane>
+      <AnchorPane layoutX="11.0" layoutY="25.0" prefHeight="626.0" prefWidth="687.0" styleClass="white-wrapper" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <TextField fx:id="exhibitionsSearch" layoutX="14.0" layoutY="14.0" prefWidth="326.0" promptText="Szukaj wystawy..." styleClass="search-input" stylesheets="@dashboard.css">
+               <padding>
+                  <Insets bottom="3.0" left="25.0" right="5.0" top="3.0" />
+               </padding>
+            </TextField>
+            <ImageView fitHeight="14.0" fitWidth="14.0" layoutX="21.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/search.png" />
+               </image>
+            </ImageView>
+            <TableView fx:id="exhibitionsTable" layoutX="14.0" layoutY="53.0" prefHeight="658.0" prefWidth="656.0" stylesheets="@dashboard.css">
+               <columns>
+                  <TableColumn fx:id="exhibitionsTableID" prefWidth="98.0" text="ID" />
+                  <TableColumn fx:id="exhibitionsTableTitle" minWidth="2.0" prefWidth="186.0" text="Nazwa" />
+                  <TableColumn fx:id="exhibitionsTableStartDate" prefWidth="120.0" text="Od" />
+                  <TableColumn fx:id="exhibitionsTableEndDate" prefWidth="129.0" text="Do" />
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+        </children>
+    </AnchorPane>
