@@ -37,3 +37,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+src/main/java/com/museum/server/mysql-connector-j-8.2.0.jar

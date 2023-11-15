@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.*;
@@ -27,8 +29,9 @@ public class LoginController {
 
     private AlertMessage alert = new AlertMessage();
 
+
     @FXML
-    protected void login(ActionEvent event) throws IOException {
+    protected void login() throws IOException {
         try {
             String username = usernameText.getText();
             String password = passwordText.getText();
@@ -61,4 +64,17 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    protected void onEnter(KeyEvent e){
+        if(e.getCode() == KeyCode.ENTER){
+            try{
+                this.login();
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
 }

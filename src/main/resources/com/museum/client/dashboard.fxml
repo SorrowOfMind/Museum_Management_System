@@ -60,7 +60,7 @@
                               <Insets left="20.0" />
                            </padding>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="196.0" styleClass="menu-button" stylesheets="@dashboard.css" text="Wystawy" textFill="WHITE">
+                        <Button fx:id="exhibitionsBtn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="60.0" onAction="#switchDashboardView" mnemonicParsing="false" prefHeight="50.0" prefWidth="196.0" styleClass="menu-button" stylesheets="@dashboard.css" text="Wystawy" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -127,7 +127,7 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="279.0" layoutY="11.0" prefHeight="179.0" prefWidth="244.0" styleClass="tile-exhibitions" stylesheets="@dashboard.css">
+                              <AnchorPane layoutX="279.0" layoutY="11.0" prefHeight="179.0" prefWidth="244.0"  styleClass="tile-exhibitions" stylesheets="@dashboard.css">
                                  <children>
                                     <Label layoutX="75.0" layoutY="20.0" text="WYSTAWY" textFill="WHITE">
                                        <font>
@@ -316,18 +316,19 @@
                                  </image>
                               </ImageView>
                               <TableView fx:id="exhibitsTable" layoutX="14.0" layoutY="53.0" prefHeight="658.0" prefWidth="656.0" stylesheets="@dashboard.css">
-                                <columns>
-                                  <TableColumn fx:id="exhibitsTableID" prefWidth="98.0" text="ID" />
-                                  <TableColumn fx:id="exhibitsTableName" prefWidth="183.0" text="Nazwa" />
+                                 <columns>
+                                    <TableColumn fx:id="exhibitsTableID" prefWidth="98.0" text="ID" />
+                                    <TableColumn fx:id="exhibitsTableName" prefWidth="183.0" text="Nazwa" />
                                     <TableColumn fx:id="exhibitsTableStatus" prefWidth="123.0" text="Status" />
                                     <TableColumn fx:id="exhibitsTableConservation" prefWidth="129.0" text="Status konserwacji" />
                                     <TableColumn fx:id="exhibitsTableSecurity" prefWidth="121.0" text="Zabezpieczenia" />
-                                </columns>
+                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
+                  <fx:include fx:id="exhibitionsView" source="exhibitionsView.fxml" />
                </children>
             </AnchorPane>
          </children>
