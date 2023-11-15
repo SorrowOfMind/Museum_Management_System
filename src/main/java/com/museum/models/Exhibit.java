@@ -64,4 +64,6 @@ public class Exhibit implements Serializable {
     public String getSecurity() {
         return security;
     }
+
+    public Date getNextConservation() {return nextConservation;}
 }
