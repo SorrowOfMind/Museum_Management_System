@@ -22,7 +22,7 @@ public class AuthHandler {
     // TODO: when registration added to admin user, all passwords will be encrypted (eg. with BCrypt), and hashed passwords will be compared during auth!
     // TODO: make a joined query to get more user data
     public boolean authenticate() {
-        String query = "SELECT * FROM users WHERE username = ? and password = ?";
+        String query = "SELECT * FROM user WHERE username = ? and password = ?";
         this.conn = Database.connect();
 
         try {

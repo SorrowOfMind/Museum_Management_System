@@ -12,4 +12,5 @@ module com.museum.client {
 
     opens com.museum.client to javafx.fxml;
     exports com.museum.client;
+    opens com.museum.models to javafx.base;
 }

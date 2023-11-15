@@ -2,6 +2,7 @@ package com.museum.server;
 
 import com.museum.Actions;
 import com.museum.models.Exhibit;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.net.Socket;

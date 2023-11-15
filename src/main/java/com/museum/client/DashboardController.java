@@ -2,10 +2,13 @@ package com.museum.client;
 
 import com.museum.Actions;
 import com.museum.models.Exhibit;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -19,6 +22,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
+
+    // DATA
+    private Exhibits exhibits;
+    private ObservableList<Exhibit> exhibitsShowList;
 
     // SOCKET CONN
     private Socket socket;
@@ -40,17 +47,17 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField exhibitsSearch;
     @FXML
-    private TableView<?> exhibitsTable;
+    private TableView<Exhibit> exhibitsTable;
     @FXML
-    private TableColumn<?, ?> exhibitsTableID;
+    private TableColumn<Exhibit, String> exhibitsTableID;
     @FXML
-    private TableColumn<?, ?> exhibitsTableName;
+    private TableColumn<Exhibit, String> exhibitsTableName;
     @FXML
-    private TableColumn<?, ?> exhibitsTableStatus;
+    private TableColumn<Exhibit, String> exhibitsTableStatus;
     @FXML
     private TableColumn<?, ?> exhibitsTableConservation;
     @FXML
-    private TableColumn<?, ?> exhibitsTableSecurity;
+    private TableColumn<Exhibit, String> exhibitsTableSecurity;
 
     // EXHIBIT FORM
     @FXML
@@ -128,37 +135,23 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void getExhibits() {
-        List<Exhibit> exhibits = new ArrayList<>();
-        try {
-            this.socket = new Socket("localhost", 5000);
-            out = new ObjectOutputStream(this.socket.getOutputStream());
-            out.writeObject(Actions.GET_EXHIBITS);
-            in = new ObjectInputStream(this.socket.getInputStream());
-            try {
-                Object object = in.readObject();
-                System.out.println("client");
-                exhibits = (List<Exhibit>)object;
-                for (Exhibit ex : exhibits) {
-                    System.out.println(ex.id + " " + ex.name + " " + ex.status);
-                }
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            this.socket.close();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    private void exhibitsShowList() {
+        exhibitsShowList = exhibits.getExhibitsList();
+        for (Exhibit ex : exhibitsShowList) {
+            System.out.println(ex.getExhibitID());
         }
+        exhibitsTableID.setCellValueFactory(new PropertyValueFactory<>("exhibitID"));
+        exhibitsTableName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        exhibitsTableStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        exhibitsTableSecurity.setCellValueFactory(new PropertyValueFactory<>("security"));
 
+        exhibitsTable.setItems(exhibitsShowList);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         views = new AnchorPane[]{overviewView, exhibitsView};
-        getExhibits();
+        exhibits = new Exhibits();
+        exhibitsShowList();
     }
 }
