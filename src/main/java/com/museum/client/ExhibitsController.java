@@ -87,6 +87,9 @@ public class ExhibitsController implements Initializable {
     @FXML
     private TableColumn<Exhibit, String> exhibitsTableSecurity;
 
+    // UTILS
+    private AlertMessage alert = new AlertMessage();
+
     private void populateExhibitsTable() {
         exhibitsShowList = exhibits.getExhibitsList();
 
@@ -101,21 +104,33 @@ public class ExhibitsController implements Initializable {
 
     @FXML
     void addExhibit(ActionEvent event) {
-        // TODO: check if valid
-        String name = exhibitName.getText();
-        String author = exhibitAuthor.getText();
-        String creationDate = exhibitCreationDate.getText();
-        String origins = exhibitOrigins.getText();
-        String description = exhibitDescription.getText();
-        Date acquisitionDate = Date.valueOf(exhibitAcquisitionDate.getValue());
-        Integer value = Integer.valueOf(exhibitValue.getText());
-        Integer ageID = Integer.valueOf(exhibitHistoricalPeriod.getSelectionModel().getSelectedIndex());
-        Date lastConservation = Date.valueOf(exhibitLastConservation.getValue());
-        Date nextConservation = Date.valueOf(exhibitNextConservation.getValue());
-        String status = String.valueOf(exhibitHistoricalPeriod.getSelectionModel().getSelectedItem());
-        String security = String.valueOf(exhibitHistoricalPeriod.getSelectionModel().getSelectedItem());
+        if (exhibitName.getText().isEmpty()
+                || exhibitAcquisitionDate.getValue() == null
+                || exhibitValue.getText().isEmpty()
+                || exhibitHistoricalPeriod.getSelectionModel().getSelectedItem() == null
+                || exhibitLastConservation.getValue() == null
+                || exhibitNextConservation.getValue() == null
+                || exhibitStatus.getSelectionModel().getSelectedItem() == null
+                || exhibitSecurity.getSelectionModel().getSelectedItem() == null
+        ) {
+            alert.info("Dodawanie eksponatu", "Proszę wypełnić wszystkie pola.");
+        } else {
+            String name = exhibitName.getText();
+            String author = exhibitAuthor.getText();
+            String creationDate = exhibitCreationDate.getText();
+            String origins = exhibitOrigins.getText();
+            String description = exhibitDescription.getText();
+            Date acquisitionDate = Date.valueOf(exhibitAcquisitionDate.getValue());
+            Integer value = Integer.valueOf(exhibitValue.getText());
+            Integer ageID = Integer.valueOf(exhibitHistoricalPeriod.getSelectionModel().getSelectedIndex());
+            Date lastConservation = Date.valueOf(exhibitLastConservation.getValue());
+            Date nextConservation = Date.valueOf(exhibitNextConservation.getValue());
+            String status = String.valueOf(exhibitStatus.getSelectionModel().getSelectedItem());
+            String security = String.valueOf(exhibitSecurity.getSelectionModel().getSelectedItem());
 
-        exhibits.addExhibit(new Exhibit(
+            System.out.println(name + " " + ageID + " " + lastConservation + " " + status);
+
+            exhibits.addExhibit(new Exhibit(
                 0,
                 name,
                 author,
@@ -129,7 +144,8 @@ public class ExhibitsController implements Initializable {
                 nextConservation,
                 status,
                 security
-        ));
+            ));
+        }
     }
 
     private void refreshExhibits() {

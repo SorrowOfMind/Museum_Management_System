@@ -12,6 +12,10 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
+    // PORT
+    public static final int PORT = 5000;
+    public static final String HOST = "localhost";
+
     private User user;
     @FXML
     private Label usernameText;

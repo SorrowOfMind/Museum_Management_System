@@ -26,7 +26,7 @@ public class Exhibits {
 
     public void getExhibits() {
         try {
-            socket = new Socket("localhost", 5000);
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.GET_EXHIBITS);
             in = new ObjectInputStream(socket.getInputStream());
@@ -48,7 +48,19 @@ public class Exhibits {
     }
 
     public void addExhibit(Exhibit exhibit) {
-        System.out.println(exhibit.getExhibitID() + " "+ exhibit.getName());
+        try {
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(Actions.ADD_EXHIBIT);
+            out.writeObject(exhibit);
+            in = new ObjectInputStream(socket.getInputStream());
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     public ObservableList<Exhibit> getExhibitsList() {
