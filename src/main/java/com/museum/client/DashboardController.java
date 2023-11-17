@@ -1,5 +1,6 @@
 package com.museum.client;
 
+import com.museum.client.Exhibitions.ExhibitionsController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

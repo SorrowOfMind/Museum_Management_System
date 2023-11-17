@@ -2,6 +2,7 @@ package com.museum.server;
 
 import com.museum.Actions;
 import com.museum.models.Exhibit;
+import com.museum.models.Exhibition;
 import javafx.collections.ObservableList;
 
 import java.io.*;
@@ -43,6 +44,23 @@ public class ClientHandler implements Runnable {
                     out.writeObject(exhibits);
                     out.flush();
                     break;
+                case GET_EXHIBITIONS:
+                    ExhibitionHandler exhibitionsHandler = new ExhibitionHandler();
+                    String filter = (String)in.readObject();
+                    List<Exhibition> exhibitions = exhibitionsHandler.getExhibitions(filter);
+                    out.writeObject(exhibitions);
+                    out.flush();
+                    break;
+                case INSERT_EXHIBITIONS:
+                    exhibitionsHandler = new ExhibitionHandler();
+                    Exhibition exhibition = (Exhibition)in.readObject();
+                    Integer id = exhibitionsHandler.insertExhibition(exhibition);
+                    out.writeInt(id);
+                    out.flush();
+                    break;
+
+
+
                 default:
                     // TODO: make a res to this
                     System.out.println("Unexpected action");

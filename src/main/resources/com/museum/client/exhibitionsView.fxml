@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
@@ -16,7 +22,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane layoutX="11.0" layoutY="25.0" prefHeight="655.0" prefWidth="1080.0" stylesheets="@dashboard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.ExhibitionsController">
+<AnchorPane prefHeight="655.0" prefWidth="1080.0" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.Exhibitions.ExhibitionsController">
         <children>
             <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
                 <children>
@@ -64,17 +70,17 @@
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Label>
-                        <Button fx:id="exhibitionResetBtn" layoutX="22.0" layoutY="520.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="305.0" styleClass="clear-btn" stylesheets="@dashboard.css" text="RESETUJ" textFill="WHITE">
+                        <Button fx:id="exhibitionResetBtn" layoutX="20.0" layoutY="583.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="305.0" styleClass="clear-btn" stylesheets="@dashboard.css" text="RESETUJ" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="exhibitionAddBtn" layoutX="22.0" layoutY="566.0" mnemonicParsing="false" prefWidth="305.0" styleClass="add-btn" stylesheets="@dashboard.css" text="DODAJ" textFill="WHITE">
+                        <Button fx:id="exhibitionAddBtn" layoutX="20.0" layoutY="629.0" mnemonicParsing="false" onAction="#insertExhibition" prefWidth="305.0" styleClass="add-btn" stylesheets="@dashboard.css" text="DODAJ" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="exhibitionUpdateBtn" layoutX="22.0" layoutY="612.0" mnemonicParsing="false" prefWidth="305.0" styleClass="update-btn" stylesheets="@dashboard.css" text="AKTUALIZUJ" textFill="WHITE">
+                        <Button fx:id="exhibitionUpdateBtn" layoutX="20.0" layoutY="675.0" mnemonicParsing="false" prefWidth="305.0" styleClass="update-btn" stylesheets="@dashboard.css" text="AKTUALIZUJ" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -82,7 +88,7 @@
                         <DatePicker fx:id="exhibitionStartDate" layoutX="20.0" layoutY="412.0" prefHeight="27.0" prefWidth="307.0" styleClass="exhibit-form-input" stylesheets="@dashboard.css" />
                         <DatePicker fx:id="exhibitionEndDate" layoutX="17.0" layoutY="479.0" prefHeight="27.0" prefWidth="307.0" styleClass="exhibit-form-input" stylesheets="@dashboard.css" />
                         <Button layoutX="294.0" layoutY="322.0" mnemonicParsing="false" onAction="#showPopup" prefHeight="25.0" prefWidth="31.0" text="Button" />
-                        <Pane fx:id="exhibitsPopup" layoutX="47.0" layoutY="136.0" pickOnBounds="false" prefHeight="500.0" prefWidth="250.0" styleClass="white-wrapper" stylesheets="@dashboard.css" visible="false">
+                        <Pane fx:id="exhibitsPopup" layoutX="45.0" layoutY="172.0" pickOnBounds="false" prefHeight="500.0" prefWidth="250.0" styleClass="white-wrapper" stylesheets="@dashboard.css" visible="false">
                            <children>
                               <Label layoutX="85.0" layoutY="14.0" text="Eksponaty">
                                  <font>
@@ -93,6 +99,12 @@
                               <Button fx:id="popUpOK" layoutX="166.0" layoutY="461.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="OK" />
                            </children>
                         </Pane>
+                        <ChoiceBox fx:id="exhibitionRoom" layoutX="17.0" layoutY="538.0" prefHeight="27.0" prefWidth="307.0" />
+                        <Label layoutX="21.0" layoutY="518.0" text="Sala:">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </content>
