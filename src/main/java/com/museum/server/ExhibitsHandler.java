@@ -18,19 +18,19 @@ public class ExhibitsHandler {
 
     public List<Exhibit> getExhibits() {
         String query = "SELECT * FROM exhibit";
-        this.conn = Database.connect();
+        conn = Database.connect();
         List<Exhibit> exhibitsList = new ArrayList<>();
 
         try {
-            this.stmt = conn.prepareStatement(query);
-            this.result = stmt.executeQuery();
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
 
             while (this.result.next()) {
                 Exhibit exhibit = new Exhibit(
                         result.getInt("exhibitID"),
                         result.getString("name"),
                         result.getString("author"),
-                        result.getDate("creationDate"),
+                        result.getString("creationDate"),
                         result.getString("origins"),
                         result.getString("description"),
                         result.getDate("acquisitionDate"),
@@ -47,12 +47,37 @@ public class ExhibitsHandler {
             throw new RuntimeException(e);
         }
 
-//        System.out.println("server");
-//        for (Exhibit ex : exhibitsList) {
-//            System.out.println(ex.exhibitID + " " + ex.name + " " + ex.status);
-//        }
-
         return exhibitsList;
+    }
+
+    public void addExhibit(Exhibit exhibit) {
+        String query = "INSERT INTO exhibit (name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status,security)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        conn = Database.connect();
+
+        try {
+            // TODO: zrobic ten cholerny AI na exhibitID
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, exhibit.getName());
+            stmt.setString(2, exhibit.getAuthor());
+            stmt.setString(3, exhibit.getCreationDate());
+            stmt.setString(4, exhibit.getOrigins());
+            stmt.setString(5, exhibit.getDescription());
+            stmt.setString(6, String.valueOf(exhibit.getAcquisitionDate()));
+            stmt.setString(7, String.valueOf(exhibit.getValue()));
+            stmt.setString(8, String.valueOf(exhibit.getAgeID()));
+            stmt.setString(9, String.valueOf(exhibit.getLastConservation()));
+            stmt.setString(10, String.valueOf(exhibit.getNextConservation()));
+            stmt.setString(11, exhibit.getStatus());
+            stmt.setString(12, exhibit.getSecurity());
+
+            stmt.executeUpdate();
+
+            System.out.println("added! :D");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

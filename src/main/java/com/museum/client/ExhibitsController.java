@@ -1,7 +1,9 @@
 package com.museum.client;
 
 import com.museum.models.Exhibit;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -23,56 +25,51 @@ public class ExhibitsController implements Initializable {
     // EXHIBITS DATA
     private Exhibits exhibits;
     private ObservableList<Exhibit> exhibitsShowList;
+    ObservableList<String> historicalPeriodsList = FXCollections.observableArrayList(
+            "Starożytność", "Hellenizm", "Cesarski Rzym", "Średniowiecze", "Współczesność"
+    );
+    ObservableList<String> exhibitStatusList = FXCollections.observableArrayList(
+            "Wystawa", "Magazyn", "Konserwacja", "Wypożyczony", "Sprzedany"
+    );
+    ObservableList<String> exhibitSecurityList = FXCollections.observableArrayList(
+            "brak", "standard", "ekstra"
+    );
+
 
     // EXHIBITS FORM
     @FXML
+    private Label exhibitIDText;
+    @FXML
+    private TextField exhibitName;
+    @FXML
+    private TextField exhibitAuthor;
+    @FXML
+    private TextField exhibitCreationDate;
+    @FXML
+    private TextField exhibitOrigins;
+    @FXML
+    private TextArea exhibitDescription;
+    @FXML
     private DatePicker exhibitAcquisitionDate;
+    @FXML
+    private TextField exhibitValue;
+    @FXML
+    private ComboBox<String> exhibitHistoricalPeriod;
+    @FXML
+    private DatePicker exhibitLastConservation;
+    @FXML
+    private DatePicker exhibitNextConservation;
+    @FXML
+    private ComboBox<String> exhibitStatus;
+    @FXML
+    private ComboBox<String> exhibitSecurity;
 
     @FXML
     private Button exhibitAddBtn;
-
-    @FXML
-    private TextField exhibitAuthor;
-
-    @FXML
-    private TextField exhibitCreationDate;
-
-    @FXML
-    private TextArea exhibitDescription;
-
-    @FXML
-    private ComboBox<?> exhibitHistoricalPeriod;
-
-    @FXML
-    private Label exhibitIDText;
-
-    @FXML
-    private DatePicker exhibitLastConservation;
-
-    @FXML
-    private TextField exhibitName;
-
-    @FXML
-    private DatePicker exhibitNextConservation;
-
-    @FXML
-    private TextField exhibitOrigins;
-
     @FXML
     private Button exhibitResetBtn;
-
-    @FXML
-    private ComboBox<?> exhibitSecurity;
-
-    @FXML
-    private ComboBox<?> exhibitStatus;
-
     @FXML
     private Button exhibitUpdateBtn;
-
-    @FXML
-    private TextField exhibitValue;
-
 
     // EXHIBITS TABLE
     @FXML
@@ -90,7 +87,10 @@ public class ExhibitsController implements Initializable {
     @FXML
     private TableColumn<Exhibit, String> exhibitsTableSecurity;
 
-    private void exhibitsShowList() {
+    // UTILS
+    private AlertMessage alert = new AlertMessage();
+
+    private void populateExhibitsTable() {
         exhibitsShowList = exhibits.getExhibitsList();
 
         exhibitsTableID.setCellValueFactory(new PropertyValueFactory<>("exhibitID"));
@@ -102,9 +102,63 @@ public class ExhibitsController implements Initializable {
         exhibitsTable.setItems(exhibitsShowList);
     }
 
+    @FXML
+    void addExhibit(ActionEvent event) {
+        if (exhibitName.getText().isEmpty()
+                || exhibitAcquisitionDate.getValue() == null
+                || exhibitValue.getText().isEmpty()
+                || exhibitHistoricalPeriod.getSelectionModel().getSelectedItem() == null
+                || exhibitLastConservation.getValue() == null
+                || exhibitNextConservation.getValue() == null
+                || exhibitStatus.getSelectionModel().getSelectedItem() == null
+                || exhibitSecurity.getSelectionModel().getSelectedItem() == null
+        ) {
+            alert.info("Dodawanie eksponatu", "Proszę wypełnić wszystkie pola.");
+        } else {
+            String name = exhibitName.getText();
+            String author = exhibitAuthor.getText();
+            String creationDate = exhibitCreationDate.getText();
+            String origins = exhibitOrigins.getText();
+            String description = exhibitDescription.getText();
+            Date acquisitionDate = Date.valueOf(exhibitAcquisitionDate.getValue());
+            Integer value = Integer.valueOf(exhibitValue.getText());
+            Integer ageID = Integer.valueOf(exhibitHistoricalPeriod.getSelectionModel().getSelectedIndex());
+            Date lastConservation = Date.valueOf(exhibitLastConservation.getValue());
+            Date nextConservation = Date.valueOf(exhibitNextConservation.getValue());
+            String status = String.valueOf(exhibitStatus.getSelectionModel().getSelectedItem());
+            String security = String.valueOf(exhibitSecurity.getSelectionModel().getSelectedItem());
+
+            System.out.println(name + " " + ageID + " " + lastConservation + " " + status);
+
+            exhibits.addExhibit(new Exhibit(
+                0,
+                name,
+                author,
+                creationDate,
+                origins,
+                description,
+                acquisitionDate,
+                value,
+                ageID,
+                lastConservation,
+                nextConservation,
+                status,
+                security
+            ));
+        }
+    }
+
+    private void refreshExhibits() {
+        exhibits.getExhibits();
+        populateExhibitsTable();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        exhibitHistoricalPeriod.setItems(historicalPeriodsList);
+        exhibitStatus.setItems(exhibitStatusList);
+        exhibitSecurity.setItems(exhibitSecurityList);
         exhibits = new Exhibits();
-        exhibitsShowList();
+        populateExhibitsTable();
     }
 }

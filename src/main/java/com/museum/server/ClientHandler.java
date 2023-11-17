@@ -10,10 +10,14 @@ import java.net.Socket;
 import java.util.List;
 
 public class ClientHandler implements Runnable {
+
+    // SOCKET
     private Socket clientSocket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
+    // HANDLERS
+    private ExhibitsHandler exhibitsHandler;
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
@@ -39,10 +43,15 @@ public class ClientHandler implements Runnable {
                     out.flush();
                     break;
                 case GET_EXHIBITS:
-                    ExhibitsHandler exhibitsHandler = new ExhibitsHandler();
+                    exhibitsHandler = new ExhibitsHandler();
                     List<Exhibit> exhibits = exhibitsHandler.getExhibits();
                     out.writeObject(exhibits);
                     out.flush();
+                    break;
+                case ADD_EXHIBIT:
+                    exhibitsHandler = new ExhibitsHandler();
+                    Exhibit exhibit = (Exhibit) in.readObject();
+                    exhibitsHandler.addExhibit(exhibit);
                     break;
                 case GET_EXHIBITIONS:
                     ExhibitionHandler exhibitionsHandler = new ExhibitionHandler();
@@ -58,8 +67,6 @@ public class ClientHandler implements Runnable {
                     out.writeInt(id);
                     out.flush();
                     break;
-
-
 
                 default:
                     // TODO: make a res to this

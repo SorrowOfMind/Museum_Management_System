@@ -95,7 +95,7 @@
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="exhibitAddBtn" layoutX="21.0" layoutY="1173.0" mnemonicParsing="false" prefWidth="305.0" styleClass="add-btn" stylesheets="@dashboard.css" text="DODAJ" textFill="WHITE">
+                        <Button fx:id="exhibitAddBtn" layoutX="21.0" layoutY="1173.0" mnemonicParsing="false" onAction="#addExhibit" prefWidth="305.0" styleClass="add-btn" stylesheets="@dashboard.css" text="DODAJ" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>

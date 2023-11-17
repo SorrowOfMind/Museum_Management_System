@@ -8,7 +8,7 @@ public class Exhibit implements Serializable {
     private int exhibitID;
     private String name;
     private String author;
-    private Date creationDate;
+    private String creationDate;
     private String origins;
     private String description;
     private Date acquisitionDate;
@@ -23,7 +23,7 @@ public class Exhibit implements Serializable {
             int exhibitID,
             String name,
             String author,
-            Date creationDate,
+            String creationDate,
             String origins,
             String description,
             Date acquisitionDate,
@@ -57,6 +57,34 @@ public class Exhibit implements Serializable {
         return name;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public String getOrigins() {
+        return origins;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getAcquisitionDate() {
+        return acquisitionDate;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public int getAgeID() {
+        return ageID;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -65,5 +93,11 @@ public class Exhibit implements Serializable {
         return security;
     }
 
-    public Date getNextConservation() {return nextConservation;}
+    public Date getNextConservation() {
+        return nextConservation;
+    }
+
+    public Date getLastConservation() {
+        return lastConservation;
+    }
 }
