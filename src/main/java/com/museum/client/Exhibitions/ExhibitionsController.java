@@ -70,15 +70,16 @@ public class ExhibitionsController implements Initializable {
     private TextArea exhibitsInExhibitions;
     @FXML
     private Pane exhibitsPopup;
+
     @FXML
-    private ListView<Exhibit> exhibitsList;
+    private ListView<?> exhibitsList;
 
     @FXML
     private ChoiceBox<Object> exhibitionRoom;
 
-    private  Popup popup;
-
     private ObservableList<Exhibit> selectedExhibits = FXCollections.observableArrayList();
+
+    private ObservableList<Room> selectedRooms = FXCollections.observableArrayList();
 
 
     private AlertMessage alert = new AlertMessage();
@@ -86,57 +87,25 @@ public class ExhibitionsController implements Initializable {
     @FXML
     private Button popUpOK;
 
-    public class CustomCellFactory implements Callback<ListView<Exhibit>, ListCell<Exhibit>> {
 
-        @Override
-        public ListCell<Exhibit> call(ListView<Exhibit> param) {
-            return new ListCell<Exhibit>() {
-                @Override
-                protected void updateItem(Exhibit item, boolean empty) {
-                    super.updateItem(item, empty);
 
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getName());
-                    }
-                }
-            };
+
+    private void setSelectedExhibits(ObservableList<Exhibit> result){
+        this.selectedExhibits = result;
+        String exhibitsString = "";
+
+        for(Exhibit x : this.selectedExhibits){
+            exhibitsString = exhibitsString + x.getName() + ", ";
         }
+        exhibitsInExhibitions.setText(exhibitsString);
     }
 
     @FXML
-    private void showPopup() {
-        if(this.popup != null) return;
-        this.popup = new Popup();
-
-        exhibitsList.setCellFactory(new CustomCellFactory());
-
-        exhibitsList.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
-
+    private void showExhibitsPopup() {
         ObservableList<Exhibit> exhibits = DatabaseHelper.getExhibits();
+        ListPopup<Exhibit> popup = new ListPopup<>(exhibitsPopup, (ListView<Exhibit>) exhibitsList, exhibits,  popUpOK, exhibitsInExhibitions.getScene().getWindow() );
+        popup.DisplayPopUpAndGetResults(res -> this.setSelectedExhibits(res));
 
-        exhibitsList.setItems(exhibits);
-
-        popup.getContent().add(exhibitsPopup);
-        exhibitsPopup.setVisible(true);
-
-        popUpOK.setOnAction(e -> {
-            System.out.println();
-            this.selectedExhibits = exhibitsList.getSelectionModel().getSelectedItems();
-            String exhibitsString = "";
-
-            for(Exhibit x : selectedExhibits){
-                exhibitsString = exhibitsString + x.getName() + ", ";
-            }
-
-            exhibitsInExhibitions.setText(exhibitsString);
-
-            exhibitsPopup.setVisible(false);
-            this.popup = null;
-        });
-
-        popup.show(exhibitsInExhibitions.getScene().getWindow());
 
     }
 
