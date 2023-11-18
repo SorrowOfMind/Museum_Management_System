@@ -50,31 +50,40 @@ public class ExhibitsHandler {
         return exhibitsList;
     }
 
-    public void addExhibit(Exhibit exhibit) {
-        String query = "INSERT INTO exhibit (name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status,security)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public List<Exhibit> addExhibit(Exhibit exhibit) {
+        String query = "INSERT INTO exhibit (exhibitID, name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status,security)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String lastIDQuery = "SELECT MAX(exhibitID) as exhibitID FROM exhibit";
+        int exhibitID;
+
         conn = Database.connect();
 
         try {
-            // TODO: zrobic ten cholerny AI na exhibitID
-            stmt = conn.prepareStatement(query);
-            stmt.setString(1, exhibit.getName());
-            stmt.setString(2, exhibit.getAuthor());
-            stmt.setString(3, exhibit.getCreationDate());
-            stmt.setString(4, exhibit.getOrigins());
-            stmt.setString(5, exhibit.getDescription());
-            stmt.setString(6, String.valueOf(exhibit.getAcquisitionDate()));
-            stmt.setString(7, String.valueOf(exhibit.getValue()));
-            stmt.setString(8, String.valueOf(exhibit.getAgeID()));
-            stmt.setString(9, String.valueOf(exhibit.getLastConservation()));
-            stmt.setString(10, String.valueOf(exhibit.getNextConservation()));
-            stmt.setString(11, exhibit.getStatus());
-            stmt.setString(12, exhibit.getSecurity());
+            stmt = conn.prepareStatement(lastIDQuery);
+            result = stmt.executeQuery();
 
-            stmt.executeUpdate();
+            if (result.next()) {
+                exhibitID = result.getInt("exhibitID") + 1;
+                System.out.println("exhibitID " + exhibitID + " " +  exhibit.getAgeID());
+                stmt = conn.prepareStatement(query);
+                stmt.setInt(1, exhibitID);
+                stmt.setString(2, exhibit.getName());
+                stmt.setString(3, exhibit.getAuthor());
+                stmt.setString(4, exhibit.getCreationDate());
+                stmt.setString(5, exhibit.getOrigins());
+                stmt.setString(6, exhibit.getDescription());
+                stmt.setDate(7, exhibit.getAcquisitionDate());
+                stmt.setInt(8, exhibit.getValue());
+                stmt.setInt(9, exhibit.getAgeID());
+                stmt.setDate(10, exhibit.getLastConservation());
+                stmt.setDate(11, exhibit.getNextConservation());
+                stmt.setString(12, exhibit.getStatus());
+                stmt.setString(13, exhibit.getSecurity());
 
-            System.out.println("added! :D");
+                stmt.executeUpdate();
+            }
 
+            return getExhibits();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

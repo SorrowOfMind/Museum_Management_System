@@ -47,20 +47,29 @@ public class Exhibits {
         }
     }
 
-    public void addExhibit(Exhibit exhibit) {
+    public boolean addExhibit(Exhibit exhibit) {
         try {
             socket = new Socket(DashboardController.HOST, DashboardController.PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.ADD_EXHIBIT);
             out.writeObject(exhibit);
             in = new ObjectInputStream(socket.getInputStream());
+
+            try {
+                List<Exhibit> receivedExhibits = (List<Exhibit>) in.readObject();
+                exhibits = FXCollections.observableArrayList(receivedExhibits);
+                exhibitsNumber = exhibits.size();
+
+                this.socket.close();
+                return true;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     public ObservableList<Exhibit> getExhibitsList() {

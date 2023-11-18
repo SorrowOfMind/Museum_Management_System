@@ -51,7 +51,9 @@ public class ClientHandler implements Runnable {
                 case ADD_EXHIBIT:
                     exhibitsHandler = new ExhibitsHandler();
                     Exhibit exhibit = (Exhibit) in.readObject();
-                    exhibitsHandler.addExhibit(exhibit);
+                    List<Exhibit> refreshedExhibits = exhibitsHandler.addExhibit(exhibit);
+                    out.writeObject(refreshedExhibits);
+                    out.flush();
                     break;
                 case GET_EXHIBITIONS:
                     ExhibitionHandler exhibitionsHandler = new ExhibitionHandler();

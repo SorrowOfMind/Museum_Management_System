@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="exhibitsView" prefHeight="655.0" prefWidth="1080.0" visible="false" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.ExhibitsController">
+<AnchorPane fx:id="exhibitsView" prefHeight="655.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.ExhibitsController">
    <children>
       <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
          <children>
@@ -29,7 +29,7 @@
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="exhibitIDText" layoutX="47.0" layoutY="192.0" prefHeight="26.0" prefWidth="272.0" text="Label">
+                        <Label fx:id="exhibitIDText" layoutX="47.0" layoutY="192.0" prefHeight="26.0" prefWidth="272.0">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -37,7 +37,7 @@
                               <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
                            </padding>
                         </Label>
-                        <Label layoutX="18.0" layoutY="226.0" text="Nazwa:">
+                        <Label layoutX="18.0" layoutY="226.0" text="Nazwa*:">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -53,12 +53,12 @@
                            </font>
                         </Label>
                         <TextArea fx:id="exhibitDescription" layoutX="18.0" layoutY="515.0" prefHeight="106.0" prefWidth="307.0" promptText="dokładny opis eksponatu, materiały, techniki wykonania" styleClass="exhibit-form-input" stylesheets="@dashboard.css" />
-                        <Label layoutX="18.0" layoutY="636.0" text="Data nabycia:">
+                        <Label layoutX="18.0" layoutY="636.0" text="Data nabycia*:">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="18.0" layoutY="702.0" text="Wartość: ">
+                        <Label layoutX="18.0" layoutY="702.0" text="Wartość*: ">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -68,29 +68,29 @@
                               <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
                            </padding>
                         </TextField>
-                        <Label layoutX="18.0" layoutY="768.0" text="Epoka: ">
+                        <Label layoutX="18.0" layoutY="768.0" text="Epoka*: ">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Label>
                         <ComboBox fx:id="exhibitHistoricalPeriod" layoutX="18.0" layoutY="794.0" prefHeight="25.0" prefWidth="305.0" promptText="Wybierz" styleClass="exhibit-form-combobox" stylesheets="@dashboard.css" />
-                        <Label layoutX="18.0" layoutY="836.0" text="Data ostatniej konserwacji:">
+                        <Label layoutX="18.0" layoutY="836.0" text="Data ostatniej konserwacji*:">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="18.0" layoutY="902.0" text="Data następnej konserwacji:">
+                        <Label layoutX="18.0" layoutY="902.0" text="Data następnej konserwacji*:">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="18.0" layoutY="967.0" text="Status:">
+                        <Label layoutX="18.0" layoutY="967.0" text="Status*:">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Label>
                         <ComboBox fx:id="exhibitStatus" layoutX="18.0" layoutY="993.0" prefHeight="25.0" prefWidth="305.0" promptText="Wybierz" styleClass="exhibit-form-combobox" stylesheets="@dashboard.css" />
-                        <Button fx:id="exhibitResetBtn" layoutX="21.0" layoutY="1127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="305.0" styleClass="clear-btn" stylesheets="@dashboard.css" text="RESETUJ" textFill="WHITE">
+                        <Button fx:id="exhibitResetBtn" layoutX="21.0" layoutY="1127.0" mnemonicParsing="false" onAction="#clearExhibit" prefHeight="30.0" prefWidth="305.0" styleClass="clear-btn" stylesheets="@dashboard.css" text="RESETUJ" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -138,7 +138,7 @@
                               <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
                            </padding>
                         </TextField>
-                        <Label layoutX="19.0" layoutY="1035.0" text="Zabezpieczenia">
+                        <Label layoutX="19.0" layoutY="1035.0" text="Zabezpieczenia*:">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -162,7 +162,7 @@
                   <Image url="@images/search.png" />
                </image>
             </ImageView>
-            <TableView fx:id="exhibitsTable" layoutX="14.0" layoutY="53.0" prefHeight="658.0" prefWidth="656.0" stylesheets="@dashboard.css">
+            <TableView fx:id="exhibitsTable" layoutX="14.0" layoutY="53.0" onMouseClicked="#selectExhibit" prefHeight="658.0" prefWidth="656.0" stylesheets="@dashboard.css">
                <columns>
                   <TableColumn fx:id="exhibitsTableID" prefWidth="98.0" text="ID" />
                   <TableColumn fx:id="exhibitsTableName" prefWidth="183.0" text="Nazwa" />

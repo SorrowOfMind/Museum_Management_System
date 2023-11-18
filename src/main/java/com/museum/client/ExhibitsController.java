@@ -15,9 +15,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class ExhibitsController implements Initializable {
@@ -29,7 +31,7 @@ public class ExhibitsController implements Initializable {
             "Starożytność", "Hellenizm", "Cesarski Rzym", "Średniowiecze", "Współczesność"
     );
     ObservableList<String> exhibitStatusList = FXCollections.observableArrayList(
-            "Wystawa", "Magazyn", "Konserwacja", "Wypożyczony", "Sprzedany"
+            "wystawa", "magazyn", "konserwacja", "wypożyczony", "sprzedany"
     );
     ObservableList<String> exhibitSecurityList = FXCollections.observableArrayList(
             "brak", "standard", "ekstra"
@@ -122,7 +124,7 @@ public class ExhibitsController implements Initializable {
             String description = exhibitDescription.getText();
             Date acquisitionDate = Date.valueOf(exhibitAcquisitionDate.getValue());
             Integer value = Integer.valueOf(exhibitValue.getText());
-            Integer ageID = Integer.valueOf(exhibitHistoricalPeriod.getSelectionModel().getSelectedIndex());
+            Integer ageID = Integer.valueOf(exhibitHistoricalPeriod.getSelectionModel().getSelectedIndex()) + 1;
             Date lastConservation = Date.valueOf(exhibitLastConservation.getValue());
             Date nextConservation = Date.valueOf(exhibitNextConservation.getValue());
             String status = String.valueOf(exhibitStatus.getSelectionModel().getSelectedItem());
@@ -130,7 +132,7 @@ public class ExhibitsController implements Initializable {
 
             System.out.println(name + " " + ageID + " " + lastConservation + " " + status);
 
-            exhibits.addExhibit(new Exhibit(
+            boolean isAdded = exhibits.addExhibit(new Exhibit(
                 0,
                 name,
                 author,
@@ -145,12 +147,61 @@ public class ExhibitsController implements Initializable {
                 status,
                 security
             ));
+
+            if (isAdded) {
+                populateExhibitsTable();
+                resetForm();
+            }
         }
+    }
+
+    @FXML
+    void clearExhibit(ActionEvent event) {
+        resetForm();
+    }
+
+    @FXML
+    void selectExhibit(MouseEvent event) {
+        Exhibit selecteExhibit = exhibitsTable.getSelectionModel().getSelectedItem();
+        int idx = exhibitsTable.getSelectionModel().getSelectedIndex();
+
+        if ((idx - 1) < -1) {
+            return;
+        }
+
+        exhibitIDText.setText(String.valueOf(selecteExhibit.getExhibitID()));
+        exhibitName.setText(selecteExhibit.getName());
+        exhibitAuthor.setText(selecteExhibit.getAuthor());
+        exhibitCreationDate.setText(selecteExhibit.getCreationDate());
+        exhibitOrigins.setText(selecteExhibit.getOrigins());
+        exhibitDescription.setText(selecteExhibit.getDescription());
+        exhibitAcquisitionDate.setValue(selecteExhibit.getAcquisitionDate().toLocalDate());
+        exhibitValue.setText(String.valueOf(selecteExhibit.getValue()));
+        exhibitHistoricalPeriod.getSelectionModel().select(selecteExhibit.getAgeID());
+        exhibitLastConservation.setValue(selecteExhibit.getLastConservation().toLocalDate());
+        exhibitNextConservation.setValue(selecteExhibit.getNextConservation().toLocalDate());
+        exhibitStatus.getSelectionModel().select(selecteExhibit.getStatus());
+        exhibitSecurity.getSelectionModel().select(selecteExhibit.getSecurity());
     }
 
     private void refreshExhibits() {
         exhibits.getExhibits();
         populateExhibitsTable();
+    }
+
+    private void resetForm() {
+        exhibitName.setText("");
+        exhibitAuthor.setText("");
+        exhibitCreationDate.setText("");
+        exhibitOrigins.setText("");
+        exhibitDescription.setText("");
+        exhibitAcquisitionDate.setValue(null);
+        exhibitValue.setText("");
+        exhibitHistoricalPeriod.getSelectionModel().clearSelection();
+        exhibitLastConservation.setValue(null);
+        exhibitNextConservation.setValue(null);
+        exhibitStatus.getSelectionModel().clearSelection();
+        exhibitSecurity.getSelectionModel().clearSelection();
     }
 
     @Override
