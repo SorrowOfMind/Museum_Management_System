@@ -1,6 +1,9 @@
 package com.museum.models;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
+    private static final long serialVersionUID = 6529685098267757690L;
     private int roomID;
     private int roomNumber;
     private int floor;
@@ -29,6 +32,6 @@ public class Room {
 
     @Override
     public String toString() {
-        return floor + "\t\t" + roomNumber + "\t\t" + area;
+        return String.format("Piętro: %s, Sala: %s, powierzchnia: %s", this.floor, this.roomNumber, this.area);
     }
 }

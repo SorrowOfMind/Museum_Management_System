@@ -2,6 +2,7 @@ package com.museum.client.Exhibitions;
 
 import com.museum.models.Exhibit;
 import com.museum.models.Room;
+import com.museum.models.Worker_Basic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,8 +46,10 @@ public class ListPopup<T> {
                         setText(exhibit.getName());
                     }
                     else if (item instanceof Room){
-                        Room room = (Room)item;
-                        setText(String.format("Piętro: %s, Sala: %s, powierzchnia: %s", room.getFloor(), room.getRoomNumber(), room.getArea()));
+                        setText(item.toString());
+                    }
+                    else if (item instanceof Worker_Basic){
+                        setText(item.toString());
                     }
                 }
             };
@@ -54,8 +57,6 @@ public class ListPopup<T> {
 
 
     }
-
-    //TODO: NEED GENERIC LABEL
     public ListPopup(Pane popup, ListView<T> list, ObservableList<T> items, Button ok, Window window){
 
         this.list = list;

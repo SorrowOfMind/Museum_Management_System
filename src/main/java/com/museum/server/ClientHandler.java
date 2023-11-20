@@ -3,6 +3,8 @@ package com.museum.server;
 import com.museum.Actions;
 import com.museum.models.Exhibit;
 import com.museum.models.Exhibition;
+import com.museum.models.Room;
+import com.museum.models.Worker_Basic;
 import javafx.collections.ObservableList;
 
 import java.io.*;
@@ -80,7 +82,18 @@ public class ClientHandler implements Runnable {
                     out.writeInt(id);
                     out.flush();
                     break;
-
+                case GET_ROOMS:
+                    exhibitionsHandler = new ExhibitionHandler();
+                    List<Room> rooms = exhibitionsHandler.getRooms();
+                    out.writeObject(rooms);
+                    out.flush();
+                    break;
+                case GET_WORKERS_FOR_EXHIBITION:
+                    exhibitionsHandler = new ExhibitionHandler();
+                    List<Worker_Basic> workers = exhibitionsHandler.getWorkersForExhibition();
+                    out.writeObject(workers);
+                    out.flush();
+                    break;
                 default:
                     // TODO: make a res to this
                     System.out.println("Unexpected action");

@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-public class Exhibitions {
+public class Exhibitions <T> {
     private ObservableList<Exhibition> exhibitions;
     private int exhibitionsNumber;
     private int insertedExhibitionID;
@@ -49,10 +49,8 @@ public class Exhibitions {
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.INSERT_EXHIBITIONS);
             out.writeObject(exhibition);
-
             in = new ObjectInputStream(socket.getInputStream());
 
-            System.out.println("server " + exhibition);
             insertedExhibitionID = in.readInt();
 
             this.socket.close();
@@ -62,5 +60,24 @@ public class Exhibitions {
             throw new RuntimeException(e);
         }
         return insertedExhibitionID;
+    }
+
+    public ObservableList<T> genericGetter(Actions action){
+
+        ObservableList<T> res;
+        try {
+            socket = new Socket("localhost", 5000);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(action);
+            in = new ObjectInputStream(socket.getInputStream());
+            List<T> receivedRes = (List<T>) in.readObject();
+            res = FXCollections.observableArrayList(receivedRes);
+            this.socket.close();
+        } catch (UnknownHostException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return res;
     }
 }

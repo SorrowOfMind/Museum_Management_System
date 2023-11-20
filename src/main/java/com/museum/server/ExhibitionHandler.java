@@ -1,6 +1,8 @@
 package com.museum.server;
 
 import com.museum.models.Exhibition;
+import com.museum.models.Room;
+import com.museum.models.Worker_Basic;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,17 +17,23 @@ public class ExhibitionHandler {
     private ResultSet result;
 
 
-
     public Integer insertExhibition(Exhibition ex) {
         String insertQuery = "INSERT INTO exhibition(title, startDate, endDate) VALUES (?, ?, ?)";
         String selectLastIdQuery = "SELECT LAST_INSERT_ID() as id";
 
         String insertExhibitsForExhibition = "INSERT INTO exhibit_exhibition(exhibitionID, exhibitID) values (?, ?)";
+        String insertExhibitionRoom = "INSERT INTO exhibition_room(exhibitionID, roomID) values (?, ?)";
+
+        String insertExhibitionWorker = "INSERT INTO worker_exhibition(exhibitionID, workerID) values (?, ?)";
+
 
         this.conn = Database.connect();
+
         Integer id = -1;
 
         try {
+            this.conn.setAutoCommit(false);
+
             // Insert the exhibition
             this.stmt = conn.prepareStatement(insertQuery);
             this.stmt.setString(1, ex.getTitle());
@@ -50,10 +58,39 @@ public class ExhibitionHandler {
 
             }
 
+            this.stmt = conn.prepareStatement(insertExhibitionRoom);
+            this.stmt.setInt(1, id);
+
+            for(Integer x : ex.getRoomIDs()){
+                this.stmt.setInt(2,x);
+                this.stmt.executeUpdate();
+
+            }
+
+            this.stmt = conn.prepareStatement(insertExhibitionWorker);
+            this.stmt.setInt(1, id);
+
+            for(Integer x : ex.getWorkerIDs()){
+                this.stmt.setInt(2,x);
+                this.stmt.executeUpdate();
+
+            }
+
+            this.conn.commit();
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            if (this.conn != null) {
+                try {
+                    this.conn.rollback();
+                } catch (SQLException rollbackException) {
+                    rollbackException.printStackTrace(); // Handle rollback failure
+                }
+            }
         } finally {
              try {
+                 if(this.conn !=null){
+                    this.conn.close();
+                }
                 if (stmt != null) {
                     stmt.close();
                 }
@@ -93,6 +130,55 @@ public class ExhibitionHandler {
         }
 
         return exhibitsList;
+    }
+
+    public List<Room> getRooms(){
+        String query = "SELECT * FROM room";
+        this.conn = Database.connect();
+        List<Room> roomList = new ArrayList<>();
+
+        try {
+            this.stmt = conn.prepareStatement(query);
+            this.result = stmt.executeQuery();
+
+            while (this.result.next()) {
+                Room room = new Room(result.getInt("roomID"),
+                        result.getInt("roomNumber"),
+                        result.getInt("floor"),
+                        result.getInt("area")
+                );
+                roomList.add(room);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return roomList;
+    }
+
+    public List<Worker_Basic> getWorkersForExhibition(){
+        String query = "SELECT workerID, forename, surname FROM worker";
+        this.conn = Database.connect();
+        List<Worker_Basic> workerList = new ArrayList<>();
+
+        try {
+            this.stmt = conn.prepareStatement(query);
+            this.result = stmt.executeQuery();
+
+            while (this.result.next()) {
+                Worker_Basic worker = new Worker_Basic(
+                        result.getInt("workerID"),
+                        result.getString("forename"),
+                        result.getString("surname")
+
+                );
+                workerList.add(worker);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return workerList;
     }
 
 }
