@@ -64,7 +64,7 @@ public class ExhibitsHandler {
 
             if (result.next()) {
                 exhibitID = result.getInt("exhibitID") + 1;
-                System.out.println("exhibitID " + exhibitID + " " +  exhibit.getAgeID());
+
                 stmt = conn.prepareStatement(query);
                 stmt.setInt(1, exhibitID);
                 stmt.setString(2, exhibit.getName());
@@ -79,6 +79,44 @@ public class ExhibitsHandler {
                 stmt.setDate(11, exhibit.getNextConservation());
                 stmt.setString(12, exhibit.getStatus());
                 stmt.setString(13, exhibit.getSecurity());
+
+                stmt.executeUpdate();
+            }
+
+            return getExhibits();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Exhibit> updateExhibit(Exhibit exhibit) {
+        String exhibitIDQuery = "SELECT exhibitID FROM exhibit WHERE exhibitID = ?";
+        String updateQuery = "UPDATE exhibit SET name = ?, author = ?, creationDate = ?, origins = ?, description = ?, acquisitionDate = ?, value = ?, ageID = ?, lastConservation = ?, nextConservation =? , status = ?, security = ? " +
+                "WHERE exhibitID = ?";
+        int exhibitID = exhibit.getExhibitID();
+
+        conn = Database.connect();
+
+        try {
+            stmt = conn.prepareStatement(exhibitIDQuery);
+            stmt.setInt(1, exhibitID);
+            result = stmt.executeQuery();
+
+            if (result.next()) {
+                stmt = conn.prepareStatement(updateQuery);
+                stmt.setString(1, exhibit.getName());
+                stmt.setString(2, exhibit.getAuthor());
+                stmt.setString(3, exhibit.getCreationDate());
+                stmt.setString(4, exhibit.getOrigins());
+                stmt.setString(5, exhibit.getDescription());
+                stmt.setDate(6, exhibit.getAcquisitionDate());
+                stmt.setInt(7, exhibit.getValue());
+                stmt.setInt(8, exhibit.getAgeID());
+                stmt.setDate(9, exhibit.getLastConservation());
+                stmt.setDate(10, exhibit.getNextConservation());
+                stmt.setString(11, exhibit.getStatus());
+                stmt.setString(12, exhibit.getSecurity());
+                stmt.setInt(13, exhibitID);
 
                 stmt.executeUpdate();
             }

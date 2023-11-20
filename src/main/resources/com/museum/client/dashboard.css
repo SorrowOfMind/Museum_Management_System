@@ -132,3 +132,9 @@
 .table-view .column-header .label{
     -fx-text-fill: #fff;
 }
+
+.refresh-btn {
+    -fx-background-color: transparent;
+    -fx-border-color:  #0a7df3;
+    -fx-cursor: hand;
+}

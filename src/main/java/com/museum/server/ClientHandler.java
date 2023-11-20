@@ -19,6 +19,10 @@ public class ClientHandler implements Runnable {
     // HANDLERS
     private ExhibitsHandler exhibitsHandler;
 
+    // DATA
+    Exhibit exhibit;
+    List<Exhibit> exhibits;
+
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
         in = new ObjectInputStream(this.clientSocket.getInputStream());
@@ -44,15 +48,22 @@ public class ClientHandler implements Runnable {
                     break;
                 case GET_EXHIBITS:
                     exhibitsHandler = new ExhibitsHandler();
-                    List<Exhibit> exhibits = exhibitsHandler.getExhibits();
+                    exhibits = exhibitsHandler.getExhibits();
                     out.writeObject(exhibits);
                     out.flush();
                     break;
                 case ADD_EXHIBIT:
                     exhibitsHandler = new ExhibitsHandler();
-                    Exhibit exhibit = (Exhibit) in.readObject();
-                    List<Exhibit> refreshedExhibits = exhibitsHandler.addExhibit(exhibit);
-                    out.writeObject(refreshedExhibits);
+                    exhibit = (Exhibit) in.readObject();
+                    exhibits = exhibitsHandler.addExhibit(exhibit);
+                    out.writeObject(exhibits);
+                    out.flush();
+                    break;
+                case UPDATE_EXHIBIT:
+                    exhibitsHandler = new ExhibitsHandler();
+                    exhibit = (Exhibit) in.readObject();
+                    exhibits = exhibitsHandler.updateExhibit(exhibit);
+                    out.writeObject(exhibits);
                     out.flush();
                     break;
                 case GET_EXHIBITIONS:

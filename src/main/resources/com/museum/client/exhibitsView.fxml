@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="exhibitsView" prefHeight="655.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.ExhibitsController">
+<AnchorPane fx:id="exhibitsView" prefHeight="655.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.exhibits.ExhibitsController">
    <children>
       <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
          <children>
@@ -100,7 +100,7 @@
                               <Font name="Lato Regular" size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="exhibitUpdateBtn" layoutX="21.0" layoutY="1219.0" mnemonicParsing="false" prefWidth="305.0" styleClass="update-btn" stylesheets="@dashboard.css" text="AKTUALIZUJ" textFill="WHITE">
+                        <Button fx:id="exhibitUpdateBtn" layoutX="21.0" layoutY="1219.0" mnemonicParsing="false" onAction="#updateExhibit" prefWidth="305.0" styleClass="update-btn" stylesheets="@dashboard.css" text="AKTUALIZUJ" textFill="WHITE">
                            <font>
                               <Font name="Lato Regular" size="16.0" />
                            </font>
@@ -162,7 +162,19 @@
                   <Image url="@images/search.png" />
                </image>
             </ImageView>
-            <TableView fx:id="exhibitsTable" layoutX="14.0" layoutY="53.0" onMouseClicked="#selectExhibit" prefHeight="658.0" prefWidth="656.0" stylesheets="@dashboard.css">
+            <Button fx:id="exhibitRefreshBtn" layoutX="630.0" layoutY="11.0" mnemonicParsing="false" onAction="#refreshExhibits" styleClass="refresh-btn" stylesheets="@dashboard.css">
+               <font>
+                  <Font name="Lato Regular" size="12.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/refresh.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <TableView fx:id="exhibitsTable" layoutX="14.0" layoutY="53.0" onMouseClicked="#selectExhibit" prefHeight="658.0" prefWidth="658.0" stylesheets="@dashboard.css">
                <columns>
                   <TableColumn fx:id="exhibitsTableID" prefWidth="98.0" text="ID" />
                   <TableColumn fx:id="exhibitsTableName" prefWidth="183.0" text="Nazwa" />

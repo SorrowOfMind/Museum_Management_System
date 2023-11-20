@@ -1,21 +1,16 @@
 package com.museum.client.Exhibitions;
 import com.museum.client.AlertMessage;
 import com.museum.client.DatabaseHelper;
-import com.museum.client.Exhibits;
 import com.museum.models.Exhibit;
 import com.museum.models.Exhibition;
 import com.museum.models.Room;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.stage.Popup;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,7 +19,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 

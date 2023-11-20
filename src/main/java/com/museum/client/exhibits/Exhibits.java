@@ -1,6 +1,7 @@
-package com.museum.client;
+package com.museum.client.exhibits;
 
 import com.museum.Actions;
+import com.museum.client.DashboardController;
 import com.museum.models.Exhibit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,6 +53,31 @@ public class Exhibits {
             socket = new Socket(DashboardController.HOST, DashboardController.PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.ADD_EXHIBIT);
+            out.writeObject(exhibit);
+            in = new ObjectInputStream(socket.getInputStream());
+
+            try {
+                List<Exhibit> receivedExhibits = (List<Exhibit>) in.readObject();
+                exhibits = FXCollections.observableArrayList(receivedExhibits);
+                exhibitsNumber = exhibits.size();
+
+                this.socket.close();
+                return true;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean updateExhibit(Exhibit exhibit) {
+        try {
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(Actions.UPDATE_EXHIBIT);
             out.writeObject(exhibit);
             in = new ObjectInputStream(socket.getInputStream());
 
