@@ -2,6 +2,8 @@ package com.museum.client.exhibits;
 
 import com.museum.client.AlertMessage;
 import com.museum.models.Exhibit;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,11 +24,15 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
+
+
 public class ExhibitsController implements Initializable {
 
     // EXHIBITS DATA
     private Exhibits exhibits;
+
     private ObservableList<Exhibit> exhibitsShowList;
+    private ObservableList<Exhibit> filteredExhibitsShowList;
     ObservableList<String> historicalPeriodsList = FXCollections.observableArrayList(
             "Starożytność", "Hellenizm", "Cesarski Rzym", "Średniowiecze", "Współczesność"
     );
@@ -36,6 +42,14 @@ public class ExhibitsController implements Initializable {
     ObservableList<String> exhibitSecurityList = FXCollections.observableArrayList(
             "brak", "standard", "ekstra"
     );
+
+    // SEARCH FORM
+    ObservableList<String> searchFiltersList = FXCollections.observableArrayList(
+            "ID", "Nazwa", "Status"
+    );
+    private int activeFilter = 0;
+    @FXML
+    private ComboBox<String> searchFilters;
 
     // EXHIBITS FORM
     @FXML
@@ -95,7 +109,7 @@ public class ExhibitsController implements Initializable {
     private AlertMessage alert = new AlertMessage();
 
     private void populateExhibitsTable() {
-        exhibitsShowList = exhibits.getExhibitsList();
+        exhibitsShowList = filteredExhibitsShowList.size() > 0 ? filteredExhibitsShowList : exhibits.getExhibitsList();
 
         exhibitsTableID.setCellValueFactory(new PropertyValueFactory<>("exhibitID"));
         exhibitsTableName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -245,13 +259,56 @@ public class ExhibitsController implements Initializable {
         exhibitUpdateBtn.setDisable(true);
     }
 
+
+    @FXML
+    void switchActiveFilter(ActionEvent event) {
+        activeFilter = searchFilters.getSelectionModel().getSelectedIndex();
+    }
+
+    private void searchExhibits(String searchText) {
+        if (exhibitsShowList == null || exhibitsShowList.size() == 0) return;
+
+        if (searchText.length() == 0) {
+            filteredExhibitsShowList = FXCollections.observableArrayList();
+            populateExhibitsTable();
+            return;
+        }
+
+        switch (activeFilter) {
+            case 0:
+                filteredExhibitsShowList = exhibitsShowList.filtered(exhibit -> String.valueOf(exhibit.getExhibitID()).equals(searchText));
+                break;
+            case 1:
+                filteredExhibitsShowList = exhibitsShowList.filtered(exhibit -> exhibit.getName().toLowerCase().contains(searchText.toLowerCase().trim()));
+                break;
+            case 2:
+                filteredExhibitsShowList = exhibitsShowList.filtered(exhibit -> exhibit.getStatus().toLowerCase().contains(searchText.toLowerCase().trim()));
+                break;
+            default:
+        }
+
+        populateExhibitsTable();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exhibitHistoricalPeriod.setItems(historicalPeriodsList);
         exhibitStatus.setItems(exhibitStatusList);
         exhibitSecurity.setItems(exhibitSecurityList);
+        searchFilters.setItems(searchFiltersList);
+        searchFilters.setValue("ID");
+        filteredExhibitsShowList = FXCollections.observableArrayList();
+
         exhibits = new Exhibits();
         populateExhibitsTable();
         exhibitUpdateBtn.setDisable(true);
+
+        exhibitsSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Call your search method with the entered text
+                searchExhibits(newValue);
+            }
+        });
     }
 }
