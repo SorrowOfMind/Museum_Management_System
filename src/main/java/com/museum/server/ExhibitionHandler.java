@@ -106,30 +106,47 @@ public class ExhibitionHandler {
     }
 
     public List<Exhibition> getExhibitions(String filter) {
-        String query = "SELECT * FROM exhibition";
+        String query = "SELECT * FROM exhibition natural join exhibit_exhibition natural join worker_exhibition natural join room ";
         if(filter != null || !filter.isEmpty())
-            query += " WHERE exhibition.name LIKE ?" ;
+            query += " WHERE exhibition.title LIKE ?" ;
+        query += " ORDER BY exhibitionID";
         this.conn = Database.connect();
-        List<Exhibition> exhibitsList = new ArrayList<>();
+        List<Exhibition> exhibitionList = new ArrayList<>();
+        Integer prev = null;
 
         try {
             this.stmt = conn.prepareStatement(query);
-            this.stmt.setString(1, filter+"%");
+            if(filter != null || !filter.isEmpty())
+                this.stmt.setString(1, filter+"%");
             this.result = stmt.executeQuery();
-
+            Exhibition exhibition = null;
             while (this.result.next()) {
-                Exhibition exhibition = new Exhibition(result.getInt("exhibitionID"),
-                        result.getString("name"),
-                        result.getDate("startDate"),
-                        result.getDate("endDate")
-                );
-                exhibitsList.add(exhibition);
+                final int id = result.getInt("exhibitionID");
+                System.out.println("ID" + (id));
+                if(prev == null || prev != id){
+                    System.out.println("first if");
+                    prev = id;
+                    exhibition = new Exhibition(id,
+                            result.getString("title"),
+                            result.getDate("startDate"),
+                            result.getDate("endDate")
+                    );
+
+                    exhibition.appendIDs( result.getInt("exhibitID"),result.getInt("roomID"), result.getInt("workerID") );
+                    exhibitionList.add(exhibition);
+                }
+                else if(id == prev && exhibition != null){
+                    System.out.println("second if");
+                    exhibition.appendIDs( result.getInt("exhibitID"), result.getInt("roomID"),  result.getInt("workerID"));
+                }
+
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return exhibitsList;
+        return exhibitionList;
     }
 
     public List<Room> getRooms(){

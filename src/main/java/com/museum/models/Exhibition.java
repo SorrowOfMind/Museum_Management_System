@@ -1,5 +1,7 @@
 package com.museum.models;
 
+import javafx.collections.FXCollections;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -11,9 +13,9 @@ public class Exhibition implements Serializable {
     private Date startDate ;
     private Date endDate;
 
-    private ArrayList<Integer> exhibitIDs;
-    private ArrayList<Integer> roomIDs;
-    private ArrayList<Integer> workerIDs;
+    private ArrayList<Integer> exhibitIDs = new ArrayList<>();
+    private ArrayList<Integer> roomIDs= new ArrayList<>();
+    private ArrayList<Integer> workerIDs= new ArrayList<>();
     public Exhibition( String title, Date start, Date end, ArrayList<Integer> exhibitIDs, ArrayList<Integer> rooms, ArrayList<Integer> workers){
         this.title = title;
         this.startDate = start;
@@ -29,6 +31,10 @@ public class Exhibition implements Serializable {
         this.startDate = start;
         this.endDate = end;
 
+    }
+
+    public Integer getExhibitionID() {
+        return exhibitionID;
     }
 
     public String getTitle(){
@@ -51,5 +57,14 @@ public class Exhibition implements Serializable {
     }
     public ArrayList<Integer> getWorkerIDs(){
         return workerIDs;
+    }
+
+    public void appendIDs(Integer exhibit, Integer room, Integer worker){
+        if(!this.exhibitIDs.contains(exhibit))
+            this.exhibitIDs.add( exhibit);
+        if(!this.roomIDs.contains(room))
+            this.roomIDs.add( room);
+        if(!this.workerIDs.contains(worker))
+            this.workerIDs.add( worker);
     }
 }

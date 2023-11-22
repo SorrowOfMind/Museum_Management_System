@@ -69,6 +69,7 @@ public class ClientHandler implements Runnable {
                     out.flush();
                     break;
                 case GET_EXHIBITIONS:
+                    System.out.println("case");
                     ExhibitionHandler exhibitionsHandler = new ExhibitionHandler();
                     String filter = (String)in.readObject();
                     List<Exhibition> exhibitions = exhibitionsHandler.getExhibitions(filter);

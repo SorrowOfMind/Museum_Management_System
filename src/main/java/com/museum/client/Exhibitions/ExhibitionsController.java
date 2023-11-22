@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 public class ExhibitionsController implements Initializable {
@@ -33,13 +35,15 @@ public class ExhibitionsController implements Initializable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
+    private ObservableList<Exhibition> exhibitionsList;
 
 
-    // EXHIBITIONS TABLE
+
+
     @FXML
     private TextField exhibitionsSearch;
     @FXML
-    private TableView<?> exhibitionsTable;
+    private TableView<Exhibition> exhibitionsTable;
     @FXML
     private TableColumn<?, ?> exhibitionsTableID;
     @FXML
@@ -76,10 +80,12 @@ public class ExhibitionsController implements Initializable {
     @FXML
     private ListView<?> popupList;
 
+    private ObservableList<Room> rooms = FXCollections.observableArrayList();
+    private  ObservableList<Worker_Basic> workers = FXCollections.observableArrayList();
+    private ObservableList<Exhibit> exhibits = FXCollections.observableArrayList();
+
     private ObservableList<Room> selectedRooms= FXCollections.observableArrayList();;
-
     private  ObservableList<Worker_Basic> selectedWorkers = FXCollections.observableArrayList();
-
     private ObservableList<Exhibit> selectedExhibits = FXCollections.observableArrayList();
 
 
@@ -93,39 +99,48 @@ public class ExhibitionsController implements Initializable {
 
     private ListPopup popup;
 
+    private Exhibitions exhibitions;
+
+    private Exhibition selectedExhibition;
+
 
 
 
     private void setSelectedExhibits(ObservableList<Exhibit> result){
-            this.selectedExhibits.addAll(result);
+            this.selectedExhibits.setAll(result);
             String exhibitsString = "";
 
             for(Exhibit x : this.selectedExhibits){
                 exhibitsString = exhibitsString + x.getName() + ", ";
             }
             exhibitsInExhibitions.setText(exhibitsString);
-            this.popup = null;
+            if(this.popup != null)
+                this.popup = null;
     }
 
     private void setSelectedRooms(ObservableList<Room> result){
 
-        this.selectedRooms.addAll(result);
+        this.selectedRooms.setAll(result);
         String roomString = "";
 
         for(Room x : this.selectedRooms){
             roomString = roomString + " piętro "+ x.getFloor() + " pokój " + x.getRoomNumber() +  ", ";
         }
-        roomField.setText(roomString); this.popup = null;
+        roomField.setText(roomString);
+        if(this.popup != null)
+            this.popup = null;
     }
 
     private void setSelectedWorkers(ObservableList<Worker_Basic> result){
-        this.selectedWorkers.addAll(result);
+        this.selectedWorkers.setAll(result);
         String workerString = "";
 
         for(Worker_Basic x : this.selectedWorkers){
             workerString = workerString + x.toString() + ", ";
         }
-        workerField.setText(workerString); this.popup = null;
+        workerField.setText(workerString);
+        if(this.popup != null)
+            this.popup = null;
     }
 
     @FXML
@@ -137,33 +152,27 @@ public class ExhibitionsController implements Initializable {
         this.popup = new ListPopup<>(popupPane, (ListView<Exhibit>) popupList, exhibits,  popUpOK, exhibitsInExhibitions.getScene().getWindow() );
         popup.DisplayPopUpAndGetResults(res -> this.setSelectedExhibits(res));
 
-
-
     }
 
     @FXML
     private void showRoomPopup() {
         if(this.popup != null) return;
-        Exhibitions<Room> ex = new Exhibitions<>();
 
-        ObservableList<Room> rooms = ex.genericGetter(Actions.GET_ROOMS);
+        this.rooms.setAll(this.exhibitions.genericGetter(Actions.GET_ROOMS)) ;
         this.popupLabel.setText("Sale");
         this.popup = new ListPopup<>(popupPane, (ListView<Room>) popupList, rooms,  popUpOK, roomField.getScene().getWindow() );
         popup.DisplayPopUpAndGetResults(res -> this.setSelectedRooms(res));
-
-
     }
 
     @FXML
     private void showWorkerPopup() {
         if(this.popup != null) return;
-        Exhibitions<Worker_Basic> ex = new Exhibitions<>();
 
-        ObservableList<Worker_Basic> workers = ex.genericGetter(Actions.GET_WORKERS_FOR_EXHIBITION);
+        this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_FOR_EXHIBITION));
         this.popupLabel.setText("Pracownicy");
         this.popup = new ListPopup<>(popupPane, (ListView<Worker_Basic>) popupList, workers,  popUpOK, workerField.getScene().getWindow() );
         popup.DisplayPopUpAndGetResults(res -> this.setSelectedWorkers(res));
-
+        this.exhibitions.getExhibitionsList();
 
     }
 
@@ -198,6 +207,48 @@ public class ExhibitionsController implements Initializable {
         return true;
     }
 
+    private void populateExhibitsTable() {
+        exhibitionsList = this.exhibitions.getExhibitionsList();
+        exhibitionsTableID.setCellValueFactory(new PropertyValueFactory<>("exhibitionID"));
+        exhibitionsTableTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        exhibitionsTableStartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        exhibitionsTableEndDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+
+        exhibitionsTable.setItems(exhibitionsList);
+    }
+
+    @FXML
+    private void selectExhibition(){
+        this.selectedExhibition = exhibitionsTable.getSelectionModel().getSelectedItem();
+        int idx = exhibitionsTable.getSelectionModel().getSelectedIndex();
+
+        if ((idx - 1) < -1) {
+            return;
+        }
+        this.exhibitionAddBtn.setDisable(true);
+
+        this.exhibitionIDText.setText("ID " + selectedExhibition.getExhibitionID().toString());
+        this.exhibitionTitle.setText(selectedExhibition.getTitle());
+
+        this.exhibitionStartDate.setValue(this.selectedExhibition.getStartDate().toLocalDate());
+        Date endDate = this.selectedExhibition.getEndDate();
+        if(endDate != null)
+            this.exhibitionEndDate.setValue(endDate.toLocalDate());
+
+        ObservableList<Exhibit> filteredExhibits = FXCollections.observableArrayList(this.exhibits.stream()
+                .filter(x ->  selectedExhibition.getExhibitIds().contains(x.getExhibitID())).collect(Collectors.toList()));
+        setSelectedExhibits(filteredExhibits);
+
+        ObservableList<Room> filteredRooms = FXCollections.observableArrayList(this.rooms.stream()
+                .filter(x ->  selectedExhibition.getRoomIDs().contains(x.getID())).collect(Collectors.toList()));
+        setSelectedRooms(filteredRooms);
+
+        ObservableList<Worker_Basic> filteredWorkers =FXCollections.observableArrayList(this.workers.stream()
+                .filter(x ->  selectedExhibition.getWorkerIDs().contains(x.getWorkerID())).collect(Collectors.toList()));
+        setSelectedWorkers(filteredWorkers);
+
+    }
+
     @FXML
     private void insertExhibition(ActionEvent e) {
         String title = this.exhibitionTitle.getText();
@@ -225,12 +276,23 @@ public class ExhibitionsController implements Initializable {
 
         final Exhibition exhibitionToSend = new Exhibition(title,
                 Date.valueOf(start), endDate == null ? null : Date.valueOf(endDate), exhibitIDs, roomIDs, workerIDs);
-        Exhibitions exhibitions = new Exhibitions();
         System.out.println(exhibitions.insertExhibition(exhibitionToSend));
+    }
+
+    private void refreshAll(){
+        populateExhibitsTable();
+        Exhibits ex = new Exhibits();
+
+        this.exhibits.setAll(ex.getExhibitsList());
+        this.rooms.setAll(this.exhibitions.genericGetter(Actions.GET_ROOMS));
+        this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_FOR_EXHIBITION));
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.exhibitions = new Exhibitions();
+        refreshAll();
     }
 
 }

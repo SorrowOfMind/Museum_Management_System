@@ -20,13 +20,16 @@ public class Exhibitions <T> {
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+
     private void getExhibitions() {
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(Actions.GET_EXHIBITS);
+            out.writeObject(Actions.GET_EXHIBITIONS);
+            out.writeObject("");
             in = new ObjectInputStream(socket.getInputStream());
             try {
+                System.out.println("client");
                 List<Exhibition> receivedExhibitions = (List<Exhibition>) in.readObject();
                 exhibitions = FXCollections.observableArrayList(receivedExhibitions);
                 exhibitionsNumber = exhibitions.size();
@@ -41,6 +44,11 @@ public class Exhibitions <T> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ObservableList<Exhibition> getExhibitionsList(){
+        getExhibitions();
+        return this.exhibitions;
     }
 
     public int insertExhibition(Exhibition exhibition){
