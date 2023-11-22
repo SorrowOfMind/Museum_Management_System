@@ -69,7 +69,7 @@
     -fx-border-color: #DBDBDB;
 }
 
-.exhibit-form-combobox {
+.exhibit-form-combobox, .search-form-combobox {
     -fx-background-color: transparent;
     -fx-border-color: #DBDBDB;
 }

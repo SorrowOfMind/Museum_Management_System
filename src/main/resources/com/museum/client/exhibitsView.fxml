@@ -152,10 +152,13 @@
       </AnchorPane>
       <AnchorPane layoutX="11.0" layoutY="25.0" prefHeight="626.0" prefWidth="687.0" styleClass="white-wrapper" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="25.0">
          <children>
-            <TextField fx:id="exhibitsSearch" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="326.0" promptText="Szukaj eksponatu..." styleClass="search-input" stylesheets="@dashboard.css">
+            <TextField fx:id="exhibitsSearch" layoutX="14.0" layoutY="13.0" prefHeight="27.0" prefWidth="326.0" promptText="Szukaj eksponatu..." styleClass="search-input" stylesheets="@dashboard.css">
                <padding>
                   <Insets bottom="3.0" left="25.0" right="5.0" top="3.0" />
                </padding>
+               <font>
+                  <Font name="Lato Regular" size="14.0" />
+               </font>
             </TextField>
             <ImageView fitHeight="14.0" fitWidth="14.0" layoutX="21.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -183,6 +186,7 @@
                   <TableColumn fx:id="exhibitsTableSecurity" prefWidth="121.0" text="Zabezpieczenia" />
                </columns>
             </TableView>
+            <ComboBox fx:id="searchFilters" layoutX="339.0" layoutY="13.0" onAction="#switchActiveFilter" prefHeight="27.0" prefWidth="100.0" styleClass="search-form-combobox" stylesheets="@dashboard.css" />
          </children>
       </AnchorPane>
    </children>
