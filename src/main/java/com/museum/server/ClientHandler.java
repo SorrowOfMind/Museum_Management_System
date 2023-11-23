@@ -69,7 +69,6 @@ public class ClientHandler implements Runnable {
                     out.flush();
                     break;
                 case GET_EXHIBITIONS:
-                    System.out.println("case");
                     ExhibitionHandler exhibitionsHandler = new ExhibitionHandler();
                     String filter = (String)in.readObject();
                     List<Exhibition> exhibitions = exhibitionsHandler.getExhibitions(filter);
@@ -79,8 +78,14 @@ public class ClientHandler implements Runnable {
                 case INSERT_EXHIBITIONS:
                     exhibitionsHandler = new ExhibitionHandler();
                     Exhibition exhibition = (Exhibition)in.readObject();
-                    Integer id = exhibitionsHandler.insertExhibition(exhibition);
+                    Integer id = exhibitionsHandler.insertUpdateExhibition(exhibition, false);
                     out.writeInt(id);
+                    out.flush();
+                    break;
+                case UPDATE_EXHIBITION:
+                    exhibitionsHandler = new ExhibitionHandler();
+                    Exhibition exhibitionToUpdate = (Exhibition)in.readObject();
+                    exhibitionsHandler.insertUpdateExhibition(exhibitionToUpdate, true);
                     out.flush();
                     break;
                 case GET_ROOMS:

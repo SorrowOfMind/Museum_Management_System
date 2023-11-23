@@ -15,24 +15,21 @@ import java.util.List;
 
 public class Exhibitions <T> {
     private ObservableList<Exhibition> exhibitions;
-    private int exhibitionsNumber;
-    private int insertedExhibitionID;
+    private int insertedExhibitionID= -1;
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    private void getExhibitions() {
+    private void getExhibitions(String filter) {
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.GET_EXHIBITIONS);
-            out.writeObject("");
+            out.writeObject(filter.isEmpty() ? "" : filter);
             in = new ObjectInputStream(socket.getInputStream());
             try {
-                System.out.println("client");
                 List<Exhibition> receivedExhibitions = (List<Exhibition>) in.readObject();
                 exhibitions = FXCollections.observableArrayList(receivedExhibitions);
-                exhibitionsNumber = exhibitions.size();
 
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -46,20 +43,21 @@ public class Exhibitions <T> {
         }
     }
 
-    public ObservableList<Exhibition> getExhibitionsList(){
-        getExhibitions();
+    public ObservableList<Exhibition> getExhibitionsList(String filter){
+        getExhibitions(filter);
         return this.exhibitions;
     }
 
-    public int insertExhibition(Exhibition exhibition){
+    public int insertUpdateExhibition(Exhibition exhibition, boolean update){
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(Actions.INSERT_EXHIBITIONS);
+            out.writeObject(update ? Actions.UPDATE_EXHIBITION : Actions.INSERT_EXHIBITIONS);
             out.writeObject(exhibition);
             in = new ObjectInputStream(socket.getInputStream());
 
-            insertedExhibitionID = in.readInt();
+            if(!update)
+                insertedExhibitionID = in.readInt();
 
             this.socket.close();
         } catch (UnknownHostException e) {

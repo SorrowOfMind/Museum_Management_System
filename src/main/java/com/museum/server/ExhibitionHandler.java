@@ -17,28 +17,34 @@ public class ExhibitionHandler {
     private ResultSet result;
 
 
-    public Integer insertExhibition(Exhibition ex) {
-        String insertQuery = "INSERT INTO exhibition(title, startDate, endDate) VALUES (?, ?, ?)";
+    public Integer insertUpdateExhibition(Exhibition ex, boolean update) {
+        String insertUpdateQuery = "INSERT INTO exhibition(title, startDate, endDate) VALUES (?, ?, ?)";
+        if(update){
+            insertUpdateQuery = "UPDATE exhibition SET title = ?, startDate = ?, endDate = ? WHERE exhibitionID = ?";
+        }
+
+        String insertUpdateExhibitsForExhibition = "INSERT INTO exhibit_exhibition(exhibitionID, exhibitID) VALUES (?, ?) ON DUPLICATE KEY UPDATE exhibitionID = VALUES(exhibitionID), exhibitID = VALUES(exhibitID)";
+        String insertUpdateExhibitionRoom = "INSERT INTO exhibition_room(exhibitionID, roomID) VALUES (?, ?) ON DUPLICATE KEY UPDATE exhibitionID = VALUES(exhibitionID), roomID = VALUES(roomID)";
+        String insertUpdateExhibitionWorker = "INSERT INTO worker_exhibition(exhibitionID, workerID) VALUES (?, ?) ON DUPLICATE KEY UPDATE exhibitionID = VALUES(exhibitionID), workerID = VALUES(workerID)";
+
+
+
         String selectLastIdQuery = "SELECT LAST_INSERT_ID() as id";
-
-        String insertExhibitsForExhibition = "INSERT INTO exhibit_exhibition(exhibitionID, exhibitID) values (?, ?)";
-        String insertExhibitionRoom = "INSERT INTO exhibition_room(exhibitionID, roomID) values (?, ?)";
-
-        String insertExhibitionWorker = "INSERT INTO worker_exhibition(exhibitionID, workerID) values (?, ?)";
-
 
         this.conn = Database.connect();
 
-        Integer id = -1;
+        Integer id = ex.getExhibitionID();
 
         try {
             this.conn.setAutoCommit(false);
 
-            // Insert the exhibition
-            this.stmt = conn.prepareStatement(insertQuery);
+            this.stmt = conn.prepareStatement(insertUpdateQuery);
             this.stmt.setString(1, ex.getTitle());
             this.stmt.setDate(2, ex.getStartDate());
             this.stmt.setDate(3, ex.getEndDate());
+            if(update)
+                this.stmt.setInt(4, ex.getExhibitionID());
+
             this.stmt.executeUpdate();
 
 
@@ -46,10 +52,10 @@ public class ExhibitionHandler {
             this.result = stmt.executeQuery();
 
             while (this.result.next()) {
+                if(!update)
                 id = result.getInt("id");
             }
-
-            this.stmt = conn.prepareStatement(insertExhibitsForExhibition);
+            this.stmt = conn.prepareStatement(insertUpdateExhibitsForExhibition);
             this.stmt.setInt(1, id);
 
             for(Integer exhibitID : ex.getExhibitIds()){
@@ -58,7 +64,7 @@ public class ExhibitionHandler {
 
             }
 
-            this.stmt = conn.prepareStatement(insertExhibitionRoom);
+            this.stmt = conn.prepareStatement(insertUpdateExhibitionRoom);
             this.stmt.setInt(1, id);
 
             for(Integer x : ex.getRoomIDs()){
@@ -67,7 +73,7 @@ public class ExhibitionHandler {
 
             }
 
-            this.stmt = conn.prepareStatement(insertExhibitionWorker);
+            this.stmt = conn.prepareStatement(insertUpdateExhibitionWorker);
             this.stmt.setInt(1, id);
 
             for(Integer x : ex.getWorkerIDs()){
@@ -81,6 +87,7 @@ public class ExhibitionHandler {
         } catch (SQLException e) {
             if (this.conn != null) {
                 try {
+
                     this.conn.rollback();
                 } catch (SQLException rollbackException) {
                     rollbackException.printStackTrace(); // Handle rollback failure
@@ -122,9 +129,7 @@ public class ExhibitionHandler {
             Exhibition exhibition = null;
             while (this.result.next()) {
                 final int id = result.getInt("exhibitionID");
-                System.out.println("ID" + (id));
                 if(prev == null || prev != id){
-                    System.out.println("first if");
                     prev = id;
                     exhibition = new Exhibition(id,
                             result.getString("title"),
@@ -136,7 +141,6 @@ public class ExhibitionHandler {
                     exhibitionList.add(exhibition);
                 }
                 else if(id == prev && exhibition != null){
-                    System.out.println("second if");
                     exhibition.appendIDs( result.getInt("exhibitID"), result.getInt("roomID"),  result.getInt("workerID"));
                 }
 

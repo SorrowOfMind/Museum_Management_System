@@ -1,6 +1,8 @@
 package com.museum.models;
 
 import javafx.collections.FXCollections;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -31,6 +33,10 @@ public class Exhibition implements Serializable {
         this.startDate = start;
         this.endDate = end;
 
+    }
+
+    public void setExhibitionID(Integer id){
+        this.exhibitionID = id;
     }
 
     public Integer getExhibitionID() {
@@ -66,5 +72,36 @@ public class Exhibition implements Serializable {
             this.roomIDs.add( room);
         if(!this.workerIDs.contains(worker))
             this.workerIDs.add( worker);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Exhibition myObject = (Exhibition) o;
+
+        return new EqualsBuilder()
+                .append(exhibitionID, myObject.exhibitionID)
+                .append(title, myObject.title)
+                .append(startDate, myObject.startDate)
+                .append(endDate, myObject.endDate)
+                .append(exhibitIDs, myObject.exhibitIDs)
+                .append(roomIDs, myObject.roomIDs)
+                .append(workerIDs, myObject.workerIDs)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(exhibitionID)
+                .append(title)
+                .append(startDate)
+                .append(endDate)
+                .append(exhibitIDs)
+                .append(roomIDs)
+                .append(workerIDs)
+                .toHashCode();
     }
 }

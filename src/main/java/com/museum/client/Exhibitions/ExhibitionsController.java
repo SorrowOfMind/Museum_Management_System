@@ -24,6 +24,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -172,7 +173,6 @@ public class ExhibitionsController implements Initializable {
         this.popupLabel.setText("Pracownicy");
         this.popup = new ListPopup<>(popupPane, (ListView<Worker_Basic>) popupList, workers,  popUpOK, workerField.getScene().getWindow() );
         popup.DisplayPopUpAndGetResults(res -> this.setSelectedWorkers(res));
-        this.exhibitions.getExhibitionsList();
 
     }
 
@@ -207,8 +207,8 @@ public class ExhibitionsController implements Initializable {
         return true;
     }
 
-    private void populateExhibitsTable() {
-        exhibitionsList = this.exhibitions.getExhibitionsList();
+    private void populateExhibitionsTable() {
+        exhibitionsList = this.exhibitions.getExhibitionsList(this.exhibitionsSearch.getText());
         exhibitionsTableID.setCellValueFactory(new PropertyValueFactory<>("exhibitionID"));
         exhibitionsTableTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         exhibitionsTableStartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -217,14 +217,10 @@ public class ExhibitionsController implements Initializable {
         exhibitionsTable.setItems(exhibitionsList);
     }
 
-    @FXML
-    private void selectExhibition(){
-        this.selectedExhibition = exhibitionsTable.getSelectionModel().getSelectedItem();
-        int idx = exhibitionsTable.getSelectionModel().getSelectedIndex();
+    private void populateFieldsForSelectedExhibition(Exhibition e){
 
-        if ((idx - 1) < -1) {
-            return;
-        }
+        this.selectedExhibition = e;
+
         this.exhibitionAddBtn.setDisable(true);
 
         this.exhibitionIDText.setText("ID " + selectedExhibition.getExhibitionID().toString());
@@ -250,13 +246,25 @@ public class ExhibitionsController implements Initializable {
     }
 
     @FXML
-    private void insertExhibition(ActionEvent e) {
+    private void selectExhibition(){
+        Exhibition selected = exhibitionsTable.getSelectionModel().getSelectedItem();
+        int idx = exhibitionsTable.getSelectionModel().getSelectedIndex();
+
+        if ((idx - 1) < -1) {
+            return;
+        }
+
+        this.populateFieldsForSelectedExhibition(selected);
+
+    }
+
+    private Exhibition constructAndValidateData(){
         String title = this.exhibitionTitle.getText();
         LocalDate start = exhibitionStartDate.getValue();
         LocalDate endDate = exhibitionEndDate.getValue();
 
 
-       if(!validateExhibition(title, start)) return;
+        if(!validateExhibition(title, start)) return null;
 
         ArrayList<Integer> exhibitIDs = new ArrayList<>();
         ArrayList<Integer> roomIDs = new ArrayList<>();
@@ -273,14 +281,46 @@ public class ExhibitionsController implements Initializable {
         for(Worker_Basic worker :  this.selectedWorkers){
             workerIDs.add(worker.getWorkerID());
         }
-
-        final Exhibition exhibitionToSend = new Exhibition(title,
+        return new Exhibition(title,
                 Date.valueOf(start), endDate == null ? null : Date.valueOf(endDate), exhibitIDs, roomIDs, workerIDs);
-        System.out.println(exhibitions.insertExhibition(exhibitionToSend));
+    }
+
+    @FXML
+    private void insertExhibition() {
+        Exhibition entity = constructAndValidateData();
+
+
+       int id = exhibitions.insertUpdateExhibition(entity, false);
+       this.refreshAll();
+
+       final Optional<Exhibition> ex = this.exhibitionsList.stream().filter(x -> x.getExhibitionID() == id).findFirst();
+       if(ex.isPresent()){
+           populateFieldsForSelectedExhibition(ex.get());
+       }
+        this.refreshExhibitions();
+
+    }
+
+    @FXML
+    private void updateExhibition(){
+        final Exhibition entity = this.constructAndValidateData();
+        entity.setExhibitionID(this.selectedExhibition.getExhibitionID());
+        if(entity.equals(this.selectedExhibition)){
+            this.alert.error("Błąd", "Nie wprowadzono żadnych zmian w wystawie.");
+            return;
+        }
+        System.out.println(this.selectedExhibition.getExhibitionID());
+        exhibitions.insertUpdateExhibition(entity, true);
+        this.refreshExhibitions();
+    }
+
+    @FXML
+    private void refreshExhibitions(){
+        this.refreshAll();
     }
 
     private void refreshAll(){
-        populateExhibitsTable();
+        populateExhibitionsTable();
         Exhibits ex = new Exhibits();
 
         this.exhibits.setAll(ex.getExhibitsList());
