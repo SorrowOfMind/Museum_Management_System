@@ -63,7 +63,12 @@
 
 .exhibit-image {
      -fx-background-color: transparent;
-      -fx-border-color: #DBDBDB;
+      -fx-border-color: #0a7df3;
+}
+
+.upload-image-btn {
+    -fx-background-color: #DBDBDB;
+    -fx-cursor: hand;
 }
 
 .exhibit-form-input {
