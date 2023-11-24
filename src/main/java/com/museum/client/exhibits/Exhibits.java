@@ -48,12 +48,15 @@ public class Exhibits {
         }
     }
 
-    public boolean addExhibit(Exhibit exhibit) {
+    public boolean addExhibit(Exhibit exhibit, byte[] imageData) {
         try {
             socket = new Socket(DashboardController.HOST, DashboardController.PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.ADD_EXHIBIT);
             out.writeObject(exhibit);
+            if (imageData != null) {
+                out.writeObject(imageData);
+            }
             in = new ObjectInputStream(socket.getInputStream());
 
             try {
