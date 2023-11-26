@@ -6,6 +6,7 @@ import com.museum.models.Exhibition;
 import com.museum.models.Room;
 import com.museum.models.Worker_Basic;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 
 import java.io.*;
 import java.net.Socket;
@@ -24,6 +25,7 @@ public class ClientHandler implements Runnable {
     // DATA
     Exhibit exhibit;
     List<Exhibit> exhibits;
+    byte[] imageData = null;
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
@@ -57,7 +59,12 @@ public class ClientHandler implements Runnable {
                 case ADD_EXHIBIT:
                     exhibitsHandler = new ExhibitsHandler();
                     exhibit = (Exhibit) in.readObject();
-                    exhibits = exhibitsHandler.addExhibit(exhibit);
+                    Object receivedObject = in.readObject();
+                    if (receivedObject instanceof byte[]) {
+                        imageData = (byte[]) receivedObject;
+                    }
+
+                    exhibits = exhibitsHandler.addExhibit(exhibit, imageData);
                     out.writeObject(exhibits);
                     out.flush();
                     break;

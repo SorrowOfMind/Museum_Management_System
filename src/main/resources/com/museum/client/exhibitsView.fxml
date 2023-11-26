@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="exhibitsView" prefHeight="655.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.exhibits.ExhibitsController">
+<AnchorPane fx:id="exhibitsView" prefHeight="655.0" prefWidth="1080.0" visible="false" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.exhibits.ExhibitsController">
    <children>
       <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
          <children>
@@ -23,7 +23,11 @@
                <content>
                   <AnchorPane prefHeight="1291.0" prefWidth="350.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
                      <children>
-                        <AnchorPane layoutX="102.0" layoutY="24.0" prefHeight="150.0" prefWidth="141.0" styleClass="exhibit-image" stylesheets="@dashboard.css" />
+                        <AnchorPane layoutX="93.0" layoutY="22.0" prefHeight="160.0" prefWidth="160.0" styleClass="exhibit-image" stylesheets="@dashboard.css">
+                           <children>
+                              <ImageView fx:id="exhibitImage" fitHeight="160.0" fitWidth="160.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true" />
+                              <Button layoutX="2.0" layoutY="127.0" mnemonicParsing="false" onAction="#uploadImage" prefHeight="34.0" prefWidth="163.0" styleClass="upload-image-btn" stylesheets="@dashboard.css" text="Wgraj zdjęcie" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="127.0" />
+                           </children></AnchorPane>
                         <Label layoutX="18.0" layoutY="195.0" text="ID: ">
                            <font>
                               <Font name="Lato Regular" size="16.0" />

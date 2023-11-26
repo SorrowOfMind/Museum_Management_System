@@ -58,10 +58,17 @@
 .exhibit-form {
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2),5,0,0,0);
+
 }
 
 .exhibit-image {
-     -fx-background-color: red;
+     -fx-background-color: transparent;
+      -fx-border-color: #0a7df3;
+}
+
+.upload-image-btn {
+    -fx-background-color: #DBDBDB;
+    -fx-cursor: hand;
 }
 
 .exhibit-form-input {

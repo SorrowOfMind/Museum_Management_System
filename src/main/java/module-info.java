@@ -10,6 +10,7 @@ module com.museum.client {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
     requires org.apache.commons.lang3;
+    requires java.desktop;
 
     opens com.museum.client to javafx.fxml;
     exports com.museum.client;

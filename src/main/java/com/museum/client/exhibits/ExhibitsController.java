@@ -18,15 +18,28 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
-
-
+import javax.imageio.ImageIO;
 
 public class ExhibitsController implements Initializable {
+
+    @FXML
+    private AnchorPane exhibitsView;
 
     // EXHIBITS DATA
     private Exhibits exhibits;
@@ -52,6 +65,8 @@ public class ExhibitsController implements Initializable {
     private ComboBox<String> searchFilters;
 
     // EXHIBITS FORM
+    @FXML
+    private ImageView exhibitImage;
     @FXML
     private Label exhibitIDText;
     @FXML
@@ -107,6 +122,8 @@ public class ExhibitsController implements Initializable {
 
     // UTILS
     private AlertMessage alert = new AlertMessage();
+    private Image image;
+    private byte[] imageData = null;
 
     private void populateExhibitsTable() {
         exhibitsShowList = filteredExhibitsShowList.size() > 0 ? filteredExhibitsShowList : exhibits.getExhibitsList();
@@ -125,7 +142,7 @@ public class ExhibitsController implements Initializable {
         Exhibit exhibit = getFormData();
 
         if (exhibit != null) {
-            boolean isAdded = exhibits.addExhibit(exhibit);
+            boolean isAdded = exhibits.addExhibit(exhibit, imageData);
 
             if (isAdded) {
                 populateExhibitsTable();
@@ -257,8 +274,10 @@ public class ExhibitsController implements Initializable {
 
         exhibitAddBtn.setDisable(false);
         exhibitUpdateBtn.setDisable(true);
-    }
 
+        exhibitImage.setImage(null);
+        imageData = null;
+    }
 
     @FXML
     void switchActiveFilter(ActionEvent event) {
@@ -290,6 +309,32 @@ public class ExhibitsController implements Initializable {
         populateExhibitsTable();
     }
 
+    @FXML
+    private void uploadImage() {
+        FileChooser fileWindow = new FileChooser();
+        fileWindow.setTitle("Wgraj zdjęcie");
+        fileWindow.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image File",  "*png"));
+
+        File file = fileWindow.showOpenDialog(null);
+
+        if (file != null) {
+            try {
+                image = new Image(file.toURI().toString(), 160, 160, false, true);
+                exhibitImage.setImage(image);
+                imageData = convertImageToByteArray(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private byte[] convertImageToByteArray(File file) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(file);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exhibitHistoricalPeriod.setItems(historicalPeriodsList);
@@ -306,7 +351,6 @@ public class ExhibitsController implements Initializable {
         exhibitsSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Call your search method with the entered text
                 searchExhibits(newValue);
             }
         });

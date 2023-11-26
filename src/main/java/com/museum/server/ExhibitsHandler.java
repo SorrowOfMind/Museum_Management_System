@@ -4,6 +4,9 @@ import com.museum.models.Exhibit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,7 +53,7 @@ public class ExhibitsHandler {
         return exhibitsList;
     }
 
-    public List<Exhibit> addExhibit(Exhibit exhibit) {
+    public List<Exhibit> addExhibit(Exhibit exhibit, byte[] imageData) {
         String query = "INSERT INTO exhibit (exhibitID, name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status,security)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String lastIDQuery = "SELECT MAX(exhibitID) as exhibitID FROM exhibit";
@@ -64,6 +67,13 @@ public class ExhibitsHandler {
 
             if (result.next()) {
                 exhibitID = result.getInt("exhibitID") + 1;
+
+                if (imageData != null) {
+                    String fileName = "exhibit_" + exhibitID;
+                    String filePath = "Images/" + fileName + ".png";
+                    System.out.println(fileName + " " + filePath);
+                    saveImage(imageData, filePath);
+                }
 
                 stmt = conn.prepareStatement(query);
                 stmt.setInt(1, exhibitID);
@@ -123,6 +133,16 @@ public class ExhibitsHandler {
 
             return getExhibits();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void saveImage(byte[] imageData, String filePath) {
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(imageData);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
