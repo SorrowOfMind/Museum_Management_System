@@ -1,11 +1,9 @@
-package com.museum.client.Exhibitions;
+package com.museum.Utils;
 
 import com.museum.models.Exhibit;
 import com.museum.models.Room;
 import com.museum.models.Worker_Basic;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -14,10 +12,6 @@ import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.Callback;
 
-@FunctionalInterface
-interface ListPopUpReturn<T> {
-    void getReturn(ObservableList<T> input);
-}
 
 public class ListPopup<T> {
 

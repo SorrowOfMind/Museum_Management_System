@@ -101,7 +101,7 @@ public class ClientHandler implements Runnable {
                     out.writeObject(rooms);
                     out.flush();
                     break;
-                case GET_WORKERS_FOR_EXHIBITION:
+                case GET_WORKERS_SIMPLIFIED:
                     exhibitionsHandler = new ExhibitionHandler();
                     List<Worker_Basic> workers = exhibitionsHandler.getWorkersForExhibition();
                     out.writeObject(workers);

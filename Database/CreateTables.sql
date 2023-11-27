@@ -1,3 +1,4 @@
+
 CREATE TABLE OWNER (
     ownerID int PRIMARY KEY AUTO_INCREMENT,
     name varchar(100) not null,
@@ -92,29 +93,18 @@ CREATE TABLE exhibit_exhibition (
     FOREIGN KEY (exhibitID) REFERENCES exhibit(exhibitID)
 );
 
-CREATE TABLE ticket (
-    ticketID int PRIMARY KEY AUTO_INCREMENT,
-    type varchar(24) not null,
-    price int not null
-);
-
 CREATE TABLE tour (
     tourID int PRIMARY KEY AUTO_INCREMENT,
     groupLeader varchar(100) not null,
     tourDate datetime not null,
+    tourHour varchar(5),
     size int not null,
     language varchar(30) not null,
+    standardTicketCount int null,
+    discountTicketCount int null,
     workerID int not null
 );
 
-CREATE TABLE tour_ticket (
-    tourID int NOT NULL,
-    ticketID int NOT NULL,
-    amount int NOT NULL,
-    PRIMARY KEY (tourID, ticketID),
-    FOREIGN KEY (tourID) REFERENCES tour(tourID),
-    FOREIGN KEY (ticketID) REFERENCES ticket(ticketID)
-);
 
 CREATE TABLE worker (
     workerID int PRIMARY KEY AUTO_INCREMENT,
@@ -247,12 +237,11 @@ INSERT INTO exhibit_exhibition (exhibitionID, exhibitID) VALUES
 (2, 2);
 -- Add more rows as needed
 
--- Populating ticket table
-INSERT INTO ticket (type, price) VALUES
-('Standard', 10),
-('VIP', 20);
 -- Add more rows as needed
-
+-- Populating worker table
+INSERT INTO worker (forename, surname, dateOfBirth, phoneNumber, email, dateOfTermination, agreementType, dateOfAgreement, accountNumber, salary, jobTitle, managerID, businessID) VALUES
+('Manager 1', 'Lastname 1', '1980-01-01', '111222333', 'manager1@example.com', NULL, 'Full-Time', '2020-01-01', '123456789', 50000, 'Manager', NULL, 'BUS1'),
+('Employee 1', 'Lastname 2', '1990-02-02', '444555666', 'employee1@example.com', NULL, 'Part-Time', '2021-01-01', '987654321', 30000, 'Staff', 1, 'BUS2');
 -- Populating tour table
 INSERT INTO tour (groupLeader, tourDate, size, language, workerID) VALUES
 ('Tour Guide 1', '2023-06-15 10:00:00', 15, 'English', 1),
@@ -265,10 +254,7 @@ INSERT INTO tour_ticket (tourID, ticketID, amount) VALUES
 (2, 2, 20);
 -- Add more rows as needed
 
--- Populating worker table
-INSERT INTO worker (forename, surname, dateOfBirth, phoneNumber, email, dateOfTermination, agreementType, dateOfAgreement, accountNumber, salary, jobTitle, managerID, businessID) VALUES
-('Manager 1', 'Lastname 1', '1980-01-01', '111222333', 'manager1@example.com', NULL, 'Full-Time', '2020-01-01', '123456789', 50000, 'Manager', NULL, 'BUS1'),
-('Employee 1', 'Lastname 2', '1990-02-02', '444555666', 'employee1@example.com', NULL, 'Part-Time', '2021-01-01', '987654321', 30000, 'Staff', 1, 'BUS2');
+
 -- Add more rows as needed
 
 -- Populating worker_exhibition table
@@ -299,4 +285,5 @@ INSERT INTO museum_address (businessID, street, buildingNumber, unitNumber, post
 INSERT INTO `user` (username, password, role) VALUES
 ('adminuser', 'adminpassword', 'admin'),
 ('regularuser', 'regularpassword', 'user');
--- Add more rows as needed
+INSERT INTO `user` (username, password, role) VALUES
+('test', '1234', 'admin');

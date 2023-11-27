@@ -1,5 +1,6 @@
 package com.museum.client.Exhibitions;
 import com.museum.Actions;
+import com.museum.Utils.ListPopup;
 import com.museum.client.AlertMessage;
 import com.museum.client.exhibits.Exhibits;
 import com.museum.models.Exhibit;
@@ -8,13 +9,11 @@ import com.museum.models.Room;
 import com.museum.models.Worker_Basic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.stage.Popup;
 
 
 import java.io.ObjectInputStream;
@@ -169,7 +168,7 @@ public class ExhibitionsController implements Initializable {
     private void showWorkerPopup() {
         if(this.popup != null) return;
 
-        this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_FOR_EXHIBITION));
+        this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_SIMPLIFIED));
         this.popupLabel.setText("Pracownicy");
         this.popup = new ListPopup<>(popupPane, (ListView<Worker_Basic>) popupList, workers,  popUpOK, workerField.getScene().getWindow() );
         popup.DisplayPopUpAndGetResults(res -> this.setSelectedWorkers(res));
@@ -325,7 +324,7 @@ public class ExhibitionsController implements Initializable {
 
         this.exhibits.setAll(ex.getExhibitsList());
         this.rooms.setAll(this.exhibitions.genericGetter(Actions.GET_ROOMS));
-        this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_FOR_EXHIBITION));
+        this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_SIMPLIFIED));
 
     }
 
