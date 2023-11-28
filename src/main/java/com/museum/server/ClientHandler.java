@@ -1,10 +1,7 @@
 package com.museum.server;
 
 import com.museum.Actions;
-import com.museum.models.Exhibit;
-import com.museum.models.Exhibition;
-import com.museum.models.Room;
-import com.museum.models.Worker_Basic;
+import com.museum.models.*;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
@@ -105,6 +102,26 @@ public class ClientHandler implements Runnable {
                     exhibitionsHandler = new ExhibitionHandler();
                     List<Worker_Basic> workers = exhibitionsHandler.getWorkersForExhibition();
                     out.writeObject(workers);
+                    out.flush();
+                    break;
+                case GET_TOURS:
+                    TourHandler tourHandler = new TourHandler();
+                    String tourFilter = (String) in.readObject();
+                    List<Tour> tours = tourHandler.getTours(tourFilter);
+                    out.writeObject(tours);
+                    out.flush();
+                    break;
+                case INSERT_TOUR:
+                    tourHandler = new TourHandler();
+                    Tour tour = (Tour) in.readObject();
+                    Integer tourId = tourHandler.insertUpdateTour(tour, false);
+                    out.writeInt(tourId);
+                    out.flush();
+                    break;
+                case UPDATE_TOUR:
+                    tourHandler = new TourHandler();
+                    Tour tourToUpdate = (Tour) in.readObject();
+                    tourHandler.insertUpdateTour(tourToUpdate, true);
                     out.flush();
                     break;
                 default:

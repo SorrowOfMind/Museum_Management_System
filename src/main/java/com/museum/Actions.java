@@ -11,7 +11,7 @@ public enum Actions {
     GET_ROOMS,
     GET_WORKERS_SIMPLIFIED,
     GET_TOURS,
-    INSERT_TOURS,
+    INSERT_TOUR,
     UPDATE_TOUR
 
 }

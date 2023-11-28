@@ -54,7 +54,6 @@ public class DashboardController implements Initializable {
 
     @FXML
     protected void switchDashboardView(ActionEvent event) {
-        System.out.println(event.getSource());
         if (event.getSource().equals(overviewBtn)) {
             setVisibleView(overviewView);
         } else if (event.getSource().equals(exhibitsBtn)) {

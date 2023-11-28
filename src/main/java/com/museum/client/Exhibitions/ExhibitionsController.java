@@ -14,11 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-
-
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDate;
 import java.sql.Date;
@@ -30,16 +25,7 @@ import java.util.stream.Collectors;
 
 public class ExhibitionsController implements Initializable {
 
-    // SOCKET CONN
-    private Socket socket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
-
     private ObservableList<Exhibition> exhibitionsList;
-
-
-
-
     @FXML
     private TextField exhibitionsSearch;
     @FXML
@@ -62,8 +48,6 @@ public class ExhibitionsController implements Initializable {
     @FXML
     private DatePicker exhibitionEndDate;
 
-    @FXML
-    private Button exhibitionResetBtn;
     @FXML
     private Button exhibitionAddBtn;
     @FXML
@@ -222,7 +206,7 @@ public class ExhibitionsController implements Initializable {
 
         this.exhibitionAddBtn.setDisable(true);
 
-        this.exhibitionIDText.setText("ID " + selectedExhibition.getExhibitionID().toString());
+        this.exhibitionIDText.setText("ID: " + selectedExhibition.getExhibitionID().toString());
         this.exhibitionTitle.setText(selectedExhibition.getTitle());
 
         this.exhibitionStartDate.setValue(this.selectedExhibition.getStartDate().toLocalDate());
@@ -252,7 +236,8 @@ public class ExhibitionsController implements Initializable {
         if ((idx - 1) < -1) {
             return;
         }
-
+        this.exhibitionUpdateBtn.setDisable(false);
+        this.exhibitionAddBtn.setDisable(true);
         this.populateFieldsForSelectedExhibition(selected);
 
     }
@@ -287,6 +272,7 @@ public class ExhibitionsController implements Initializable {
     @FXML
     private void insertExhibition() {
         Exhibition entity = constructAndValidateData();
+        if(entity == null) return;
 
 
        int id = exhibitions.insertUpdateExhibition(entity, false);
@@ -308,10 +294,27 @@ public class ExhibitionsController implements Initializable {
             this.alert.error("Błąd", "Nie wprowadzono żadnych zmian w wystawie.");
             return;
         }
-        System.out.println(this.selectedExhibition.getExhibitionID());
         exhibitions.insertUpdateExhibition(entity, true);
         this.refreshExhibitions();
+
     }
+
+    @FXML
+    private void resetExhibition(){
+        this.selectedExhibition = null;
+        this.exhibitionUpdateBtn.setDisable(true);
+        this.exhibitionAddBtn.setDisable(false);
+        exhibitionIDText.setText("ID: ");
+        exhibitionTitle.setText(null);
+        exhibitionStartDate.setValue(null);
+        exhibitionEndDate.setValue(null);
+        exhibitsInExhibitions.setText(null);
+        roomField.setText(null);
+        workerField.setText(null);
+    }
+
+
+
 
     @FXML
     private void refreshExhibitions(){

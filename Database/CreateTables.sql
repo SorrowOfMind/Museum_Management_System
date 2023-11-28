@@ -93,19 +93,6 @@ CREATE TABLE exhibit_exhibition (
     FOREIGN KEY (exhibitID) REFERENCES exhibit(exhibitID)
 );
 
-CREATE TABLE tour (
-    tourID int PRIMARY KEY AUTO_INCREMENT,
-    groupLeader varchar(100) not null,
-    tourDate datetime not null,
-    tourHour varchar(5),
-    size int not null,
-    language varchar(30) not null,
-    standardTicketCount int null,
-    discountTicketCount int null,
-    workerID int not null
-);
-
-
 CREATE TABLE worker (
     workerID int PRIMARY KEY AUTO_INCREMENT,
     forename varchar(50) not null,
@@ -123,6 +110,20 @@ CREATE TABLE worker (
     FOREIGN KEY (managerID) REFERENCES worker(workerID),
     businessID varchar(30)
 );
+
+CREATE TABLE tour (
+    tourID int PRIMARY KEY AUTO_INCREMENT,
+    groupLeader varchar(100) not null,
+    tourDate datetime not null,
+    tourHour varchar(5),
+    size int not null,
+    language varchar(30)  null,
+    standardTicketCount int null,
+    discountTicketCount int null,
+    workerID int  null,
+    foreign key (workerID) REFERENCES worker(workerID)
+);
+
 
 ALTER TABLE tour ADD FOREIGN KEY (workerID) REFERENCES worker(workerID);
 
@@ -243,15 +244,11 @@ INSERT INTO worker (forename, surname, dateOfBirth, phoneNumber, email, dateOfTe
 ('Manager 1', 'Lastname 1', '1980-01-01', '111222333', 'manager1@example.com', NULL, 'Full-Time', '2020-01-01', '123456789', 50000, 'Manager', NULL, 'BUS1'),
 ('Employee 1', 'Lastname 2', '1990-02-02', '444555666', 'employee1@example.com', NULL, 'Part-Time', '2021-01-01', '987654321', 30000, 'Staff', 1, 'BUS2');
 -- Populating tour table
-INSERT INTO tour (groupLeader, tourDate, size, language, workerID) VALUES
-('Tour Guide 1', '2023-06-15 10:00:00', 15, 'English', 1),
-('Tour Guide 2', '2023-07-01 14:00:00', 20, 'Spanish', 2);
--- Add more rows as needed
-
--- Populating tour_ticket table
-INSERT INTO tour_ticket (tourID, ticketID, amount) VALUES
-(1, 1, 15),
-(2, 2, 20);
+INSERT INTO tour (groupLeader, tourDate, tourHour, language, standardTicketCount, discountTicketCount, workerID, size)
+VALUES
+    ('Group1 Leader', '2023-12-01 10:00:00', '10:00', 'English', 5, 3, 1, (5 + 3)),
+    ('Group2 Leader', '2023-12-02 14:30:00', '14:30', 'Spanish', 3, 2, 2, (3 + 2));
+    -- Add more rows as needed;
 -- Add more rows as needed
 
 

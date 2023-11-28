@@ -1,8 +1,7 @@
 package com.museum.client.Tours;
 
 import com.museum.Actions;
-import com.museum.models.Exhibit;
-import com.museum.models.Tour;  // Renamed from Exhibition
+import com.museum.models.Tour;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -44,20 +43,20 @@ public class Tours <T> {
     }
 
     public ObservableList<Tour> getToursList(String filter){  // Renamed from getExhibitionsList
-        //getTours(filter);
+        getTours(filter);
         return this.tours;
     }
 
-    public int insertUpdateTour(Tour tour, boolean update){  // Renamed from insertUpdateExhibition
+    public int insertUpdateTour(Tour tour, boolean update){
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(update ? Actions.UPDATE_TOUR : Actions.INSERT_TOURS);  // Renamed from UPDATE_EXHIBITION and INSERT_EXHIBITIONS
+            out.writeObject(update ? Actions.UPDATE_TOUR : Actions.INSERT_TOUR);
             out.writeObject(tour);
             in = new ObjectInputStream(socket.getInputStream());
 
             if(!update)
-                insertedTourID = in.readInt();  // Renamed from insertedExhibitionID
+                insertedTourID = in.readInt();
 
             this.socket.close();
         } catch (UnknownHostException e) {
