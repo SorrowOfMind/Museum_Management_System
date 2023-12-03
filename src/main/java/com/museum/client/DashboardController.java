@@ -28,6 +28,8 @@ public class DashboardController implements Initializable {
     private Button exhibitsBtn;
     @FXML
     private Button exhibitionsBtn;
+    @FXML
+    private Button toursButton;
 
     // VIEWS
     @FXML
@@ -38,8 +40,8 @@ public class DashboardController implements Initializable {
     private AnchorPane exhibitsView;
     @FXML
     private AnchorPane exhibitionsView;
-
-    private ExhibitionsController exhibitionsController = null;
+    @FXML
+    private AnchorPane toursView;
 
     // CUSTOM
     private AnchorPane[] views;
@@ -63,6 +65,9 @@ public class DashboardController implements Initializable {
         }
         else if (event.getSource().equals(exhibitionsBtn)) {
             setVisibleView(exhibitionsView, exhibitionsBtn);
+        }
+        else if (event.getSource().equals(toursButton)) {
+            setVisibleView(toursView, toursButton);
         }
     }
 
@@ -95,7 +100,7 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView};
+        views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView, toursView};
         menuButtons = new Button[]{overviewBtn, exhibitsBtn, exhibitionsBtn};
         overviewBtn.setStyle(activeBtnStyle);
     }

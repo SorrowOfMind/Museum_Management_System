@@ -1,6 +1,5 @@
 package com.museum.models;
 
-import javafx.collections.FXCollections;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
