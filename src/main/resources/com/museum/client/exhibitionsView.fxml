@@ -16,11 +16,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="655.0" prefWidth="1080.0" stylesheets="@dashboard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.Exhibitions.ExhibitionsController">
+<AnchorPane prefHeight="755.0" prefWidth="1080.0" stylesheets="@dashboard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.Exhibitions.ExhibitionsController">
         <children>
-            <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
+            <AnchorPane layoutX="711.0" layoutY="19.0" prefHeight="736.0" prefWidth="348.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
                 <children>
-                    <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="721.0" prefWidth="350.0" style="-fx-border-color: none;" stylesheets="@dashboard.css" vbarPolicy="ALWAYS">
+                    <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="736.0" prefWidth="350.0" style="-fx-border-color: none;" stylesheets="@dashboard.css" vbarPolicy="ALWAYS">
                <content>
                   <AnchorPane prefHeight="600.0" prefWidth="350.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
                      <children>
@@ -105,7 +105,7 @@
                     </ScrollPane>
                 </children>
             </AnchorPane>
-      <AnchorPane layoutX="11.0" layoutY="25.0" prefHeight="626.0" prefWidth="687.0" styleClass="white-wrapper" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="25.0">
+      <AnchorPane layoutX="11.0" layoutY="19.0" prefHeight="736.0" prefWidth="687.0" styleClass="white-wrapper" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="19.0">
          <children>
             <Button layoutX="630.0" layoutY="11.0" mnemonicParsing="false" onAction="#refreshExhibitions" styleClass="refresh-btn" stylesheets="@dashboard.css">
                <font>
@@ -129,7 +129,7 @@
                   <Image url="@images/search.png" />
                </image>
             </ImageView>
-            <TableView fx:id="exhibitionsTable" layoutX="14.0" layoutY="53.0" onMouseClicked="#selectExhibition" prefHeight="658.0" prefWidth="656.0" stylesheets="@dashboard.css">
+            <TableView fx:id="exhibitionsTable" layoutX="14.0" layoutY="53.0" onMouseClicked="#selectExhibition" prefHeight="674.0" prefWidth="656.0" stylesheets="@dashboard.css">
                <columns>
                   <TableColumn fx:id="exhibitionsTableID" prefWidth="98.0" text="ID" />
                   <TableColumn fx:id="exhibitionsTableTitle" minWidth="2.0" prefWidth="283.0" text="Nazwa" />

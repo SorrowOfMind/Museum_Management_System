@@ -43,7 +43,11 @@ public class DashboardController implements Initializable {
 
     // CUSTOM
     private AnchorPane[] views;
+    private Button[] menuButtons;
     private AlertMessage alert = new AlertMessage();
+
+    private String activeBtnStyle = "-fx-border-color: #fff;";
+    private String inactiveBtnStyle = "-fx-border-color: transparent;";
 
     public void setUser(User user) {
         this.user = user;
@@ -53,13 +57,12 @@ public class DashboardController implements Initializable {
     @FXML
     protected void switchDashboardView(ActionEvent event) {
         if (event.getSource().equals(overviewBtn)) {
-            setVisibleView(overviewView);
+            setVisibleView(overviewView, overviewBtn);
         } else if (event.getSource().equals(exhibitsBtn)) {
-            setVisibleView(exhibitsView);
+            setVisibleView(exhibitsView, exhibitsBtn);
         }
         else if (event.getSource().equals(exhibitionsBtn)) {
-            if(exhibitionsController == null) this.exhibitionsController = new ExhibitionsController();
-            setVisibleView(exhibitionsView);
+            setVisibleView(exhibitionsView, exhibitionsBtn);
         }
     }
 
@@ -72,7 +75,7 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void setVisibleView(AnchorPane visibleView) {
+    private void setVisibleView(AnchorPane visibleView, Button menuButton) {
         visibleView.setVisible(true);
 
         for (AnchorPane view : views) {
@@ -80,10 +83,20 @@ public class DashboardController implements Initializable {
                 view.setVisible(false);
             }
         }
+
+        for (Button button : menuButtons) {
+            if (button == menuButton) {
+                button.setStyle(activeBtnStyle);
+            } else {
+                button.setStyle(inactiveBtnStyle);
+            }
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView};
+        menuButtons = new Button[]{overviewBtn, exhibitsBtn, exhibitionsBtn};
+        overviewBtn.setStyle(activeBtnStyle);
     }
 }

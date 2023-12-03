@@ -12,7 +12,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.DashboardController">
    <children>
-      <AnchorPane fx:id="dashboardView" prefHeight="200.0" prefWidth="200.0" styleClass="dashboard" stylesheets="@dashboard.css">
+      <AnchorPane fx:id="dashboardView" prefHeight="800.0" prefWidth="1300.0" styleClass="dashboard" stylesheets="@dashboard.css">
          <children>
             <AnchorPane prefHeight="800.0" prefWidth="220.0" styleClass="menu" stylesheets="@dashboard.css">
                <children>

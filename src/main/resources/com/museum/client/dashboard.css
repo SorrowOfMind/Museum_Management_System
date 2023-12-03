@@ -11,10 +11,12 @@
 .menu-button {
     -fx-background-color: transparent;
     -fx-cursor: hand;
+    -fx-border-radius: 8px;
 }
 
 .menu-button:hover {
     -fx-background-color: #487cd2;
+    -fx-background-radius: 8px;
 }
 
 .topbar {

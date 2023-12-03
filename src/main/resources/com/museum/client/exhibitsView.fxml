@@ -15,13 +15,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="exhibitsView" prefHeight="655.0" prefWidth="1080.0" visible="false" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.exhibits.ExhibitsController">
+<AnchorPane fx:id="exhibitsView" prefHeight="755.0" prefWidth="1080.0" visible="false" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.exhibits.ExhibitsController">
    <children>
-      <AnchorPane layoutX="711.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
+      <AnchorPane layoutX="711.0" layoutY="18.0" prefHeight="729.0" prefWidth="350.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
          <children>
-            <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="713.0" prefWidth="350.0" style="-fx-border-color: none;" stylesheets="@dashboard.css" vbarPolicy="ALWAYS">
+            <ScrollPane hbarPolicy="NEVER" layoutY="-7.0" pannable="true" prefHeight="737.0" prefWidth="350.0" style="-fx-border-color: none;" stylesheets="@dashboard.css" vbarPolicy="ALWAYS">
                <content>
-                  <AnchorPane prefHeight="1291.0" prefWidth="350.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
+                  <AnchorPane prefHeight="1305.0" prefWidth="350.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
                      <children>
                         <AnchorPane layoutX="93.0" layoutY="22.0" prefHeight="160.0" prefWidth="160.0" styleClass="exhibit-image" stylesheets="@dashboard.css">
                            <children>
@@ -154,7 +154,7 @@
             </ScrollPane>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="11.0" layoutY="25.0" prefHeight="626.0" prefWidth="687.0" styleClass="white-wrapper" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="25.0">
+      <AnchorPane layoutX="11.0" layoutY="11.0" prefHeight="713.0" prefWidth="687.0" styleClass="white-wrapper" stylesheets="@dashboard.css" AnchorPane.bottomAnchor="7.0" AnchorPane.topAnchor="11.0">
          <children>
             <TextField fx:id="exhibitsSearch" layoutX="14.0" layoutY="13.0" prefHeight="27.0" prefWidth="326.0" promptText="Szukaj eksponatu..." styleClass="search-input" stylesheets="@dashboard.css">
                <padding>
@@ -181,7 +181,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TableView fx:id="exhibitsTable" layoutX="14.0" layoutY="53.0" onMouseClicked="#selectExhibit" prefHeight="658.0" prefWidth="658.0" stylesheets="@dashboard.css">
+            <TableView fx:id="exhibitsTable" layoutX="14.0" layoutY="53.0" onMouseClicked="#selectExhibit" prefHeight="674.0" prefWidth="658.0" stylesheets="@dashboard.css">
                <columns>
                   <TableColumn fx:id="exhibitsTableID" prefWidth="98.0" text="ID" />
                   <TableColumn fx:id="exhibitsTableName" prefWidth="183.0" text="Nazwa" />
