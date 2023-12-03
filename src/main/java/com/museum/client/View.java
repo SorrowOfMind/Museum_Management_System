@@ -17,7 +17,7 @@ public class View {
     public View(Stage stage, String fxmlFile) throws IOException {
         fxmlLoader = new FXMLLoader(MuseumApplication.class.getResource(fxmlFile));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.getIcons().add(new Image(getClass().getResource(ICON_PATH ).toExternalForm()));
+        stage.getIcons().add(new Image(getClass().getResource(ICON_PATH).toExternalForm()));
         stage.setTitle(TITLE);
         stage.setScene(scene);
         stage.show();
@@ -28,7 +28,7 @@ public class View {
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
         stage.setTitle(TITLE);
-        stage.getIcons().add(new Image(getClass().getResource(ICON_PATH ).toExternalForm()));
+        stage.getIcons().add(new Image(getClass().getResource(ICON_PATH).toExternalForm()));
         stage.setScene(scene);
         stage.show();
 

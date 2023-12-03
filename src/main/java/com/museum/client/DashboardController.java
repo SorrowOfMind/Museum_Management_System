@@ -1,6 +1,5 @@
 package com.museum.client;
 
-import com.museum.client.Exhibitions.ExhibitionsController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -101,7 +100,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView, toursView};
-        menuButtons = new Button[]{overviewBtn, exhibitsBtn, exhibitionsBtn};
+        menuButtons = new Button[]{overviewBtn, exhibitsBtn, exhibitionsBtn, toursButton};
         overviewBtn.setStyle(activeBtnStyle);
     }
 }

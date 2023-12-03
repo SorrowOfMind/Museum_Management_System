@@ -22,11 +22,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
 <AnchorPane prefHeight="755.0" prefWidth="1080.0" stylesheets="@dashboard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.Exhibitions.ExhibitionsController">
-=======
-<AnchorPane prefHeight="655.0" prefWidth="1080.0" stylesheets="@dashboard.css" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.Exhibitions.ExhibitionsController">
->>>>>>> 029e5a7ca195f75cefc0da406dd6eb585b766de3
         <children>
             <AnchorPane layoutX="711.0" layoutY="19.0" prefHeight="736.0" prefWidth="348.0" styleClass="exhibit-form" stylesheets="@dashboard.css">
                 <children>
