@@ -23,6 +23,7 @@ public class ClientHandler implements Runnable {
     Exhibit exhibit;
     List<Exhibit> exhibits;
     byte[] imageData = null;
+    private Object receivedObject;
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
@@ -56,7 +57,7 @@ public class ClientHandler implements Runnable {
                 case ADD_EXHIBIT:
                     exhibitsHandler = new ExhibitsHandler();
                     exhibit = (Exhibit) in.readObject();
-                    Object receivedObject = in.readObject();
+                    receivedObject = in.readObject();
                     if (receivedObject instanceof byte[]) {
                         imageData = (byte[]) receivedObject;
                     }
@@ -68,7 +69,11 @@ public class ClientHandler implements Runnable {
                 case UPDATE_EXHIBIT:
                     exhibitsHandler = new ExhibitsHandler();
                     exhibit = (Exhibit) in.readObject();
-                    exhibits = exhibitsHandler.updateExhibit(exhibit);
+                    receivedObject = in.readObject();
+                    if (receivedObject instanceof byte[]) {
+                        imageData = (byte[]) receivedObject;
+                    }
+                    exhibits = exhibitsHandler.updateExhibit(exhibit, imageData);
                     out.writeObject(exhibits);
                     out.flush();
                     break;

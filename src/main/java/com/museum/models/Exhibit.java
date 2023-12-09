@@ -18,6 +18,7 @@ public class Exhibit implements Serializable {
     private Date nextConservation;
     private String status;
     private String security;
+    private String filePath;
 
     public Exhibit(
             int exhibitID,
@@ -47,6 +48,38 @@ public class Exhibit implements Serializable {
         this.nextConservation = nextConservation;
         this.status = status;
         this.security = security;
+    }
+
+    public Exhibit(
+            int exhibitID,
+            String name,
+            String author,
+            String creationDate,
+            String origins,
+            String description,
+            Date acquisitionDate,
+            int value,
+            int ageID,
+            Date lastConservation,
+            Date nextConservation,
+            String status,
+            String security,
+            String filePath
+    ) {
+        this.exhibitID = exhibitID;
+        this.name = name;
+        this.author = author;
+        this.creationDate = creationDate;
+        this.origins = origins;
+        this.description = description;
+        this.acquisitionDate = acquisitionDate;
+        this.value = value;
+        this.ageID = ageID;
+        this.lastConservation = lastConservation;
+        this.nextConservation = nextConservation;
+        this.status = status;
+        this.security = security;
+        this.filePath = filePath;
     }
 
     public int getExhibitID() {
@@ -99,5 +132,9 @@ public class Exhibit implements Serializable {
 
     public Date getLastConservation() {
         return lastConservation;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }

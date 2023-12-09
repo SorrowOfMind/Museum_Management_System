@@ -147,6 +147,7 @@ public class ExhibitsController implements Initializable {
             if (isAdded) {
                 populateExhibitsTable();
                 resetForm();
+                imageData = null;
             }
         }
     }
@@ -163,11 +164,12 @@ public class ExhibitsController implements Initializable {
         Exhibit exhibit = getFormData();
 
         if (exhibit != null) {
-          boolean isUpdated = exhibits.updateExhibit(exhibit);
+          boolean isUpdated = exhibits.updateExhibit(exhibit, imageData);
 
             if (isUpdated) {
                 populateExhibitsTable();
                 resetForm();
+                imageData = null;
             }
         }
     }
@@ -180,6 +182,7 @@ public class ExhibitsController implements Initializable {
     @FXML
     void selectExhibit(MouseEvent event) {
         Exhibit selectedExhibit = exhibitsTable.getSelectionModel().getSelectedItem();
+
         int idx = exhibitsTable.getSelectionModel().getSelectedIndex();
 
         if ((idx - 1) < -1) {
@@ -202,6 +205,10 @@ public class ExhibitsController implements Initializable {
         exhibitNextConservation.setValue(selectedExhibit.getNextConservation().toLocalDate());
         exhibitStatus.getSelectionModel().select(selectedExhibit.getStatus());
         exhibitSecurity.getSelectionModel().select(selectedExhibit.getSecurity());
+
+        image = new Image(System.getProperty("user.dir") + selectedExhibit.getFilePath(), 160, 160, false, true);
+        exhibitImage.setImage(image);
+
     }
 
     private Exhibit getFormData() {
@@ -259,6 +266,7 @@ public class ExhibitsController implements Initializable {
     }
 
     private void resetForm() {
+        exhibitIDText.setText("");
         exhibitName.setText("");
         exhibitAuthor.setText("");
         exhibitCreationDate.setText("");

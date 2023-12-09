@@ -15,9 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExhibitsHandler {
+    public final String  IMAGES_DIR = "Images";
+    public final String IMAGE_FILE_NAME = "exhibit_";
     private Connection conn;
     private PreparedStatement stmt;
     private ResultSet result;
+    private String dbFilePath = null;
+    private String filePath = null;
 
     public List<Exhibit> getExhibits() {
         String query = "SELECT * FROM exhibit";
@@ -42,7 +46,8 @@ public class ExhibitsHandler {
                         result.getDate("lastConservation"),
                         result.getDate("nextConservation"),
                         result.getString("status"),
-                        result.getString("security")
+                        result.getString("security"),
+                        result.getString("filePath")
                 );
                 exhibitsList.add(exhibit);
             }
@@ -54,8 +59,8 @@ public class ExhibitsHandler {
     }
 
     public List<Exhibit> addExhibit(Exhibit exhibit, byte[] imageData) {
-        String query = "INSERT INTO exhibit (exhibitID, name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status,security)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO exhibit (exhibitID, name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status,security, filePath)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String lastIDQuery = "SELECT MAX(exhibitID) as exhibitID FROM exhibit";
         int exhibitID;
 
@@ -67,11 +72,10 @@ public class ExhibitsHandler {
 
             if (result.next()) {
                 exhibitID = result.getInt("exhibitID") + 1;
-
                 if (imageData != null) {
                     String fileName = "exhibit_" + exhibitID;
-                    String filePath = "Images/" + fileName + ".png";
-                    System.out.println(fileName + " " + filePath);
+                    filePath = createFilePath(fileName);
+                    dbFilePath = createDbFilePath(fileName);
                     saveImage(imageData, filePath);
                 }
 
@@ -89,6 +93,7 @@ public class ExhibitsHandler {
                 stmt.setDate(11, exhibit.getNextConservation());
                 stmt.setString(12, exhibit.getStatus());
                 stmt.setString(13, exhibit.getSecurity());
+                stmt.setString(14, dbFilePath);
 
                 stmt.executeUpdate();
             }
@@ -99,9 +104,9 @@ public class ExhibitsHandler {
         }
     }
 
-    public List<Exhibit> updateExhibit(Exhibit exhibit) {
+    public List<Exhibit> updateExhibit(Exhibit exhibit, byte[] imageData) {
         String exhibitIDQuery = "SELECT exhibitID FROM exhibit WHERE exhibitID = ?";
-        String updateQuery = "UPDATE exhibit SET name = ?, author = ?, creationDate = ?, origins = ?, description = ?, acquisitionDate = ?, value = ?, ageID = ?, lastConservation = ?, nextConservation =? , status = ?, security = ? " +
+        String updateQuery = "UPDATE exhibit SET name = ?, author = ?, creationDate = ?, origins = ?, description = ?, acquisitionDate = ?, value = ?, ageID = ?, lastConservation = ?, nextConservation =? , status = ?, security = ?, filePath = ? " +
                 "WHERE exhibitID = ?";
         int exhibitID = exhibit.getExhibitID();
 
@@ -111,6 +116,13 @@ public class ExhibitsHandler {
             stmt = conn.prepareStatement(exhibitIDQuery);
             stmt.setInt(1, exhibitID);
             result = stmt.executeQuery();
+
+            if (imageData != null) {
+                String fileName = createFileName(exhibitID);
+                filePath = createFilePath(fileName);
+                dbFilePath = createDbFilePath(fileName);
+                saveImage(imageData, filePath);
+            }
 
             if (result.next()) {
                 stmt = conn.prepareStatement(updateQuery);
@@ -126,7 +138,8 @@ public class ExhibitsHandler {
                 stmt.setDate(10, exhibit.getNextConservation());
                 stmt.setString(11, exhibit.getStatus());
                 stmt.setString(12, exhibit.getSecurity());
-                stmt.setInt(13, exhibitID);
+                stmt.setString(13, dbFilePath);
+                stmt.setInt(14, exhibitID);
 
                 stmt.executeUpdate();
             }
@@ -145,6 +158,18 @@ public class ExhibitsHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String createFilePath(String fileName) {
+        return IMAGES_DIR + "/" + fileName + ".png";
+    }
+
+    private String createDbFilePath(String fileName) {
+        return "\\" + IMAGES_DIR + "\\" + fileName + ".png";
+    }
+
+    private String createFileName(int exhibitID) {
+        return IMAGE_FILE_NAME + exhibitID;
     }
 
 }

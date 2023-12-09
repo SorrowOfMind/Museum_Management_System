@@ -1,4 +1,4 @@
-package com.museum.Utils;
+package com.museum.utils;
 
 import javafx.collections.ObservableList;
 

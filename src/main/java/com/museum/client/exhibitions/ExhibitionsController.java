@@ -1,6 +1,6 @@
-package com.museum.client.Exhibitions;
+package com.museum.client.exhibitions;
 import com.museum.Actions;
-import com.museum.Utils.ListPopup;
+import com.museum.utils.ListPopup;
 import com.museum.client.AlertMessage;
 import com.museum.client.exhibits.Exhibits;
 import com.museum.models.Exhibit;

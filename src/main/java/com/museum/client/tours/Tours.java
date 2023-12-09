@@ -1,8 +1,7 @@
-package com.museum.client.Exhibitions;
+package com.museum.client.tours;
 
 import com.museum.Actions;
-import com.museum.models.Exhibit;
-import com.museum.models.Exhibition;
+import com.museum.models.Tour;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,23 +12,23 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-public class Exhibitions <T> {
-    private ObservableList<Exhibition> exhibitions;
-    private int insertedExhibitionID= -1;
+public class Tours <T> {
+    private ObservableList<Tour> tours;
+    private int insertedTourID = -1;
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    private void getExhibitions(String filter) {
+    private void getTours(String filter) {
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(Actions.GET_EXHIBITIONS);
+            out.writeObject(Actions.GET_TOURS);
             out.writeObject(filter.isEmpty() ? "" : filter);
             in = new ObjectInputStream(socket.getInputStream());
             try {
-                List<Exhibition> receivedExhibitions = (List<Exhibition>) in.readObject();
-                exhibitions = FXCollections.observableArrayList(receivedExhibitions);
+                List<Tour> receivedTours = (List<Tour>) in.readObject();
+                tours = FXCollections.observableArrayList(receivedTours);
 
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -43,21 +42,21 @@ public class Exhibitions <T> {
         }
     }
 
-    public ObservableList<Exhibition> getExhibitionsList(String filter){
-        getExhibitions(filter);
-        return this.exhibitions;
+    public ObservableList<Tour> getToursList(String filter){
+        getTours(filter);
+        return this.tours;
     }
 
-    public int insertUpdateExhibition(Exhibition exhibition, boolean update){
+    public int insertUpdateTour(Tour tour, boolean update){
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(update ? Actions.UPDATE_EXHIBITION : Actions.INSERT_EXHIBITIONS);
-            out.writeObject(exhibition);
+            out.writeObject(update ? Actions.UPDATE_TOUR : Actions.INSERT_TOUR);
+            out.writeObject(tour);
             in = new ObjectInputStream(socket.getInputStream());
 
             if(!update)
-                insertedExhibitionID = in.readInt();
+                insertedTourID = in.readInt();
 
             this.socket.close();
         } catch (UnknownHostException e) {
@@ -65,11 +64,10 @@ public class Exhibitions <T> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return insertedExhibitionID;
+        return insertedTourID;
     }
 
     public ObservableList<T> genericGetter(Actions action){
-
         ObservableList<T> res;
         try {
             socket = new Socket("localhost", 5000);

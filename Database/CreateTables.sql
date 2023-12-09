@@ -28,7 +28,7 @@ CREATE TABLE `exhibit` (
     `exhibitID` int PRIMARY KEY AUTO_INCREMENT,
     `name` varchar(100) NOT NULL,
     `author` varchar(250) DEFAULT NULL,
-    `creationDate` date DEFAULT NULL,
+    `creationDate` varchar(100) DEFAULT NULL,
     `origins` varchar(250) DEFAULT NULL,
     `description` varchar(250) DEFAULT NULL,
     `acquisitionDate` date DEFAULT NULL,
@@ -38,6 +38,7 @@ CREATE TABLE `exhibit` (
     `nextConservation` date DEFAULT NULL,
     `status` varchar(100) NOT NULL,
     `security` varchar(100) NOT NULL,
+    `filePath` varchar(250) DEFAULT NULL,
     KEY `ageID` (`ageID`),
     CONSTRAINT `exhibit_ibfk_1` FOREIGN KEY (`ageID`) REFERENCES `age` (`ageID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -186,8 +187,11 @@ INSERT INTO owner_address (ownerID, street, buildingNumber, unitNumber, postCode
 
 -- Populating age table
 INSERT INTO age (name, startYear, endYear) VALUES
-('Ancient', -5000, 500),
-('Medieval', 501, 1500);
+('Starożytność', -5000, 500),
+('Hellenizm', -323, -30),
+('Cesarski Rzym', -30, 1453),
+('Średniowiecze', 476, 1453),
+('Współczesność', 1945, null);
 -- Add more rows as needed
 
 -- Populating exhibit table

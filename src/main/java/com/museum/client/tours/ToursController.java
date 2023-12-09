@@ -1,4 +1,4 @@
-package com.museum.client.Tours;
+package com.museum.client.tours;
 
 import com.museum.Actions;
 import com.museum.client.AlertMessage;
@@ -10,9 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;

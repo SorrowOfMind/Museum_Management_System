@@ -1,4 +1,4 @@
-package com.museum.Utils;
+package com.museum.utils;
 
 import com.museum.models.Exhibit;
 import com.museum.models.Room;
