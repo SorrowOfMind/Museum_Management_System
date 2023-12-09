@@ -99,7 +99,6 @@ public class TourHandler {
             if (filter != null && !filter.isEmpty()) {
                 this.stmt.setString(1, filter + "%");
             }
-            System.out.println("called");
             this.result = stmt.executeQuery();
             while (this.result.next()) {
                     Tour tour = new Tour(result.getInt("tourID"),

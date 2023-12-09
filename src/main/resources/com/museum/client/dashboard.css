@@ -43,18 +43,22 @@
 
 .tile-tours {
     -fx-background-color: #0a7df3;
+    -fx-cursor: hand;
 }
 
 .tile-exhibitions {
     -fx-background-color: #8d64f2;
+    -fx-cursor: hand;
 }
 
 .tile-exhibits-due {
     -fx-background-color: #28c195;
+    -fx-cursor: hand;
 }
 
 .tile-exhibits-overdue {
     -fx-background-color: #e74519;
+    -fx-cursor: hand;
 }
 
 .exhibit-form {

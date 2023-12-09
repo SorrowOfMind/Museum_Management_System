@@ -5,12 +5,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
+
+    private static DashboardController instance;
 
     // PORT
     public static final int PORT = 5000;
@@ -22,25 +23,25 @@ public class DashboardController implements Initializable {
 
     // DASHBOARD SIDE BUTTONS
     @FXML
-    private Button overviewBtn;
+    public Button overviewBtn;
     @FXML
-    private Button exhibitsBtn;
+    public Button exhibitsBtn;
     @FXML
-    private Button exhibitionsBtn;
+    public Button exhibitionsBtn;
     @FXML
-    private Button toursButton;
+    public Button toursButton;
 
     // VIEWS
     @FXML
-    private AnchorPane dashboardView;
+    public AnchorPane dashboardView;
     @FXML
-    private AnchorPane overviewView;
+    public AnchorPane overviewView;
     @FXML
-    private AnchorPane exhibitsView;
+    public AnchorPane exhibitsView;
     @FXML
-    private AnchorPane exhibitionsView;
+    public AnchorPane exhibitionsView;
     @FXML
-    private AnchorPane toursView;
+    public AnchorPane toursView;
 
     // CUSTOM
     private AnchorPane[] views;
@@ -56,7 +57,7 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    protected void switchDashboardView(ActionEvent event) {
+    public void switchDashboardView(ActionEvent event) {
         if (event.getSource().equals(overviewBtn)) {
             setVisibleView(overviewView, overviewBtn);
         } else if (event.getSource().equals(exhibitsBtn)) {
@@ -79,7 +80,7 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void setVisibleView(AnchorPane visibleView, Button menuButton) {
+    public void setVisibleView(AnchorPane visibleView, Button menuButton) {
         visibleView.setVisible(true);
 
         for (AnchorPane view : views) {
@@ -97,10 +98,15 @@ public class DashboardController implements Initializable {
         }
     }
 
+    public static DashboardController getInstance() {
+        return instance;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView, toursView};
         menuButtons = new Button[]{overviewBtn, exhibitsBtn, exhibitionsBtn, toursButton};
         overviewBtn.setStyle(activeBtnStyle);
+        instance = this;
     }
 }

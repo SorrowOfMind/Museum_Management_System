@@ -20,31 +20,35 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 public class ExhibitsController implements Initializable {
+
+    private static ExhibitsController instance;
 
     @FXML
     private AnchorPane exhibitsView;
 
     // EXHIBITS DATA
     private Exhibits exhibits;
-
     private ObservableList<Exhibit> exhibitsShowList;
+    private ObservableList<Exhibit> exhibitsDueList;
+    private String exhibitsDueListSize;
+    private String exhibitsOverdueListSize;
+    private ObservableList<Exhibit> exhibitsOverdueList;
+    private int getExhibitsOverdueListSize;
+
     private ObservableList<Exhibit> filteredExhibitsShowList;
     ObservableList<String> historicalPeriodsList = FXCollections.observableArrayList(
             "Starożytność", "Hellenizm", "Cesarski Rzym", "Średniowiecze", "Współczesność"
@@ -124,6 +128,7 @@ public class ExhibitsController implements Initializable {
     private AlertMessage alert = new AlertMessage();
     private Image image;
     private byte[] imageData = null;
+
 
     private void populateExhibitsTable() {
         exhibitsShowList = filteredExhibitsShowList.size() > 0 ? filteredExhibitsShowList : exhibits.getExhibitsList();
@@ -261,8 +266,10 @@ public class ExhibitsController implements Initializable {
 
     @FXML
     private void refreshExhibits() {
+        filteredExhibitsShowList = FXCollections.observableArrayList();
         exhibits.getExhibits();
         populateExhibitsTable();
+        resetForm();
     }
 
     private void resetForm() {
@@ -343,6 +350,48 @@ public class ExhibitsController implements Initializable {
         return byteArrayOutputStream.toByteArray();
     }
 
+    public void showDueExhibits() {
+        filteredExhibitsShowList = exhibitsDueList;
+
+        populateExhibitsTable();
+    }
+
+    public void showOverdueExhibits() {
+        filteredExhibitsShowList = exhibitsOverdueList;
+
+        populateExhibitsTable();
+    }
+
+    private void getExhibitsDue() {
+        if (exhibitsShowList == null || exhibitsShowList.size() == 0) return;
+
+        LocalDate currentDate = LocalDate.now();
+        LocalDate updatedDate = currentDate.plusDays(30);
+        exhibitsDueList = exhibitsShowList.filtered(exhibit -> exhibit.getNextConservation().toLocalDate().isBefore(updatedDate));
+        exhibitsDueListSize = String.valueOf(exhibitsDueList.size());
+    }
+
+    private void getExhibitsOverdue() {
+        if (exhibitsShowList == null || exhibitsShowList.size() == 0) return;
+
+        LocalDate currentDate = LocalDate.now();
+
+        exhibitsOverdueList = exhibitsShowList.filtered(exhibit -> exhibit.getNextConservation().toLocalDate().isBefore(currentDate));
+        exhibitsOverdueListSize = String.valueOf(exhibitsOverdueList.size());
+    }
+
+    public String getExhibitsDueListSize() {
+        return exhibitsDueListSize;
+    }
+
+    public String getExhibitsOverdueListSize() {
+        return exhibitsOverdueListSize;
+    }
+
+    public static ExhibitsController getInstance() {
+        return instance;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exhibitHistoricalPeriod.setItems(historicalPeriodsList);
@@ -354,6 +403,8 @@ public class ExhibitsController implements Initializable {
 
         exhibits = new Exhibits();
         populateExhibitsTable();
+        getExhibitsDue();
+        getExhibitsOverdue();
         exhibitUpdateBtn.setDisable(true);
 
         exhibitsSearch.textProperty().addListener(new ChangeListener<String>() {
@@ -362,5 +413,6 @@ public class ExhibitsController implements Initializable {
                 searchExhibits(newValue);
             }
         });
+        instance = this;
     }
 }

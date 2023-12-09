@@ -172,78 +172,38 @@ CREATE TABLE `user` (
   `role` enum('admin','user') NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
--- Populating OWNER table
 INSERT INTO OWNER (name, phoneNumber, email) VALUES
 ('John Doe', '123456789', 'john.doe@example.com'),
 ('Jane Smith', '987654321', 'jane.smith@example.com');
--- Add more rows as needed
 
--- Populating owner_address table
 INSERT INTO owner_address (ownerID, street, buildingNumber, unitNumber, postCode, city, country) VALUES
 (1, 'Main St', 123, NULL, '12345', 'City1', 'Country1'),
 (2, 'Broad St', 456, 789, '54321', 'City2', 'Country2');
--- Add more rows as needed
 
--- Populating age table
 INSERT INTO age (name, startYear, endYear) VALUES
 ('Starożytność', -5000, 500),
 ('Hellenizm', -323, -30),
 ('Cesarski Rzym', -30, 1453),
 ('Średniowiecze', 476, 1453),
 ('Współczesność', 1945, null);
--- Add more rows as needed
 
--- Populating exhibit table
-INSERT INTO exhibit (name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status, security) VALUES
-('Sculpture 1', 'Artist 1', '2000-01-01', 'Italy', 'Beautiful sculpture', '2020-01-01', 1000, 1, '2021-01-01', '2023-01-01', 'Available', 'High'),
-('Painting 1', 'Artist 2', '1800-01-01', 'France', 'Stunning painting', '2010-01-01', 2000, 2, '2022-01-01', '2024-01-01', 'On display', 'Medium');
--- Add more rows as needed
 
--- Populating exhibit_owner table
-INSERT INTO exhibit_owner (ownerID, exhibitID) VALUES
-(1, 1),
-(2, 2);
--- Add more rows as needed
-
--- Populating category table
 INSERT INTO category (name) VALUES
 ('Abstract'),
 ('Realism');
--- Add more rows as needed
 
--- Populating exhibit_category table
-INSERT INTO exhibit_category (exhibitID, categoryID) VALUES
-(1, 1),
-(2, 2);
--- Add more rows as needed
-
--- Populating room table
 INSERT INTO room (roomNumber, floor, area) VALUES
 (101, 1, 50),
 (201, 2, 75);
--- Add more rows as needed
 
--- Populating exhibition table
 INSERT INTO exhibition (title, startDate, endDate) VALUES
 ('Art Expo 2023', '2023-06-01', '2023-07-01'),
 ('Modern Art Showcase', '2023-08-01', '2023-09-01');
--- Add more rows as needed
 
--- Populating exhibition_room table
 INSERT INTO exhibition_room (exhibitionID, roomID) VALUES
 (1, 1),
 (2, 2);
--- Add more rows as needed
 
--- Populating exhibit_exhibition table
-INSERT INTO exhibit_exhibition (exhibitionID, exhibitID) VALUES
-(1, 1),
-(2, 2);
--- Add more rows as needed
-
--- Add more rows as needed
--- Populating worker table
 INSERT INTO worker (forename, surname, dateOfBirth, phoneNumber, email, dateOfTermination, agreementType, dateOfAgreement, accountNumber, salary, jobTitle, managerID, businessID) VALUES
 ('Manager 1', 'Lastname 1', '1980-01-01', '111222333', 'manager1@example.com', NULL, 'Full-Time', '2020-01-01', '123456789', 50000, 'Manager', NULL, 'BUS1'),
 ('Employee 1', 'Lastname 2', '1990-02-02', '444555666', 'employee1@example.com', NULL, 'Part-Time', '2021-01-01', '987654321', 30000, 'Staff', 1, 'BUS2');
@@ -252,13 +212,7 @@ INSERT INTO tour (groupLeader, tourDate, tourHour, language, standardTicketCount
 VALUES
     ('Group1 Leader', '2023-12-01 10:00:00', '10:00', 'English', 5, 3, 1, (5 + 3)),
     ('Group2 Leader', '2023-12-02 14:30:00', '14:30', 'Spanish', 3, 2, 2, (3 + 2));
-    -- Add more rows as needed;
--- Add more rows as needed
 
-
--- Add more rows as needed
-
--- Populating worker_exhibition table
 INSERT INTO worker_exhibition (workerID, exhibitionID) VALUES
 (1, 1),
 (2, 2);

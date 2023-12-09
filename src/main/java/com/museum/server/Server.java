@@ -16,7 +16,6 @@ public class Server {
               System.out.println("Client has been connected: " + clientSocket.getInetAddress());
 
               Thread clientThread = new Thread(new ClientHandler(clientSocket));
-              System.out.println(clientThread.getName());
               clientThread.start();
           }
       } catch (IOException e) {

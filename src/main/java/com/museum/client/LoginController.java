@@ -56,7 +56,6 @@ public class LoginController {
                 } else {
                     alert.error("Błąd logowania", "Nazwa użytkownika lub hasło są niepoprawne.");
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
