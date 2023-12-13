@@ -4,13 +4,15 @@ import com.museum.Actions;
 import com.museum.client.AlertMessage;
 import com.museum.models.Tour;
 import com.museum.models.Worker_Basic;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -21,7 +23,22 @@ import java.util.regex.Pattern;
 import static java.lang.Integer.parseInt;
 
 public class ToursController implements Initializable {
+    private static ToursController instance;
+
     private ObservableList<Tour> toursList;
+
+    private ObservableList<Tour> currentToursList;
+
+    private String currentToursListSize;
+
+    private ObservableList<Tour> filteredToursList = FXCollections.observableArrayList();
+    @FXML
+    private ComboBox<String> searchToursFilters;
+
+    ObservableList<String> searchFiltersList = FXCollections.observableArrayList(
+            "ID", "Opiekun", "Język"
+    );
+    private int activeFilter = 0;
 
     @FXML
     private TextField toursSearch;
@@ -67,8 +84,9 @@ public class ToursController implements Initializable {
     private AlertMessage alert = new AlertMessage();
     private Tours tours;
     private Tour selectedTour;
+
     private void populateToursTable() {
-        toursList = this.tours.getToursList(this.toursSearch.getText());
+        toursList = filteredToursList.size() > 0 ? filteredToursList : this.tours.getToursList();
         tableTourID.setCellValueFactory(new PropertyValueFactory<>("tourID"));
         tableGroupLeader.setCellValueFactory(new PropertyValueFactory<>("groupLeader"));
         tableTourDate.setCellValueFactory(new PropertyValueFactory<>("tourDate"));
@@ -146,7 +164,6 @@ public class ToursController implements Initializable {
         return new Tour(leader, date, hour, (normalTickets + discountedTickets), language, assignedWorker != null ? assignedWorker.getWorkerID() : null, normalTickets, discountedTickets);
     }
 
-
     @FXML
     private void insertTour() {
         Tour entity = constructAndValidateData();
@@ -199,10 +216,67 @@ public class ToursController implements Initializable {
         populateToursTable();
     }
 
+    public String getCurrentToursListSize() {
+        return currentToursListSize;
+    }
+
+    private void searchTours(String searchText) {
+        if (toursList == null || toursList.size() == 0) return;
+
+        if (searchText.length() == 0) {
+            filteredToursList = FXCollections.observableArrayList();
+            populateToursTable();
+            return;
+        }
+
+
+        switch (activeFilter) {
+            case 0:
+                filteredToursList = toursList.filtered(tour -> String.valueOf(tour.getTourID()).equals(searchText));
+                break;
+            case 1:
+                filteredToursList = toursList.filtered(tour -> tour.getGroupLeader().toLowerCase().contains(searchText.toLowerCase().trim()));
+                break;
+            case 2:
+                filteredToursList = toursList.filtered(tour -> tour.getLanguage().toLowerCase().contains(searchText.toLowerCase().trim()));
+            default:
+                break;
+        }
+
+        populateToursTable();
+    }
+
+    private void getCurrentToursList() {
+        if (toursList == null || toursList.size() == 0) return;
+
+        LocalDate currentDate = LocalDate.now();
+
+        currentToursList = toursList.filtered(tour -> tour.getTourDate().isEqual(currentDate));
+        currentToursListSize = String.valueOf(currentToursList.size());
+    }
+
+    public void showCurrentTours() {
+        filteredToursList = currentToursList;
+
+        populateToursTable();
+    }
+
+    @FXML
+    void switchActiveFilter(ActionEvent event) {
+        activeFilter = searchToursFilters.getSelectionModel().getSelectedIndex();
+    }
+
+    public static ToursController getInstance() {
+        return instance;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        searchToursFilters.setItems(searchFiltersList);
+        searchToursFilters.setValue("ID");
         this.tours = new Tours();
         refreshAll();
+        getCurrentToursList();
 
         tourStandard.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -216,6 +290,16 @@ public class ToursController implements Initializable {
             }
         });
         this.tourWorker.setItems(this.tours.genericGetter(Actions.GET_WORKERS_SIMPLIFIED));
+
+        toursSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                searchTours(newValue);
+            }
+        });
+
+
+        instance = this;
 
     }
 }

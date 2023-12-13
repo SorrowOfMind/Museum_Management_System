@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Exhibits {
     private ObservableList<Exhibit> exhibits;
-    private int exhibitsNumber;
+
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -34,8 +34,6 @@ public class Exhibits {
             try {
                 List<Exhibit> receivedExhibits = (List<Exhibit>) in.readObject();
                 exhibits = FXCollections.observableArrayList(receivedExhibits);
-                exhibitsNumber = exhibits.size();
-
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -62,7 +60,6 @@ public class Exhibits {
             try {
                 List<Exhibit> receivedExhibits = (List<Exhibit>) in.readObject();
                 exhibits = FXCollections.observableArrayList(receivedExhibits);
-                exhibitsNumber = exhibits.size();
 
                 this.socket.close();
                 return true;
@@ -90,7 +87,6 @@ public class Exhibits {
             try {
                 List<Exhibit> receivedExhibits = (List<Exhibit>) in.readObject();
                 exhibits = FXCollections.observableArrayList(receivedExhibits);
-                exhibitsNumber = exhibits.size();
 
                 this.socket.close();
                 return true;
@@ -108,7 +104,4 @@ public class Exhibits {
         return exhibits;
     }
 
-    public int getExhibitsNumber() {
-        return exhibitsNumber;
-    }
 }

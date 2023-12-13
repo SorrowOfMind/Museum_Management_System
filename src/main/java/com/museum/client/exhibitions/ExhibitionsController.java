@@ -7,8 +7,11 @@ import com.museum.models.Exhibit;
 import com.museum.models.Exhibition;
 import com.museum.models.Room;
 import com.museum.models.Worker_Basic;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -22,10 +25,23 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-
 public class ExhibitionsController implements Initializable {
-
+    private static ExhibitionsController instance;
     private ObservableList<Exhibition> exhibitionsList;
+    private ObservableList<Exhibition> currentExhibitionsList;
+    private String currentExhibitionsListSize;
+
+    private ObservableList<Exhibition> filteredExhibitionsList = FXCollections.observableArrayList();
+
+    // SEARCH FORM
+    ObservableList<String> searchFiltersList = FXCollections.observableArrayList(
+            "ID", "Nazwa"
+    );
+    private int activeFilter = 0;
+
+    @FXML
+    private ComboBox<String> searchExhibitionsFilters;
+
     @FXML
     private TextField exhibitionsSearch;
     @FXML
@@ -67,12 +83,9 @@ public class ExhibitionsController implements Initializable {
     private ObservableList<Room> rooms = FXCollections.observableArrayList();
     private  ObservableList<Worker_Basic> workers = FXCollections.observableArrayList();
     private ObservableList<Exhibit> exhibits = FXCollections.observableArrayList();
-
     private ObservableList<Room> selectedRooms= FXCollections.observableArrayList();;
     private  ObservableList<Worker_Basic> selectedWorkers = FXCollections.observableArrayList();
     private ObservableList<Exhibit> selectedExhibits = FXCollections.observableArrayList();
-
-
 
     private AlertMessage alert = new AlertMessage();
 
@@ -86,8 +99,6 @@ public class ExhibitionsController implements Initializable {
     private Exhibitions exhibitions;
 
     private Exhibition selectedExhibition;
-
-
 
 
     private void setSelectedExhibits(ObservableList<Exhibit> result){
@@ -191,7 +202,7 @@ public class ExhibitionsController implements Initializable {
     }
 
     private void populateExhibitionsTable() {
-        exhibitionsList = this.exhibitions.getExhibitionsList(this.exhibitionsSearch.getText());
+        exhibitionsList = filteredExhibitionsList.size() > 0 ? filteredExhibitionsList : exhibitions.getExhibitionsList();
         exhibitionsTableID.setCellValueFactory(new PropertyValueFactory<>("exhibitionID"));
         exhibitionsTableTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         exhibitionsTableStartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -313,9 +324,6 @@ public class ExhibitionsController implements Initializable {
         workerField.setText(null);
     }
 
-
-
-
     @FXML
     private void refreshExhibitions(){
         this.refreshAll();
@@ -324,17 +332,81 @@ public class ExhibitionsController implements Initializable {
     private void refreshAll(){
         populateExhibitionsTable();
         Exhibits ex = new Exhibits();
+        filteredExhibitionsList = FXCollections.observableArrayList();
 
         this.exhibits.setAll(ex.getExhibitsList());
         this.rooms.setAll(this.exhibitions.genericGetter(Actions.GET_ROOMS));
         this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_SIMPLIFIED));
+    }
 
+    private void searchExhibitions(String searchText) {
+        if (exhibitionsList == null || exhibitionsList.size() == 0) return;
+
+        if (searchText.length() == 0) {
+            filteredExhibitionsList = FXCollections.observableArrayList();
+            populateExhibitionsTable();
+            return;
+        }
+
+        switch (activeFilter) {
+            case 0:
+                filteredExhibitionsList = exhibitionsList.filtered(exhibition -> String.valueOf(exhibition.getExhibitionID()).equals(searchText));
+                break;
+            case 1:
+                filteredExhibitionsList = exhibitionsList.filtered(exhibition -> exhibition.getTitle().toLowerCase().contains(searchText.toLowerCase().trim()));
+                break;
+            default:
+                break;
+        }
+
+        populateExhibitionsTable();
+    }
+
+    @FXML
+    void switchActiveFilter(ActionEvent event) {
+        activeFilter = searchExhibitionsFilters.getSelectionModel().getSelectedIndex();
+    }
+
+    private void getCurrentExhibitions() {
+        if (exhibitionsList == null || exhibitionsList.size() == 0) return;
+
+        LocalDate currentDate = LocalDate.now();
+
+        currentExhibitionsList = exhibitionsList.filtered(exhibition -> exhibition.getStartDate().toLocalDate().isBefore(currentDate)
+                && exhibition.getEndDate().toLocalDate().isAfter(currentDate));
+        currentExhibitionsListSize = String.valueOf(currentExhibitionsList.size());
+    }
+
+    public void showCurrentExhibitions() {
+        filteredExhibitionsList = currentExhibitionsList;
+
+        populateExhibitionsTable();
+    }
+
+    public String getCurrentExhibitionsListSize() {
+        return currentExhibitionsListSize;
+    }
+
+    public static ExhibitionsController getInstance() {
+        return instance;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        searchExhibitionsFilters.setItems(searchFiltersList);
+        searchExhibitionsFilters.setValue("ID");
         this.exhibitions = new Exhibitions();
         refreshAll();
+        getCurrentExhibitions();
+
+        exhibitionsSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                searchExhibitions(newValue);
+            }
+        });
+
+        instance = this;
     }
 
 }

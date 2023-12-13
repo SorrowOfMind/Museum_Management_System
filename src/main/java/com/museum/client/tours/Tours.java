@@ -1,10 +1,10 @@
 package com.museum.client.tours;
 
 import com.museum.Actions;
+import com.museum.client.DashboardController;
 import com.museum.models.Tour;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,12 +19,15 @@ public class Tours <T> {
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    private void getTours(String filter) {
+    public Tours() {
+        getTours();
+    }
+
+    private void getTours() {
         try {
-            socket = new Socket("localhost", 5000);
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.GET_TOURS);
-            out.writeObject(filter.isEmpty() ? "" : filter);
             in = new ObjectInputStream(socket.getInputStream());
             try {
                 List<Tour> receivedTours = (List<Tour>) in.readObject();
@@ -42,8 +45,7 @@ public class Tours <T> {
         }
     }
 
-    public ObservableList<Tour> getToursList(String filter){
-        getTours(filter);
+    public ObservableList<Tour> getToursList(){
         return this.tours;
     }
 

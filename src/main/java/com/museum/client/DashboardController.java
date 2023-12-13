@@ -72,7 +72,7 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    protected void logout(ActionEvent event) throws IOException {
+    private void logout(ActionEvent event) throws IOException {
         if (alert.confirm("Potwierdzenie wylogowania","Czy na pewno chcesz się wylogować?" )) {
             dashboardView.getScene().getWindow().hide();
             this.user = null;

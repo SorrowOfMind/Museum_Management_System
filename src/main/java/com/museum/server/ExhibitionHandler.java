@@ -112,10 +112,49 @@ public class ExhibitionHandler {
         return id;
     }
 
-    public List<Exhibition> getExhibitions(String filter) {
+//    public List<Exhibition> getExhibitions(String filter) {
+//        String query = "SELECT * FROM exhibition natural join exhibit_exhibition natural join worker_exhibition natural join room ";
+//        if(filter != null || !filter.isEmpty())
+//            query += " WHERE exhibition.title LIKE ?" ;
+//        query += " ORDER BY exhibitionID";
+//        this.conn = Database.connect();
+//        List<Exhibition> exhibitionList = new ArrayList<>();
+//        Integer prev = null;
+//
+//        try {
+//            this.stmt = conn.prepareStatement(query);
+//            if(filter != null || !filter.isEmpty())
+//                this.stmt.setString(1, filter+"%");
+//            this.result = stmt.executeQuery();
+//            Exhibition exhibition = null;
+//            while (this.result.next()) {
+//                final int id = result.getInt("exhibitionID");
+//                if(prev == null || prev != id){
+//                    prev = id;
+//                    exhibition = new Exhibition(id,
+//                            result.getString("title"),
+//                            result.getDate("startDate"),
+//                            result.getDate("endDate")
+//                    );
+//
+//                    exhibition.appendIDs( result.getInt("exhibitID"),result.getInt("roomID"), result.getInt("workerID") );
+//                    exhibitionList.add(exhibition);
+//                }
+//                else if(id == prev && exhibition != null){
+//                    exhibition.appendIDs( result.getInt("exhibitID"), result.getInt("roomID"),  result.getInt("workerID"));
+//                }
+//
+//            }
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return exhibitionList;
+//    }
+
+    public List<Exhibition> getExhibitions() {
         String query = "SELECT * FROM exhibition natural join exhibit_exhibition natural join worker_exhibition natural join room ";
-        if(filter != null || !filter.isEmpty())
-            query += " WHERE exhibition.title LIKE ?" ;
         query += " ORDER BY exhibitionID";
         this.conn = Database.connect();
         List<Exhibition> exhibitionList = new ArrayList<>();
@@ -123,8 +162,6 @@ public class ExhibitionHandler {
 
         try {
             this.stmt = conn.prepareStatement(query);
-            if(filter != null || !filter.isEmpty())
-                this.stmt.setString(1, filter+"%");
             this.result = stmt.executeQuery();
             Exhibition exhibition = null;
             while (this.result.next()) {

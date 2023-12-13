@@ -2,9 +2,6 @@ package com.museum.server;
 
 import com.museum.Actions;
 import com.museum.models.*;
-import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
@@ -79,8 +76,7 @@ public class ClientHandler implements Runnable {
                     break;
                 case GET_EXHIBITIONS:
                     ExhibitionHandler exhibitionsHandler = new ExhibitionHandler();
-                    String filter = (String)in.readObject();
-                    List<Exhibition> exhibitions = exhibitionsHandler.getExhibitions(filter);
+                    List<Exhibition> exhibitions = exhibitionsHandler.getExhibitions();
                     out.writeObject(exhibitions);
                     out.flush();
                     break;
@@ -111,8 +107,7 @@ public class ClientHandler implements Runnable {
                     break;
                 case GET_TOURS:
                     TourHandler tourHandler = new TourHandler();
-                    String tourFilter = (String) in.readObject();
-                    List<Tour> tours = tourHandler.getTours(tourFilter);
+                    List<Tour> tours = tourHandler.getTours();
                     out.writeObject(tours);
                     out.flush();
                     break;

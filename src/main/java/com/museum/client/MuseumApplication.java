@@ -8,6 +8,7 @@ public class MuseumApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
         new View(stage, "login-view.fxml");
     }
 

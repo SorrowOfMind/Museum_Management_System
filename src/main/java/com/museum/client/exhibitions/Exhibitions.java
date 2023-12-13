@@ -1,6 +1,7 @@
 package com.museum.client.exhibitions;
 
 import com.museum.Actions;
+import com.museum.client.DashboardController;
 import com.museum.models.Exhibition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,12 +20,15 @@ public class Exhibitions <T> {
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    private void getExhibitions(String filter) {
+    public Exhibitions() {
+        getExhibitions();
+    }
+
+    private void getExhibitions() {
         try {
-            socket = new Socket("localhost", 5000);
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.GET_EXHIBITIONS);
-            out.writeObject(filter.isEmpty() ? "" : filter);
             in = new ObjectInputStream(socket.getInputStream());
             try {
                 List<Exhibition> receivedExhibitions = (List<Exhibition>) in.readObject();
@@ -42,8 +46,7 @@ public class Exhibitions <T> {
         }
     }
 
-    public ObservableList<Exhibition> getExhibitionsList(String filter){
-        getExhibitions(filter);
+    public ObservableList<Exhibition> getExhibitionsList(){
         return this.exhibitions;
     }
 

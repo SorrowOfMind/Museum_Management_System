@@ -86,19 +86,13 @@ public class TourHandler {
     }
 
 
-    public List<Tour> getTours(String filter) {
+    public List<Tour> getTours() {
         String query = "SELECT * FROM tour ";
-        if (filter != null && !filter.isEmpty()) {
-            query += "WHERE groupLeader LIKE ? ";
-        }
 
         this.conn = Database.connect();
         List<Tour> tourList = new ArrayList<>();
         try {
             this.stmt = conn.prepareStatement(query);
-            if (filter != null && !filter.isEmpty()) {
-                this.stmt.setString(1, filter + "%");
-            }
             this.result = stmt.executeQuery();
             while (this.result.next()) {
                     Tour tour = new Tour(result.getInt("tourID"),

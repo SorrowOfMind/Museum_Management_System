@@ -47,9 +47,8 @@ public class ExhibitsController implements Initializable {
     private String exhibitsDueListSize;
     private String exhibitsOverdueListSize;
     private ObservableList<Exhibit> exhibitsOverdueList;
-    private int getExhibitsOverdueListSize;
 
-    private ObservableList<Exhibit> filteredExhibitsShowList;
+    private ObservableList<Exhibit> filteredExhibitsShowList = FXCollections.observableArrayList();
     ObservableList<String> historicalPeriodsList = FXCollections.observableArrayList(
             "Starożytność", "Hellenizm", "Cesarski Rzym", "Średniowiecze", "Współczesność"
     );
@@ -143,7 +142,7 @@ public class ExhibitsController implements Initializable {
     }
 
     @FXML
-    void addExhibit(ActionEvent event) {
+    private void addExhibit(ActionEvent event) {
         Exhibit exhibit = getFormData();
 
         if (exhibit != null) {
@@ -158,7 +157,7 @@ public class ExhibitsController implements Initializable {
     }
 
     @FXML
-    void updateExhibit(ActionEvent event) {
+    private void updateExhibit(ActionEvent event) {
         String exhibitID = exhibitIDText.getText();
 
         if (exhibitID.isEmpty()) {
@@ -180,12 +179,12 @@ public class ExhibitsController implements Initializable {
     }
 
     @FXML
-    void clearExhibit(ActionEvent event) {
+    private void clearExhibit(ActionEvent event) {
         resetForm();
     }
 
     @FXML
-    void selectExhibit(MouseEvent event) {
+    private void selectExhibit(MouseEvent event) {
         Exhibit selectedExhibit = exhibitsTable.getSelectionModel().getSelectedItem();
 
         int idx = exhibitsTable.getSelectionModel().getSelectedIndex();
@@ -218,7 +217,7 @@ public class ExhibitsController implements Initializable {
 
     private Exhibit getFormData() {
         Exhibit exhibit = null;
-
+        System.out.println(Date.valueOf(exhibitLastConservation.getValue()));
         if (exhibitName.getText().isEmpty()
                 || exhibitAcquisitionDate.getValue() == null
                 || exhibitValue.getText().isEmpty()
@@ -319,6 +318,7 @@ public class ExhibitsController implements Initializable {
                 filteredExhibitsShowList = exhibitsShowList.filtered(exhibit -> exhibit.getStatus().toLowerCase().contains(searchText.toLowerCase().trim()));
                 break;
             default:
+                break;
         }
 
         populateExhibitsTable();
@@ -399,7 +399,6 @@ public class ExhibitsController implements Initializable {
         exhibitSecurity.setItems(exhibitSecurityList);
         searchFilters.setItems(searchFiltersList);
         searchFilters.setValue("ID");
-        filteredExhibitsShowList = FXCollections.observableArrayList();
 
         exhibits = new Exhibits();
         populateExhibitsTable();
