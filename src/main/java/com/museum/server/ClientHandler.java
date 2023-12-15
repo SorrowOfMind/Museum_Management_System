@@ -124,8 +124,9 @@ public class ClientHandler implements Runnable {
                     tourHandler.insertUpdateTour(tourToUpdate, true);
                     out.flush();
                     break;
+                case GET_WORKERS:
+                    break;
                 default:
-                    // TODO: make a res to this
                     System.out.println("Unexpected action");
                     break;
             }

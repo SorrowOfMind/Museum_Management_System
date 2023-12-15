@@ -83,6 +83,21 @@
                               <Insets left="20.0" />
                            </padding>
                         </Button>
+                        <Button fx:id="workersBtn" alignment="BASELINE_LEFT" graphicTextGap="25.0" layoutX="10.0" layoutY="160.0" mnemonicParsing="false" onAction="#switchDashboardView" prefHeight="50.0" prefWidth="192.0" styleClass="menu-button" stylesheets="@dashboard.css" text="Pracownicy" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Regular" size="16.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/menu-workers.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Button>
                      </children>
                   </VBox>
                   <Button layoutX="13.0" layoutY="750.0" mnemonicParsing="false" onAction="#logout" styleClass="logout-btn" stylesheets="@dashboard.css" text="WYLOGUJ" textFill="WHITE">
@@ -110,6 +125,7 @@
                   <fx:include fx:id="exhibitsView" source="exhibitsView.fxml" />
                   <fx:include fx:id="exhibitionsView" source="exhibitionsView.fxml" />
                   <fx:include fx:id="toursView" source="toursView.fxml" />
+                  <fx:include fx:id="workersView" source="workersView.fxml" />
                   <fx:include fx:id="overviewView" source="overviewView.fxml" />
                </children>
             </AnchorPane>

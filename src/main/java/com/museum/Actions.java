@@ -12,6 +12,6 @@ public enum Actions {
     GET_WORKERS_SIMPLIFIED,
     GET_TOURS,
     INSERT_TOUR,
-    UPDATE_TOUR
-
+    UPDATE_TOUR,
+    GET_WORKERS
 }
