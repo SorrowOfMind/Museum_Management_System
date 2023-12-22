@@ -13,5 +13,7 @@ public enum Actions {
     GET_TOURS,
     INSERT_TOUR,
     UPDATE_TOUR,
-    GET_WORKERS
+    GET_WORKERS,
+    ADD_WORKER,
+    UPDATE_WORKER
 }

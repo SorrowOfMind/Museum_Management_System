@@ -47,6 +47,36 @@ public class Worker implements Serializable {
         this.jobTitle = jobTitle;
     }
 
+    public Worker(
+            String name,
+            String surname,
+            Date dateOfBirth,
+            String phone,
+            String email,
+            Date terminationDate,
+            String agreementType,
+            Date agreementDate,
+            String accountNumber,
+            int salary,
+            String jobTitle
+    ) {
+        this.name = name;
+        this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
+        this.phone = phone;
+        this.email = email;
+        this.terminationDate = terminationDate;
+        this.agreementType = agreementType;
+        this.agreementDate = agreementDate;
+        this.accountNumber = accountNumber;
+        this.salary = salary;
+        this.jobTitle = jobTitle;
+    }
+
+    public int getWorkerID() {
+        return workerID;
+    }
+
     public String getName() {
         return name;
     }

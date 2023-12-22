@@ -15,12 +15,15 @@ public class ClientHandler implements Runnable {
 
     // HANDLERS
     private ExhibitsHandler exhibitsHandler;
+    private WorkersHandler workersHandler;
 
     // DATA
     Exhibit exhibit;
     List<Exhibit> exhibits;
+    List <Worker> workers;
     byte[] imageData = null;
     private Object receivedObject;
+    Worker worker;
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
@@ -101,8 +104,8 @@ public class ClientHandler implements Runnable {
                     break;
                 case GET_WORKERS_SIMPLIFIED:
                     exhibitionsHandler = new ExhibitionHandler();
-                    List<Worker_Basic> workers = exhibitionsHandler.getWorkersForExhibition();
-                    out.writeObject(workers);
+                    List<Worker_Basic> workersBasic = exhibitionsHandler.getWorkersForExhibition();
+                    out.writeObject(workersBasic);
                     out.flush();
                     break;
                 case GET_TOURS:
@@ -125,6 +128,24 @@ public class ClientHandler implements Runnable {
                     out.flush();
                     break;
                 case GET_WORKERS:
+                    workersHandler = new WorkersHandler();
+                    workers = workersHandler.getWorkers();
+                    out.writeObject(workers);
+                    out.flush();
+                    break;
+                case ADD_WORKER:_WORKERS:
+                    workersHandler = new WorkersHandler();
+                    worker = (Worker) in.readObject();
+                    workers = workersHandler.addWorker(worker);
+                    out.writeObject(workers);
+                    out.flush();
+                    break;
+                case UPDATE_WORKER:
+                    workersHandler = new WorkersHandler();
+                    worker = (Worker) in.readObject();
+                    workers = workersHandler.updateWorker(worker);
+                    out.writeObject(workers);
+                    out.flush();
                     break;
                 default:
                     System.out.println("Unexpected action");

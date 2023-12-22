@@ -205,8 +205,8 @@ INSERT INTO exhibition_room (exhibitionID, roomID) VALUES
 (2, 2);
 
 INSERT INTO worker (forename, surname, dateOfBirth, phoneNumber, email, dateOfTermination, agreementType, dateOfAgreement, accountNumber, salary, jobTitle, managerID, businessID) VALUES
-('Manager 1', 'Lastname 1', '1980-01-01', '111222333', 'manager1@example.com', NULL, 'Full-Time', '2020-01-01', '123456789', 50000, 'Manager', NULL, 'BUS1'),
-('Employee 1', 'Lastname 2', '1990-02-02', '444555666', 'employee1@example.com', NULL, 'Part-Time', '2021-01-01', '987654321', 30000, 'Staff', 1, 'BUS2');
+('Jan', 'Kowalski', '1981-07-29', '111222333', 'jkowalski@museum.com', NULL, 'B2B', '2020-01-01', '123456789', 50000, 'kurator', NULL, 'BUS1'),
+('Janusz', 'Nowak', '1990-02-02', '444555666', 'jnowak@museum.com', NULL, 'umowa o pracę', '2021-01-01', '987654321', 30000, 'kustosz', 1, 'BUS2');
 -- Populating tour table
 INSERT INTO tour (groupLeader, tourDate, tourHour, language, standardTicketCount, discountTicketCount, workerID, size)
 VALUES

@@ -217,7 +217,7 @@ public class ExhibitsController implements Initializable {
 
     private Exhibit getFormData() {
         Exhibit exhibit = null;
-        System.out.println(Date.valueOf(exhibitLastConservation.getValue()));
+
         if (exhibitName.getText().isEmpty()
                 || exhibitAcquisitionDate.getValue() == null
                 || exhibitValue.getText().isEmpty()
@@ -227,7 +227,7 @@ public class ExhibitsController implements Initializable {
                 || exhibitStatus.getSelectionModel().getSelectedItem() == null
                 || exhibitSecurity.getSelectionModel().getSelectedItem() == null
         ) {
-            alert.info("Eksponat", "Proszę wypełnić wszystkie pola.");
+            alert.info("Eksponat", "Proszę wypełnić wymagane pola.");
         } else {
             Integer exhibitID = exhibitIDText.getText().isEmpty() ? 0 : Integer.valueOf(exhibitIDText.getText());
             String name = exhibitName.getText();

@@ -44,4 +44,56 @@ public class Workers {
 
     }
 
+    public boolean addWorker(Worker worker) {
+        try {
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(Actions.ADD_WORKER);
+            out.writeObject(worker);
+            in = new ObjectInputStream(socket.getInputStream());
+
+            try {
+                List<Worker> receivedWorkers = (List<Worker>) in.readObject();
+                workers = FXCollections.observableArrayList(receivedWorkers);
+
+                this.socket.close();
+                return true;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean updateWorker(Worker worker) {
+        try {
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(Actions.UPDATE_WORKER);
+            out.writeObject(worker);
+            in = new ObjectInputStream(socket.getInputStream());
+
+            try {
+                List<Worker> receivedWorkers = (List<Worker>) in.readObject();
+                workers = FXCollections.observableArrayList(receivedWorkers);
+
+                this.socket.close();
+                return true;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ObservableList<Worker> getWorkersList() {
+        return workers;
+    }
+
 }
