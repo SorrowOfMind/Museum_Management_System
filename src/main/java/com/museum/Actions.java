@@ -15,5 +15,6 @@ public enum Actions {
     UPDATE_TOUR,
     GET_WORKERS,
     ADD_WORKER,
-    UPDATE_WORKER
+    UPDATE_WORKER,
+    CHANGE_PSWD
 }

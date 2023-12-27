@@ -21,6 +21,8 @@ public class ClientHandler implements Runnable {
     Exhibit exhibit;
     List<Exhibit> exhibits;
     List <Worker> workers;
+
+    AuthHandler auth;
     byte[] imageData = null;
     private Object receivedObject;
     Worker worker;
@@ -41,11 +43,25 @@ public class ClientHandler implements Runnable {
                     String username = (String) in.readObject();
                     String password = (String) in.readObject();
 
-                    AuthHandler auth = new AuthHandler(username, password);
-                    // TODO: for now we only return if user is authenticated
-                    boolean isAuthenticated = auth.authenticate();
-
+                    auth = new AuthHandler();
+                    boolean isAuthenticated = auth.authenticate(username, password);
                     out.writeBoolean(isAuthenticated);
+
+                    if (isAuthenticated) {
+                        out.writeInt(auth.getRole());
+                        out.writeObject(auth.getUser());
+                    }
+
+                    out.flush();
+                    break;
+                case CHANGE_PSWD:
+                    int userID = (int) in.readObject();
+                    String oldPassword = (String) in.readObject();
+                    String newPassword = (String) in.readObject();
+
+                    auth = new AuthHandler();
+                    boolean isChanged = auth.changePassword(userID, oldPassword, newPassword);
+                    out.writeBoolean(isChanged);
                     out.flush();
                     break;
                 case GET_EXHIBITS:

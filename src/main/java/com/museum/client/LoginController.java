@@ -1,6 +1,8 @@
 package com.museum.client;
 
 import com.museum.Actions;
+import com.museum.client.user.User;
+import com.museum.models.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -45,10 +47,11 @@ public class LoginController {
 
                 in = new ObjectInputStream(this.socket.getInputStream());
                 boolean isAuthenticated = in.readBoolean();
-                this.socket.close();
 
                 if (isAuthenticated) {
-                    User user = new User(username); // populate with more data: role, department etc
+                    int role = in.readInt();
+                    Worker worker = (Worker) in.readObject();
+                    User user = new User(username, role, worker);
                     loginForm.getScene().getWindow().hide();
                     View dashboardView = new View("dashboard.fxml");
                     DashboardController dashboardController = dashboardView.getFXMLController();
@@ -56,6 +59,8 @@ public class LoginController {
                 } else {
                     alert.error("Błąd logowania", "Nazwa użytkownika lub hasło są niepoprawne.");
                 }
+
+                this.socket.close();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -18,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.LoginController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.museum.client.LoginController">
    <children>
       <AnchorPane fx:id="loginForm" onKeyPressed="#onEnter" prefHeight="597.0" prefWidth="812.0" styleClass="login-form" stylesheets="@loginView.css">
          <children>
@@ -54,12 +48,12 @@
             </AnchorPane>
             <AnchorPane layoutX="375.0" prefHeight="500.0" prefWidth="375.0" stylesheets="@loginView.css">
                <children>
-                  <Text fill="#0a7df3" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login Account" textAlignment="CENTER" wrappingWidth="377.0">
+                  <Text fill="#0a7df3" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logowanie" textAlignment="CENTER" wrappingWidth="377.0">
                      <font>
                         <Font name="Lato Regular" size="33.0" />
                      </font>
                   </Text>
-                  <Text fill="#979393" layoutX="79.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In case your account is not yet created, please contact your supervisor." textAlignment="CENTER" wrappingWidth="219.71875">
+                  <Text fill="#979393" layoutX="79.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jeśli nie masz jeszcze konta, skontaktuj się ze swoim przełożonym." textAlignment="CENTER" wrappingWidth="219.71875">
                      <font>
                         <Font name="Lato Regular" size="13.0" />
                      </font>
@@ -74,17 +68,17 @@
                         <Font name="Lato Regular" size="13.0" />
                      </font>
                   </PasswordField>
-                  <Button fx:id="loginButton" layoutX="76.0" layoutY="401.0" mnemonicParsing="false" onAction="#login" prefHeight="32.0" prefWidth="225.0" styleClass="login-button" text="LOGIN" textFill="WHITE">
+                  <Button fx:id="loginButton" layoutX="76.0" layoutY="401.0" mnemonicParsing="false" onAction="#login" prefHeight="32.0" prefWidth="225.0" styleClass="login-button" text="ZALOGUJ" textFill="WHITE">
                      <font>
                         <Font name="Lato Semibold" size="14.0" />
                      </font>
                   </Button>
-                  <Label layoutX="77.0" layoutY="199.0" text="Username" textFill="#979393">
+                  <Label layoutX="77.0" layoutY="199.0" text="Nazwa użytkownika" textFill="#979393">
                      <font>
                         <Font name="Lato Regular" size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="78.0" layoutY="277.0" text="Password" textFill="#979393">
+                  <Label layoutX="78.0" layoutY="277.0" text="Hasło" textFill="#979393">
                      <font>
                         <Font name="Lato Regular" size="13.0" />
                      </font>

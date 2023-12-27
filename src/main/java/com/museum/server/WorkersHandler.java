@@ -84,7 +84,7 @@ public class WorkersHandler {
         int workerID = worker.getWorkerID();
 
         conn = Database.connect();
-        System.out.println(workerID);
+
         try {
             stmt = conn.prepareStatement(updateQuery);
             stmt.setString(1, worker.getName());

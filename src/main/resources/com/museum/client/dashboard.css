@@ -151,3 +151,7 @@
     -fx-border-color:  #0a7df3;
     -fx-cursor: hand;
 }
+
+.cursor-hand {
+    -fx-cursor: hand;
+}

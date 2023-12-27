@@ -1,5 +1,8 @@
 package com.museum.client;
 
+import com.museum.client.user.Roles;
+import com.museum.client.user.SettingsController;
+import com.museum.client.user.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,6 +35,8 @@ public class DashboardController implements Initializable {
     public Button toursButton;
     @FXML
     public Button workersBtn;
+    @FXML
+    public Button settingsBtn;
 
     // VIEWS
     @FXML
@@ -46,6 +51,10 @@ public class DashboardController implements Initializable {
     public AnchorPane toursView;
     @FXML
     public AnchorPane workersView;
+    @FXML
+    public AnchorPane settingsView;
+
+    private SettingsController settingsController;
 
     // CUSTOM
     private AnchorPane[] views;
@@ -58,6 +67,10 @@ public class DashboardController implements Initializable {
     public void setUser(User user) {
         this.user = user;
         usernameText.setText(user.getUsername());
+        if (user.getRole() != Roles.SUPERADMIN.ordinal() && user.getRole() != Roles.ADMIN.ordinal()) {
+            workersView.setVisible(false);
+            workersBtn.setVisible(false);
+        }
     }
 
     @FXML
@@ -72,6 +85,11 @@ public class DashboardController implements Initializable {
             setVisibleView(toursView, toursButton);
         } else if (event.getSource().equals(workersBtn)) {
             setVisibleView(workersView, workersBtn);
+        } else if (event.getSource().equals(settingsBtn)) {
+            if (settingsController.getUser() == null) {
+                settingsController.setUser(user);
+            }
+            setVisibleView(settingsView);
         }
     }
 
@@ -102,15 +120,32 @@ public class DashboardController implements Initializable {
         }
     }
 
+    public void setVisibleView(AnchorPane visibleView) {
+        visibleView.setVisible(true);
+
+        for (AnchorPane view : views) {
+            if (view != visibleView) {
+                view.setVisible(false);
+            }
+        }
+
+        for (Button button : menuButtons) {
+            button.setStyle(inactiveBtnStyle);
+        }
+    }
+
     public static DashboardController getInstance() {
         return instance;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView, toursView, workersView};
-        menuButtons = new Button[]{overviewBtn, exhibitsBtn, exhibitionsBtn, toursButton, workersBtn};
+        views = new AnchorPane[]{overviewView, exhibitsView, exhibitionsView, toursView, workersView, settingsView};
+        menuButtons = new Button[]{overviewBtn, exhibitsBtn, exhibitionsBtn, toursButton, workersBtn, settingsBtn};
         overviewBtn.setStyle(activeBtnStyle);
+
+        settingsController = SettingsController.getInstance();
+
         instance = this;
     }
 }

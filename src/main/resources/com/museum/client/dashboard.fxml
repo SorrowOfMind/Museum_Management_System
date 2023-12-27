@@ -109,23 +109,28 @@
             </AnchorPane>
             <AnchorPane layoutX="220.0" prefHeight="45.0" prefWidth="1080.0" styleClass="topbar" stylesheets="@dashboard.css" AnchorPane.rightAnchor="0.0">
                <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="1026.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="30.0">
-                     <image>
-                        <Image url="@images/user.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="usernameText" alignment="BASELINE_RIGHT" graphicTextGap="10.0" layoutX="727.0" layoutY="14.0" prefHeight="18.0" prefWidth="71.0" AnchorPane.rightAnchor="75.0">
+                  <Button fx:id="settingsBtn" layoutX="1026.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchDashboardView" styleClass="cursor-hand" stylesheets="@dashboard.css">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label fx:id="usernameText" alignment="BASELINE_RIGHT" graphicTextGap="10.0" layoutX="935.0" layoutY="14.0" prefHeight="18.0" prefWidth="71.0" AnchorPane.rightAnchor="74.0">
                      <font>
                         <Font name="Lato Regular" size="14.0" />
                      </font></Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="220.0" layoutY="45.0" prefHeight="756.0" prefWidth="1080.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0">
+            <AnchorPane layoutX="220.0" layoutY="45.0" prefHeight="756.0" prefWidth="1080.0" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <fx:include fx:id="exhibitsView" source="exhibitsView.fxml" />
                   <fx:include fx:id="exhibitionsView" source="exhibitionsView.fxml" />
                   <fx:include fx:id="toursView" source="toursView.fxml" />
                   <fx:include fx:id="workersView" source="workersView.fxml" />
+                  <fx:include fx:id="settingsView" source="settingsView.fxml" />
                   <fx:include fx:id="overviewView" source="overviewView.fxml" />
                </children>
             </AnchorPane>

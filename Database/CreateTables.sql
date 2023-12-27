@@ -169,7 +169,7 @@ CREATE TABLE `user` (
   `userID` int PRIMARY KEY AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('admin','user') NOT NULL
+  `role` tinyint NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO OWNER (name, phoneNumber, email) VALUES
@@ -206,7 +206,8 @@ INSERT INTO exhibition_room (exhibitionID, roomID) VALUES
 
 INSERT INTO worker (forename, surname, dateOfBirth, phoneNumber, email, dateOfTermination, agreementType, dateOfAgreement, accountNumber, salary, jobTitle, managerID, businessID) VALUES
 ('Jan', 'Kowalski', '1981-07-29', '111222333', 'jkowalski@museum.com', NULL, 'B2B', '2020-01-01', '123456789', 50000, 'kurator', NULL, 'BUS1'),
-('Janusz', 'Nowak', '1990-02-02', '444555666', 'jnowak@museum.com', NULL, 'umowa o pracę', '2021-01-01', '987654321', 30000, 'kustosz', 1, 'BUS2');
+('Janusz', 'Nowak', '1990-02-02', '444555666', 'jnowak@museum.com', NULL, 'umowa o pracę', '2021-01-01', '987654321', 30000, 'kustosz', 1, 'BUS2'),
+('Mściwój', 'Pólnoga', '1990-02-02', '444555666', 'mpolnoga@museum.com', NULL, 'umowa o pracę', '2021-01-01', '987654321', 30000, 'konserwator', 2, 'BUS2');
 -- Populating tour table
 INSERT INTO tour (groupLeader, tourDate, tourHour, language, standardTicketCount, discountTicketCount, workerID, size)
 VALUES
@@ -237,8 +238,9 @@ INSERT INTO museum_address (businessID, street, buildingNumber, unitNumber, post
 -- Add more rows as needed
 
 -- Populating user table
-INSERT INTO `user` (username, password, role) VALUES
-('adminuser', 'adminpassword', 'admin'),
-('regularuser', 'regularpassword', 'user');
-INSERT INTO `user` (username, password, role) VALUES
-('test', '1234', 'admin');
+-- password: 1234
+INSERT INTO `user` (userID, username, password, role) VALUES
+(1, 'superadmin', '81dc9bdb52d04dc20036dbd8313ed055', 0),
+(2, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 1),
+(3, 'user', '81dc9bdb52d04dc20036dbd8313ed055', 2);
+

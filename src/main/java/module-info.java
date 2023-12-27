@@ -27,4 +27,6 @@ module com.museum.client {
     opens com.museum.client.tours to javafx.fxml;
     exports com.museum.client.workers;
     opens com.museum.client.workers to javafx.fxml;
+    exports com.museum.client.user;
+    opens com.museum.client.user to javafx.fxml;
 }
