@@ -4,12 +4,16 @@ import com.museum.client.DashboardController;
 import com.museum.client.exhibitions.ExhibitionsController;
 import com.museum.client.exhibits.ExhibitsController;
 import com.museum.client.tours.ToursController;
+import com.museum.models.Visitor;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class OverviewController implements Initializable {
@@ -22,6 +26,9 @@ public class OverviewController implements Initializable {
 
     private ToursController toursController;
 
+    private VisitorsData visitorsData;
+    private List<Visitor> visitors;
+
     @FXML
     private Label exhibitsDueLabel;
     @FXML
@@ -31,6 +38,8 @@ public class OverviewController implements Initializable {
 
     @FXML
     private Label toursLabel;
+    @FXML
+    private BarChart<?, ?> visitorsChart;
 
     @FXML
     void showExhibitions(MouseEvent event) {
@@ -72,6 +81,21 @@ public class OverviewController implements Initializable {
         dashboardController.setVisibleView(dashboardController.toursView, dashboardController.toursButton);
     }
 
+    private void prepareChart() {
+        visitorsChart.getData().clear();
+        try {
+            XYChart.Series chart = new XYChart.Series();
+
+            for (int i = visitors.size() - 1; i >= 0; i--) {
+                chart.getData().add(new XYChart.Data(visitors.get(i).getMonth(), visitors.get(i).getNumber()));
+            }
+
+            visitorsChart.getData().add(chart);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exhibitsController = ExhibitsController.getInstance();
@@ -81,5 +105,8 @@ public class OverviewController implements Initializable {
         exhibitsOverdueLabel.setText(exhibitsController.getExhibitsOverdueListSize());
         exhibitionsLabel.setText(exhibitionsController.getCurrentExhibitionsListSize());
         toursLabel.setText(toursController.getCurrentToursListSize());
+        visitorsData = new VisitorsData();
+        visitors = visitorsData.getVisitorsData();
+        prepareChart();
     }
 }

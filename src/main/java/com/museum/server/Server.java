@@ -13,7 +13,6 @@ public class Server {
 
           while(true) {
               Socket clientSocket = serverSocket.accept();
-              System.out.println("Client has been connected: " + clientSocket.getInetAddress());
 
               Thread clientThread = new Thread(new ClientHandler(clientSocket));
               clientThread.start();

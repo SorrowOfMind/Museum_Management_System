@@ -172,6 +172,12 @@ CREATE TABLE `user` (
   `role` tinyint NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE visitor (
+    ID int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    month varchar(50) not null,
+    number int not null
+);
+
 INSERT INTO OWNER (name, phoneNumber, email) VALUES
 ('John Doe', '123456789', 'john.doe@example.com'),
 ('Jane Smith', '987654321', 'jane.smith@example.com');
@@ -179,6 +185,21 @@ INSERT INTO OWNER (name, phoneNumber, email) VALUES
 INSERT INTO owner_address (ownerID, street, buildingNumber, unitNumber, postCode, city, country) VALUES
 (1, 'Main St', 123, NULL, '12345', 'City1', 'Country1'),
 (2, 'Broad St', 456, 789, '54321', 'City2', 'Country2');
+
+INSERT INTO visitor (month, number) VALUES
+("01.2023", 2110),
+("02.2023", 2050),
+("03.2023", 2810),
+("04.2023", 2500),
+("05.2023", 3160),
+("06.2023", 3500),
+("07.2023", 4080),
+("08.2023", 4290),
+("09.2023", 3200),
+("10.2023", 3030),
+("11.2023", 2910),
+("12.2023", 2600),
+("01.2024", 2220);
 
 INSERT INTO age (name, startYear, endYear) VALUES
 ('Starożytność', -5000, 500),

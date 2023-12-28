@@ -16,5 +16,6 @@ public enum Actions {
     GET_WORKERS,
     ADD_WORKER,
     UPDATE_WORKER,
-    CHANGE_PSWD
+    CHANGE_PSWD,
+    GET_VISITORS
 }

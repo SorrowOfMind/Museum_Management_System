@@ -16,11 +16,13 @@ public class ClientHandler implements Runnable {
     // HANDLERS
     private ExhibitsHandler exhibitsHandler;
     private WorkersHandler workersHandler;
+    private DataHandler visitorsHandler;
 
     // DATA
     Exhibit exhibit;
     List<Exhibit> exhibits;
     List <Worker> workers;
+    List<Visitor> visitorData;
 
     AuthHandler auth;
     byte[] imageData = null;
@@ -161,6 +163,12 @@ public class ClientHandler implements Runnable {
                     worker = (Worker) in.readObject();
                     workers = workersHandler.updateWorker(worker);
                     out.writeObject(workers);
+                    out.flush();
+                    break;
+                case GET_VISITORS:
+                    visitorsHandler = new DataHandler();
+                    visitorData = visitorsHandler.getVisitorsData();
+                    out.writeObject(visitorData);
                     out.flush();
                     break;
                 default:

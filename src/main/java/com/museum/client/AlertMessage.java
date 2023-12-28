@@ -17,7 +17,7 @@ public class AlertMessage {
     }
 
     public void error(String title, String message) {
-        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
