@@ -2,6 +2,7 @@ package com.museum.client.exhibitions;
 
 import com.museum.Actions;
 import com.museum.client.DashboardController;
+import com.museum.models.Exhibit;
 import com.museum.models.Exhibition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,24 +51,28 @@ public class Exhibitions <T> {
         return this.exhibitions;
     }
 
-    public int insertUpdateExhibition(Exhibition exhibition, boolean update){
+    public boolean insertUpdateExhibition(Exhibition exhibition, boolean update){
         try {
-            socket = new Socket("localhost", 5000);
+            socket = new Socket(DashboardController.HOST, DashboardController.PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(update ? Actions.UPDATE_EXHIBITION : Actions.INSERT_EXHIBITIONS);
             out.writeObject(exhibition);
             in = new ObjectInputStream(socket.getInputStream());
 
-            if(!update)
-                insertedExhibitionID = in.readInt();
+            try {
+                List<Exhibition> receivedExhibitions = (List<Exhibition>) in.readObject();
+                exhibitions = FXCollections.observableArrayList(receivedExhibitions);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
             this.socket.close();
+            return true;
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return insertedExhibitionID;
     }
 
     public ObservableList<T> genericGetter(Actions action){

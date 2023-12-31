@@ -2,6 +2,7 @@ package com.museum.client.tours;
 
 import com.museum.Actions;
 import com.museum.client.DashboardController;
+import com.museum.models.Exhibition;
 import com.museum.models.Tour;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +50,7 @@ public class Tours <T> {
         return this.tours;
     }
 
-    public int insertUpdateTour(Tour tour, boolean update){
+    public boolean insertUpdateTour(Tour tour, boolean update){
         try {
             socket = new Socket("localhost", 5000);
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -57,16 +58,20 @@ public class Tours <T> {
             out.writeObject(tour);
             in = new ObjectInputStream(socket.getInputStream());
 
-            if(!update)
-                insertedTourID = in.readInt();
+            try {
+                List<Tour> receivedTours = (List<Tour>) in.readObject();
+                tours = FXCollections.observableArrayList(receivedTours);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
             this.socket.close();
+            return true;
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return insertedTourID;
     }
 
     public ObservableList<T> genericGetter(Actions action){

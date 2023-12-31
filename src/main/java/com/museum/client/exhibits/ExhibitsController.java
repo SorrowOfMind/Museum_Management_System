@@ -50,7 +50,7 @@ public class ExhibitsController implements Initializable {
 
     private ObservableList<Exhibit> filteredExhibitsShowList = FXCollections.observableArrayList();
     ObservableList<String> historicalPeriodsList = FXCollections.observableArrayList(
-            "Starożytność", "Hellenizm", "Cesarski Rzym", "Średniowiecze", "Współczesność"
+            "Starożytność", "Hellenizm", "Cesarski Rzym", "Średniowiecze", "Nowożytność", "Epoka XIX w", "Współczesność"
     );
     ObservableList<String> exhibitStatusList = FXCollections.observableArrayList(
             "wystawa", "magazyn", "konserwacja", "wypożyczony", "sprzedany"
@@ -210,9 +210,10 @@ public class ExhibitsController implements Initializable {
         exhibitStatus.getSelectionModel().select(selectedExhibit.getStatus());
         exhibitSecurity.getSelectionModel().select(selectedExhibit.getSecurity());
 
-        image = new Image(System.getProperty("user.dir") + selectedExhibit.getFilePath(), 160, 160, false, true);
-        exhibitImage.setImage(image);
-
+        if (selectedExhibit.getFilePath() != null) {
+            image = new Image(System.getProperty("user.dir") + selectedExhibit.getFilePath(), 160, 160, false, true);
+            exhibitImage.setImage(image);
+        }
     }
 
     private Exhibit getFormData() {

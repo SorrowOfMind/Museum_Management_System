@@ -109,7 +109,7 @@ public class ExhibitsHandler {
         String updateQuery = "UPDATE exhibit SET name = ?, author = ?, creationDate = ?, origins = ?, description = ?, acquisitionDate = ?, value = ?, ageID = ?, lastConservation = ?, nextConservation =? , status = ?, security = ?, filePath = ? " +
                 "WHERE exhibitID = ?";
         int exhibitID = exhibit.getExhibitID();
-
+        System.out.println("id " + exhibit.getExhibitID());
         conn = Database.connect();
 
         try {

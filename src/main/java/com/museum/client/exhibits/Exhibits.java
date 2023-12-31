@@ -79,9 +79,7 @@ public class Exhibits {
             out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(Actions.UPDATE_EXHIBIT);
             out.writeObject(exhibit);
-            if (imageData != null) {
-                out.writeObject(imageData);
-            }
+            out.writeObject(imageData);
             in = new ObjectInputStream(socket.getInputStream());
 
             try {

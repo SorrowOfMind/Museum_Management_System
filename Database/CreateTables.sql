@@ -205,8 +205,10 @@ INSERT INTO age (name, startYear, endYear) VALUES
 ('Starożytność', -5000, 500),
 ('Hellenizm', -323, -30),
 ('Cesarski Rzym', -30, 1453),
-('Średniowiecze', 476, 1453),
-('Współczesność', 1945, null);
+('Średniowiecze', 476, 1492),
+('Nowożytność', 1492, 1789),
+('Epoka XIX w.', 1789, 1914),
+('Współczesność', 1914, null);
 
 
 INSERT INTO category (name) VALUES
@@ -215,53 +217,46 @@ INSERT INTO category (name) VALUES
 
 INSERT INTO room (roomNumber, floor, area) VALUES
 (101, 1, 50),
-(201, 2, 75);
+(201, 2, 75),
+(202, 2, 100),
+(210, 2, 150);
 
-INSERT INTO exhibition (title, startDate, endDate) VALUES
-('Art Expo 2023', '2023-06-01', '2023-07-01'),
-('Modern Art Showcase', '2023-08-01', '2023-09-01');
-
-INSERT INTO exhibition_room (exhibitionID, roomID) VALUES
-(1, 1),
-(2, 2);
 
 INSERT INTO worker (forename, surname, dateOfBirth, phoneNumber, email, dateOfTermination, agreementType, dateOfAgreement, accountNumber, salary, jobTitle, managerID, businessID) VALUES
-('Jan', 'Kowalski', '1981-07-29', '111222333', 'jkowalski@museum.com', NULL, 'B2B', '2020-01-01', '123456789', 50000, 'kurator', NULL, 'BUS1'),
-('Janusz', 'Nowak', '1990-02-02', '444555666', 'jnowak@museum.com', NULL, 'umowa o pracę', '2021-01-01', '987654321', 30000, 'kustosz', 1, 'BUS2'),
-('Mściwój', 'Pólnoga', '1990-02-02', '444555666', 'mpolnoga@museum.com', NULL, 'umowa o pracę', '2021-01-01', '987654321', 30000, 'konserwator', 2, 'BUS2');
--- Populating tour table
+('Borzygniew', 'Ciemięga', '1981-07-29', '111222333', 'bciemiega@museum.com', NULL, 'B2B', '2020-01-01', '123456789', 5000, 'kurator', NULL, 'BUS1'),
+('Pomścibór', 'Boligłowa', '1990-02-02', '444555666', 'pboliglowa@museum.com', NULL, 'umowa o pracę', '2021-01-01', '987654321', 3000, 'kustosz', 1, 'BUS2'),
+('Mściwój', 'Półnoga', '1990-02-02', '444555666', 'mpolnoga@museum.com', NULL, 'umowa o pracę', '2021-01-01', '9876456321', 3000, 'konserwator', 2, 'BUS2'),
+('Myślimir', 'Pomietlarz', '1990-02-02', '444555666', 'mpomietlarz@museum.com', NULL, 'umowa o pracę', '2020-01-01', '687699876', 3500, 'konserwator', 2, 'BUS2');
+
 INSERT INTO tour (groupLeader, tourDate, tourHour, language, standardTicketCount, discountTicketCount, workerID, size)
 VALUES
     ('Group1 Leader', '2023-12-01 10:00:00', '10:00', 'English', 5, 3, 1, (5 + 3)),
     ('Group2 Leader', '2023-12-02 14:30:00', '14:30', 'Spanish', 3, 2, 2, (3 + 2));
 
-INSERT INTO worker_exhibition (workerID, exhibitionID) VALUES
-(1, 1),
-(2, 2);
--- Add more rows as needed
 
--- Populating worker_address table
 INSERT INTO worker_address (workerID, street, buildingNumber, unitNumber, postCode, city, country) VALUES
 (1, 'Manager St', 10, NULL, '54321', 'City1', 'Country1'),
 (2, 'Employee St', 20, 5, '12345', 'City2', 'Country2');
--- Add more rows as needed
 
--- Populating museum table
 INSERT INTO museum (businessID, name, accountNumber) VALUES
 ('BUS1', 'Museum 1', '111111'),
 ('BUS2', 'Museum 2', '222222');
--- Add more rows as needed
 
--- Populating museum_address table
 INSERT INTO museum_address (businessID, street, buildingNumber, unitNumber, postCode, city, country) VALUES
 ('BUS1', 'Main St', 100, NULL, '11111', 'City1', 'Country1'),
 ('BUS2', 'Broad St', 200, 10, '22222', 'City2', 'Country2');
--- Add more rows as needed
 
--- Populating user table
 -- password: 1234
 INSERT INTO `user` (userID, username, password, role) VALUES
 (1, 'superadmin', '81dc9bdb52d04dc20036dbd8313ed055', 0),
 (2, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 1),
 (3, 'user', '81dc9bdb52d04dc20036dbd8313ed055', 2);
+
+INSERT INTO exhibit (name, author, creationDate, origins, description, acquisitionDate, value, ageID, lastConservation, nextConservation, status, security) VALUES
+("Kuźnia Wulkana", "Francesco da Ponte", "II poł. XVI w.", "Włochy", "olej na płótnie", "2023-01-01",  300000, 5, "2023-01-21", "2024-01-21", "wystawa", "ekstra"),
+("Kobieta przed lustrem", "Pieter Codde", "XVII w.", "Holandia", "olej na desce dębowej", "2023-01-01", 100000, 5, "2023-01-01", "2024-01-01", "wystawa", "ekstra"),
+("Żydówka z pomarańczami", "Aleksander Gierymski", "1880-1881", "Polska", "olej na płótnie", "2023-01-01", 200000, 6, "2023-01-01", "2024-01-01", "wystawa", "ekstra"),
+("Figura Króla Dawida", "nieznany", "XVw", "Hiszpania", "drewno polichromowane", "2023-01-01", 300000, 4, "2023-01-01", "2024-01-21", "wystawa", "standard"),
+("Topór perski", "nieznany", "XVIII w.", "Persja", "", "2023-01-01", 100000, 6, "2023-04-01", "2024-04-01", "wystawa", "standard"),
+("Szyszak turniejowy", "nieznany", "XVI w.", "Niemcy", "","2023-01-01", 100000, 5, "2023-04-01", "2024-04-01", "wystawa", "standard");
 

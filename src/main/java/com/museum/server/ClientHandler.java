@@ -23,6 +23,8 @@ public class ClientHandler implements Runnable {
     List<Exhibit> exhibits;
     List <Worker> workers;
     List<Visitor> visitorData;
+    List<Exhibition> exhibitions;
+    List<Tour> tours;
 
     AuthHandler auth;
     byte[] imageData = null;
@@ -104,14 +106,15 @@ public class ClientHandler implements Runnable {
                 case INSERT_EXHIBITIONS:
                     exhibitionsHandler = new ExhibitionHandler();
                     Exhibition exhibition = (Exhibition)in.readObject();
-                    Integer id = exhibitionsHandler.insertUpdateExhibition(exhibition, false);
-                    out.writeInt(id);
+                    exhibitions = exhibitionsHandler.insertUpdateExhibition(exhibition, false);
+                    out.writeObject(exhibitions);
                     out.flush();
                     break;
                 case UPDATE_EXHIBITION:
                     exhibitionsHandler = new ExhibitionHandler();
                     Exhibition exhibitionToUpdate = (Exhibition)in.readObject();
-                    exhibitionsHandler.insertUpdateExhibition(exhibitionToUpdate, true);
+                    exhibitions = exhibitionsHandler.insertUpdateExhibition(exhibitionToUpdate, true);
+                    out.writeObject(exhibitions);
                     out.flush();
                     break;
                 case GET_ROOMS:
@@ -128,21 +131,22 @@ public class ClientHandler implements Runnable {
                     break;
                 case GET_TOURS:
                     TourHandler tourHandler = new TourHandler();
-                    List<Tour> tours = tourHandler.getTours();
+                    tours = tourHandler.getTours();
                     out.writeObject(tours);
                     out.flush();
                     break;
                 case INSERT_TOUR:
                     tourHandler = new TourHandler();
                     Tour tour = (Tour) in.readObject();
-                    Integer tourId = tourHandler.insertUpdateTour(tour, false);
-                    out.writeInt(tourId);
+                    tours = tourHandler.insertUpdateTour(tour, false);
+                    out.writeObject(tours);
                     out.flush();
                     break;
                 case UPDATE_TOUR:
                     tourHandler = new TourHandler();
                     Tour tourToUpdate = (Tour) in.readObject();
-                    tourHandler.insertUpdateTour(tourToUpdate, true);
+                    tours = tourHandler.insertUpdateTour(tourToUpdate, true);
+                    out.writeObject(tours);
                     out.flush();
                     break;
                 case GET_WORKERS:

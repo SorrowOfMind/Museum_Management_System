@@ -14,14 +14,11 @@ public class TourHandler {
     private PreparedStatement stmt;
     private ResultSet result;
 
-
-    public Integer insertUpdateTour(Tour tour, boolean update) {
+    public List<Tour> insertUpdateTour(Tour tour, boolean update) {
         String insertUpdateQuery = "INSERT INTO tour(groupLeader, tourDate, tourHour, size, language, standardTicketCount, discountTicketCount, workerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         if (update) {
             insertUpdateQuery = "UPDATE tour SET groupLeader = ?, tourDate = ?, tourHour = ?, size = ?, language = ?, standardTicketCount = ?, discountTicketCount = ?, workerID = ? WHERE tourID = ?";
         }
-
-        String selectLastIdQuery = "SELECT LAST_INSERT_ID() as id";
 
         this.conn = Database.connect();
 
@@ -43,46 +40,15 @@ public class TourHandler {
             if (update) {
                 this.stmt.setInt(9, tour.getTourID());
             }
-            System.out.println( this.stmt);
 
             this.stmt.executeUpdate();
 
-            this.stmt = conn.prepareStatement(selectLastIdQuery);
-            this.result = stmt.executeQuery();
-
-            while (this.result.next()) {
-                if (!update) {
-                    id = result.getInt("id");
-                }
-            }
-
             this.conn.commit();
-
+            return getTours();
         } catch (SQLException e) {
-            if (this.conn != null) {
-                try {
-                    this.conn.rollback();
-                } catch (SQLException rollbackException) {
-                    rollbackException.printStackTrace(); // Handle rollback failure
-                }
-            }
-        } finally {
-            try {
-                if (this.conn != null) {
-                    this.conn.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (result != null) {
-                    result.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException(e);
         }
 
-        return id;
     }
 
 

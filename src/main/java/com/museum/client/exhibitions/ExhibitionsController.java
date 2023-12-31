@@ -196,8 +196,6 @@ public class ExhibitionsController implements Initializable {
             return false;
         }
 
-
-
         return true;
     }
 
@@ -232,6 +230,7 @@ public class ExhibitionsController implements Initializable {
         ObservableList<Room> filteredRooms = FXCollections.observableArrayList(this.rooms.stream()
                 .filter(x ->  selectedExhibition.getRoomIDs().contains(x.getID())).collect(Collectors.toList()));
         setSelectedRooms(filteredRooms);
+        System.out.println("rooms " + filteredRooms.size() + " " + selectedExhibition.getRoomIDs().size());
 
         ObservableList<Worker_Basic> filteredWorkers =FXCollections.observableArrayList(this.workers.stream()
                 .filter(x ->  selectedExhibition.getWorkerIDs().contains(x.getWorkerID())).collect(Collectors.toList()));
@@ -272,10 +271,11 @@ public class ExhibitionsController implements Initializable {
         for(Room room :  this.selectedRooms){
             roomIDs.add(room.getID());
         }
-
+        System.out.println("roomes " + this.selectedRooms.size());
         for(Worker_Basic worker :  this.selectedWorkers){
             workerIDs.add(worker.getWorkerID());
         }
+        System.out.println("workers " + this.selectedWorkers.size());
         return new Exhibition(title,
                 Date.valueOf(start), endDate == null ? null : Date.valueOf(endDate), exhibitIDs, roomIDs, workerIDs);
     }
@@ -285,16 +285,12 @@ public class ExhibitionsController implements Initializable {
         Exhibition entity = constructAndValidateData();
         if(entity == null) return;
 
+        boolean isInserted = exhibitions.insertUpdateExhibition(entity, false);
 
-       int id = exhibitions.insertUpdateExhibition(entity, false);
-       this.refreshAll();
-
-       final Optional<Exhibition> ex = this.exhibitionsList.stream().filter(x -> x.getExhibitionID() == id).findFirst();
-       if(ex.isPresent()){
-           populateFieldsForSelectedExhibition(ex.get());
-       }
-        this.refreshExhibitions();
-
+        if (isInserted) {
+            populateExhibitionsTable();
+            resetExhibition();
+        }
     }
 
     @FXML
@@ -305,9 +301,12 @@ public class ExhibitionsController implements Initializable {
             this.alert.error("Błąd", "Nie wprowadzono żadnych zmian w wystawie.");
             return;
         }
-        exhibitions.insertUpdateExhibition(entity, true);
-        this.refreshExhibitions();
+        boolean isUpdated = exhibitions.insertUpdateExhibition(entity, true);
 
+        if (isUpdated) {
+            populateExhibitionsTable();
+            resetExhibition();
+        }
     }
 
     @FXML
@@ -330,13 +329,13 @@ public class ExhibitionsController implements Initializable {
     }
 
     private void refreshAll(){
-        populateExhibitionsTable();
         Exhibits ex = new Exhibits();
         filteredExhibitionsList = FXCollections.observableArrayList();
 
         this.exhibits.setAll(ex.getExhibitsList());
         this.rooms.setAll(this.exhibitions.genericGetter(Actions.GET_ROOMS));
         this.workers.setAll(this.exhibitions.genericGetter(Actions.GET_WORKERS_SIMPLIFIED));
+        populateExhibitionsTable();
     }
 
     private void searchExhibitions(String searchText) {

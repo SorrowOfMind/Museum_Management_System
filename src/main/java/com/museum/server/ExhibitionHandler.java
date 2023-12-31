@@ -16,18 +16,15 @@ public class ExhibitionHandler {
     private PreparedStatement stmt;
     private ResultSet result;
 
-
-    public Integer insertUpdateExhibition(Exhibition ex, boolean update) {
+    public List<Exhibition> insertUpdateExhibition(Exhibition ex, boolean update) {
         String insertUpdateQuery = "INSERT INTO exhibition(title, startDate, endDate) VALUES (?, ?, ?)";
-        if(update){
+        if (update){
             insertUpdateQuery = "UPDATE exhibition SET title = ?, startDate = ?, endDate = ? WHERE exhibitionID = ?";
         }
 
         String insertUpdateExhibitsForExhibition = "INSERT INTO exhibit_exhibition(exhibitionID, exhibitID) VALUES (?, ?) ON DUPLICATE KEY UPDATE exhibitionID = VALUES(exhibitionID), exhibitID = VALUES(exhibitID)";
         String insertUpdateExhibitionRoom = "INSERT INTO exhibition_room(exhibitionID, roomID) VALUES (?, ?) ON DUPLICATE KEY UPDATE exhibitionID = VALUES(exhibitionID), roomID = VALUES(roomID)";
         String insertUpdateExhibitionWorker = "INSERT INTO worker_exhibition(exhibitionID, workerID) VALUES (?, ?) ON DUPLICATE KEY UPDATE exhibitionID = VALUES(exhibitionID), workerID = VALUES(workerID)";
-
-
 
         String selectLastIdQuery = "SELECT LAST_INSERT_ID() as id";
 
@@ -53,7 +50,7 @@ public class ExhibitionHandler {
 
             while (this.result.next()) {
                 if(!update)
-                id = result.getInt("id");
+                    id = result.getInt("id");
             }
             this.stmt = conn.prepareStatement(insertUpdateExhibitsForExhibition);
             this.stmt.setInt(1, id);
@@ -79,82 +76,19 @@ public class ExhibitionHandler {
             for(Integer x : ex.getWorkerIDs()){
                 this.stmt.setInt(2,x);
                 this.stmt.executeUpdate();
-
             }
 
             this.conn.commit();
 
+            return getExhibitions();
         } catch (SQLException e) {
-            if (this.conn != null) {
-                try {
-
-                    this.conn.rollback();
-                } catch (SQLException rollbackException) {
-                    rollbackException.printStackTrace(); // Handle rollback failure
-                }
-            }
-        } finally {
-             try {
-                 if(this.conn !=null){
-                    this.conn.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (result != null) {
-                    result.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException(e);
         }
 
-        return id;
     }
 
-//    public List<Exhibition> getExhibitions(String filter) {
-//        String query = "SELECT * FROM exhibition natural join exhibit_exhibition natural join worker_exhibition natural join room ";
-//        if(filter != null || !filter.isEmpty())
-//            query += " WHERE exhibition.title LIKE ?" ;
-//        query += " ORDER BY exhibitionID";
-//        this.conn = Database.connect();
-//        List<Exhibition> exhibitionList = new ArrayList<>();
-//        Integer prev = null;
-//
-//        try {
-//            this.stmt = conn.prepareStatement(query);
-//            if(filter != null || !filter.isEmpty())
-//                this.stmt.setString(1, filter+"%");
-//            this.result = stmt.executeQuery();
-//            Exhibition exhibition = null;
-//            while (this.result.next()) {
-//                final int id = result.getInt("exhibitionID");
-//                if(prev == null || prev != id){
-//                    prev = id;
-//                    exhibition = new Exhibition(id,
-//                            result.getString("title"),
-//                            result.getDate("startDate"),
-//                            result.getDate("endDate")
-//                    );
-//
-//                    exhibition.appendIDs( result.getInt("exhibitID"),result.getInt("roomID"), result.getInt("workerID") );
-//                    exhibitionList.add(exhibition);
-//                }
-//                else if(id == prev && exhibition != null){
-//                    exhibition.appendIDs( result.getInt("exhibitID"), result.getInt("roomID"),  result.getInt("workerID"));
-//                }
-//
-//            }
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return exhibitionList;
-//    }
-
     public List<Exhibition> getExhibitions() {
-        String query = "SELECT * FROM exhibition natural join exhibit_exhibition natural join worker_exhibition natural join room ";
+        String query = "SELECT * FROM exhibition natural join exhibit_exhibition natural join worker_exhibition natural join exhibition_room ";
         query += " ORDER BY exhibitionID";
         this.conn = Database.connect();
         List<Exhibition> exhibitionList = new ArrayList<>();
@@ -176,8 +110,7 @@ public class ExhibitionHandler {
 
                     exhibition.appendIDs( result.getInt("exhibitID"),result.getInt("roomID"), result.getInt("workerID") );
                     exhibitionList.add(exhibition);
-                }
-                else if(id == prev && exhibition != null){
+                } else if(id == prev && exhibition != null){
                     exhibition.appendIDs( result.getInt("exhibitID"), result.getInt("roomID"),  result.getInt("workerID"));
                 }
 

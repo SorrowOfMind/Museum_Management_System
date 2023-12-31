@@ -169,14 +169,19 @@ public class ToursController implements Initializable {
         Tour entity = constructAndValidateData();
         if(entity == null) return;
 
-        int id = tours.insertUpdateTour(entity, false);
-        this.refreshAll();
+        boolean isInserted = tours.insertUpdateTour(entity, false);
 
-        final Optional<Tour> t = this.toursList.stream().filter(x -> x.getTourID() == id).findFirst();
-        if(t.isPresent()){
-            populateFieldsForSelectedTour(t.get());
+        if (isInserted) {
+            populateToursTable();
+            resetTour();
         }
-        this.refreshTours();
+//        this.refreshAll();
+
+//        final Optional<Tour> t = this.toursList.stream().filter(x -> x.getTourID() == id).findFirst();
+//        if(t.isPresent()){
+//            populateFieldsForSelectedTour(t.get());
+//        }
+//        this.refreshTours();
     }
 
     @FXML
@@ -189,8 +194,12 @@ public class ToursController implements Initializable {
             return;
         }
         entity.setTourID(this.selectedTour.getTourID());
-        tours.insertUpdateTour(entity, true);
-        this.refreshAll();
+        boolean isUpdated = tours.insertUpdateTour(entity, true);
+
+        if (isUpdated) {
+            populateToursTable();
+            resetTour();
+        }
     }
 
     @FXML
