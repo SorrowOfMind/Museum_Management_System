@@ -14,8 +14,6 @@ import javafx.util.Callback;
 
 
 public class ListPopup<T> {
-
-
     private Pane exhibitsPopup;
 
     private ListView<T> list;
@@ -52,7 +50,6 @@ public class ListPopup<T> {
 
     }
     public ListPopup(Pane popup, ListView<T> list, ObservableList<T> items, Button ok, Window window){
-
         this.list = list;
         this.list.setItems(items);
         this.list.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
@@ -70,12 +67,10 @@ public class ListPopup<T> {
         popup.show(window);
 
         this.ok.setOnAction(e -> {
-
             ObservableList<T> selected = list.getSelectionModel().getSelectedItems();
             getter.getReturn(selected);
             exhibitsPopup.setVisible(false);
             this.popup = null;
         });
-
     }
 }

@@ -175,13 +175,6 @@ public class ToursController implements Initializable {
             populateToursTable();
             resetTour();
         }
-//        this.refreshAll();
-
-//        final Optional<Tour> t = this.toursList.stream().filter(x -> x.getTourID() == id).findFirst();
-//        if(t.isPresent()){
-//            populateFieldsForSelectedTour(t.get());
-//        }
-//        this.refreshTours();
     }
 
     @FXML
@@ -307,8 +300,6 @@ public class ToursController implements Initializable {
             }
         });
 
-
         instance = this;
-
     }
 }

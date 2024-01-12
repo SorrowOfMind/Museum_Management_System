@@ -2,7 +2,6 @@ package com.museum.client.workers;
 
 import com.museum.Actions;
 import com.museum.client.DashboardController;
-import com.museum.models.Exhibit;
 import com.museum.models.Worker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -95,5 +94,4 @@ public class Workers {
     public ObservableList<Worker> getWorkersList() {
         return workers;
     }
-
 }

@@ -37,6 +37,4 @@ public class View {
     public <T> T getFXMLController() {
         return this.fxmlLoader.getController();
     }
-
-
 }

@@ -1,8 +1,7 @@
 package com.museum.server;
 
-import com.museum.models.Exhibit;
-import com.museum.models.Worker;
 
+import com.museum.models.Worker;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

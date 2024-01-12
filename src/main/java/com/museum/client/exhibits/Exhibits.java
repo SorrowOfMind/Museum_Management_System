@@ -101,5 +101,4 @@ public class Exhibits {
     public ObservableList<Exhibit> getExhibitsList() {
         return exhibits;
     }
-
 }

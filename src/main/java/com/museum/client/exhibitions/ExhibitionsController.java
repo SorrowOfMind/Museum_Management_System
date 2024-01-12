@@ -407,5 +407,4 @@ public class ExhibitionsController implements Initializable {
 
         instance = this;
     }
-
 }

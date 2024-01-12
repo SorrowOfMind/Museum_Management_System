@@ -1,10 +1,6 @@
 package com.museum.server;
 
-import com.museum.models.Exhibition;
-import com.museum.models.Room;
 import com.museum.models.Tour;
-import com.museum.models.Worker_Basic;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +95,5 @@ public class TourHandler {
             e.printStackTrace();
         }
     }
-
 
 }

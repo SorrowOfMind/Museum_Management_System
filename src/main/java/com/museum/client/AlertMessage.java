@@ -34,5 +34,4 @@ public class AlertMessage {
 
         return option.get().equals(ButtonType.OK);
     }
-
 }

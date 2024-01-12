@@ -171,5 +171,4 @@ public class ExhibitsHandler {
     private String createFileName(int exhibitID) {
         return IMAGE_FILE_NAME + exhibitID;
     }
-
 }

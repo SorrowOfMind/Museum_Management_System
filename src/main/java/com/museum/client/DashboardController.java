@@ -16,7 +16,6 @@ public class DashboardController implements Initializable {
 
     private static DashboardController instance;
 
-    // PORT
     public static final int PORT = 5000;
     public static final String HOST = "localhost";
 
@@ -24,7 +23,6 @@ public class DashboardController implements Initializable {
     @FXML
     private Label usernameText;
 
-    // DASHBOARD SIDE BUTTONS
     @FXML
     public Button overviewBtn;
     @FXML
@@ -38,7 +36,6 @@ public class DashboardController implements Initializable {
     @FXML
     public Button settingsBtn;
 
-    // VIEWS
     @FXML
     public AnchorPane dashboardView;
     @FXML
@@ -56,7 +53,6 @@ public class DashboardController implements Initializable {
 
     private SettingsController settingsController;
 
-    // CUSTOM
     private AnchorPane[] views;
     private Button[] menuButtons;
     private AlertMessage alert = new AlertMessage();

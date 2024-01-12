@@ -23,15 +23,13 @@ public class LoginController {
 
     @FXML
     private PasswordField passwordText;
-
     @FXML
     private TextField usernameText;
-
     private AlertMessage alert = new AlertMessage();
 
 
     @FXML
-    protected void login() throws IOException {
+    protected void login() {
         try {
             String username = usernameText.getText();
             String password = passwordText.getText();
@@ -77,5 +75,4 @@ public class LoginController {
             }
         }
     }
-
 }

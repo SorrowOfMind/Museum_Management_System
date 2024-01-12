@@ -40,7 +40,6 @@ public class ExhibitsController implements Initializable {
     @FXML
     private AnchorPane exhibitsView;
 
-    // EXHIBITS DATA
     private Exhibits exhibits;
     private ObservableList<Exhibit> exhibitsShowList;
     private ObservableList<Exhibit> exhibitsDueList;
@@ -59,7 +58,6 @@ public class ExhibitsController implements Initializable {
             "brak", "standard", "ekstra"
     );
 
-    // SEARCH FORM
     ObservableList<String> searchFiltersList = FXCollections.observableArrayList(
             "ID", "Nazwa", "Status"
     );
@@ -67,7 +65,6 @@ public class ExhibitsController implements Initializable {
     @FXML
     private ComboBox<String> searchFilters;
 
-    // EXHIBITS FORM
     @FXML
     private ImageView exhibitImage;
     @FXML
@@ -97,7 +94,6 @@ public class ExhibitsController implements Initializable {
     @FXML
     private ComboBox<String> exhibitSecurity;
 
-    // FORM BUTTONS
     @FXML
     private Button exhibitAddBtn;
     @FXML
@@ -105,7 +101,6 @@ public class ExhibitsController implements Initializable {
     @FXML
     private Button exhibitUpdateBtn;
 
-    // EXHIBITS TABLE
     @FXML
     private TextField exhibitsSearch;
     @FXML
@@ -123,11 +118,9 @@ public class ExhibitsController implements Initializable {
     @FXML
     private TableColumn<Exhibit, String> exhibitsTableSecurity;
 
-    // UTILS
     private AlertMessage alert = new AlertMessage();
     private Image image;
     private byte[] imageData = null;
-
 
     private void populateExhibitsTable() {
         exhibitsShowList = filteredExhibitsShowList.size() > 0 ? filteredExhibitsShowList : exhibits.getExhibitsList();

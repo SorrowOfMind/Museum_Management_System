@@ -120,5 +120,4 @@ public class Worker implements Serializable {
     public String getJobTitle() {
         return jobTitle;
     }
-
 }

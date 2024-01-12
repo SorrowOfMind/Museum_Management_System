@@ -319,5 +319,4 @@ public class WorkersController implements Initializable {
             }
         });
     }
-
 }
