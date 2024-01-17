@@ -203,7 +203,7 @@ public class ExhibitsController implements Initializable {
         exhibitNextConservation.setValue(selectedExhibit.getNextConservation().toLocalDate());
         exhibitStatus.getSelectionModel().select(selectedExhibit.getStatus());
         exhibitSecurity.getSelectionModel().select(selectedExhibit.getSecurity());
- 
+
         if (selectedExhibit.getFilePath() != null) {
             image = new Image(System.getProperty("user.dir") + selectedExhibit.getFilePath(), 160, 160, false, true);
             exhibitImage.setImage(image);
